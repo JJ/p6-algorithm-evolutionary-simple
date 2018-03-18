@@ -37,8 +37,8 @@ sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
     my $xover1 = ^( $length - 2 ).pick;
     my $range = 1 + ^( @chromosome1.elems - $xover1 ).pick;
     my @x-chromosome = @chromosome2;
-    @chromosome2.splice( @chromosome1[$xover1,$xover1+$length],$length);
-    @chromosome1.splice( @x-chromosome[$xover1,$xover1+$length],$length);
+    @chromosome2.splice($xover1, $length, @chromosome1[$xover1,$xover1+$length]);
+    @chromosome1.splice($xover1, $length, @x-chromosome[$xover1,$xover1+$length]);
     return [@chromosome1,@chromosome2];
 }
 
