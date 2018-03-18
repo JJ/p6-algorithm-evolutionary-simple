@@ -45,9 +45,15 @@ sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
     return [@chromosome1,@chromosome2];
 }
 
-sub produce-offspring( @population,
-		       $size = @population.elems ) is export {
+sub produce-offspring( @pool,
+		       $size = @pool.elems ) is export {
     my @new-population;
+    for 1..($size/2) {
+	my @χx = @pool.pick: 2;
+	@new-population.push: crossover(@χx[0], @χx[1]);
+	say @new-population.perl;
+    }
+    return @new-population.map: mutation( * );
     
 }
 

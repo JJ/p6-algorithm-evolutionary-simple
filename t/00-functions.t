@@ -26,20 +26,19 @@ for 1..$population-size -> $p {
 my @χs = crossover( @initial-population[0], @initial-population[1]);
 cmp-ok( @initial-population[$_], &[!eqv], @χs[$_], "$_ chromosome xovered" ) for 0..1;
 
-
-
 my $population = evaluate( population => @initial-population,
 			   fitness-of => %fitness-of );
-
-say "Values ", $population.values;
 my $initial-fitness = $population.values.sum;
 
 my $one-of-them = $population.pick();
 ok( %fitness-of{$one-of-them}, "Evaluated to " ~ %fitness-of{$one-of-them});
 
-my @new-population = get-pool-roulette-wheel( $population, $population-size);
-cmp-ok( @new-population.elems, "==", $population-size, "Correct number of elements" );
+my @pool = get-pool-roulette-wheel( $population, $population-size);
+cmp-ok( @pool.elems, "==", $population-size, "Correct number of elements" );
 
+# Reproduce
+my @new-population= produce-offspring( @pool );
+cmp-ok( @new-population.elems, "==", $population-size, "Correct number of elements" );
 
 $population =  evaluate( population => @new-population,
 			 fitness-of => %fitness-of );
