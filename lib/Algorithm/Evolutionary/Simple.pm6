@@ -34,11 +34,14 @@ sub mutation ( @chromosome is copy ) is export {
 
 sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
     my $length = @chromosome1.elems;
-    my $xover1 = ^( $length - 2 ).pick;
-    my $range = 1 + ^( @chromosome1.elems - $xover1 ).pick;
+    my $xover1 = (^(@chromosome1.elems-2)).pick: 1;
+    my $range = 1 + ($length - $xover1).rand.UInt;
+    say "$xover1 and $range";
     my @x-chromosome = @chromosome2;
-    @chromosome2.splice($xover1, $length, @chromosome1[$xover1,$xover1+$length]);
-    @chromosome1.splice($xover1, $length, @x-chromosome[$xover1,$xover1+$length]);
+    my @þone = $xover1..$xover1+$range;
+    say @chromosome2[@þone];
+    @chromosome2[@þone] = @chromosome1[@þone];
+    @chromosome1[@þone] = @x-chromosome[@þone];
     return [@chromosome1,@chromosome2];
 }
 
