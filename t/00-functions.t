@@ -33,18 +33,22 @@ my $initial-fitness = $population.values.sum;
 my $one-of-them = $population.pick();
 ok( %fitness-of{$one-of-them}, "Evaluated to " ~ %fitness-of{$one-of-them});
 
-my @pool = get-pool-roulette-wheel( $population, $population-size);
-cmp-ok( @pool.elems, "==", $population-size, "Correct number of elements" );
+my @best = $population.sort(*.value).reverse.[0..1];
+say @best;
+
+my @pool = get-pool-roulette-wheel( $population, $population-size-2);
+cmp-ok( @pool.elems, "==", $population-size-2, "Correct number of elements" );
 
 # Reproduce
 my @new-population= produce-offspring( @pool );
-cmp-ok( @new-population.elems, "==", $population-size, "Correct number of elements in reproduction" );
+cmp-ok( @new-population.elems, "==", $population-size-2, "Correct number of elements in reproduction" );
 
 $population =  evaluate( population => @new-population,
-			 fitness-of => %fitness-of );
-say $population.sort;
+			 fitness-of => %fitness-of ) ∪ @best;
+
+cmp-ok( $population.elems, "<=", $population-size, "Correct number of elements in new generation" );
 
 say "Initial fitness " ~ $initial-fitness ~ " now " ~ $population.values.sum;
 
-#cmp-ok( $population.values.sum, ">=", $initial-fitness, "Improving fitness" );
+cmp-ok( $population.values.sum, ">=", $initial-fitness, "Improving fitness" );
 done-testing;

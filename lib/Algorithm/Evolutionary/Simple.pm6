@@ -36,10 +36,8 @@ sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
     my $length = @chromosome1.elems;
     my $xover1 = (^($length-2)).pick;
     my $xover2 = ($xover1^..^$length).pick;
-    say "$xover1 and $xover2";
     my @x-chromosome = @chromosome2;
     my @þone = $xover1..$xover2;
-    say @chromosome2[@þone];
     @chromosome2[@þone] = @chromosome1[@þone];
     @chromosome1[@þone] = @x-chromosome[@þone];
     return [@chromosome1,@chromosome2];
