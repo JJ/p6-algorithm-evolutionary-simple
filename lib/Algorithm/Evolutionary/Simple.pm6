@@ -50,10 +50,9 @@ sub produce-offspring( @pool,
     my @new-population;
     for 1..($size/2) {
 	my @χx = @pool.pick: 2;
-	@new-population.push: crossover(@χx[0], @χx[1]);
-	say @new-population.perl;
+	@new-population.push: crossover(@χx[0], @χx[1]).Slip;
     }
-    return @new-population.map: mutation( * );
+    return @new-population.map( { mutation( $^þ ) } );
     
 }
 
