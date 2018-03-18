@@ -32,6 +32,15 @@ sub mutation ( @chromosome is copy ) is export {
     return @chromosome;
 }
 
+sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
+    my $xover1 = @chromosome1.pick: @chromosome1.elems-2;
+    my $range = 1 + int rand ( @chromosome1.elems - $xover1 );
+    my @x-chromosome = @chromosome2;
+    @chromosome2.splice( @chromosome1[$xover1,$xover1+$length],$length);
+    @chromosome1.splice( @x-chromosome[$xover1,$xover1+$length],$length);
+    return [@chromosome1,@chromosome2];
+}
+
 sub produce-offspring( @population,
 		       $size = @population.elems ) is export {
     my @new-population;

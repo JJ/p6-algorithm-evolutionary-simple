@@ -22,6 +22,9 @@ for 1..$population-size -> $p {
     cmp-ok( @initial-population[$p-1], "==", mutation( @initial-population[$p-1] ), "Mutation works" );
 }
 
+say @initial-population[0], @initial-population[1];
+my @χs = crossover( @initial-population[0], @initial-population[1]);
+say @χs;						   
 my $population = evaluate( population => @initial-population,
 			   fitness-of => %fitness-of );
 
