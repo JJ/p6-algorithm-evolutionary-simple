@@ -6,6 +6,9 @@ sub random-chromosome( UInt $length ) is export {
     return Bool.pick() xx $length;
 }
 
+sub max-ones( @chromosome ) is export {
+    return @chromosome.sum;
+}
 
 =begin pod
 
@@ -26,6 +29,10 @@ Algorithm::Evolutionary::Simple is ...
 =head2 random-chromosome( $length )
 
 Generates a random chromosome
+
+=head2 max-ones( @chromosome )
+
+Returns the number of trues or ones in the chromosome
 
 =head1 AUTHOR
 
