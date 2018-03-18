@@ -27,14 +27,15 @@ sub get-pool-roulette-wheel( BagHash $population,
 }
 
 sub mutation ( @chromosome is copy ) is export {
-    my $pick = @chromosome.pick: @chromosome.elems;
+    my $pick = (^@chromosome.elems).pick;
     @chromosome[ $pick ] = !@chromosome[ $pick ];
     return @chromosome;
 }
 
 sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
-    my $xover1 = @chromosome1.pick: @chromosome1.elems-2;
-    my $range = 1 + int rand ( @chromosome1.elems - $xover1 );
+    my $length = @chromosome1.elems;
+    my $xover1 = ^( $length - 2 ).pick;
+    my $range = 1 + ^( @chromosome1.elems - $xover1 ).pick;
     my @x-chromosome = @chromosome2;
     @chromosome2.splice( @chromosome1[$xover1,$xover1+$length],$length);
     @chromosome1.splice( @x-chromosome[$xover1,$xover1+$length],$length);
