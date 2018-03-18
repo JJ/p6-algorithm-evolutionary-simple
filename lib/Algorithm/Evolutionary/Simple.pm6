@@ -26,6 +26,18 @@ sub get-pool-roulette-wheel( BagHash $population,
     return $population.pick: $need;
 }
 
+sub mutation ( @chromosome is copy ) is export {
+    my $pick = @chromosome.pick: @chromosome.elems;
+    @chromosome[ $pick ] = !@chromosome[ $pick ];
+    return @chromosome;
+}
+
+sub produce-offspring( @population,
+		       $size = @population.elems ) is export {
+    my @new-population;
+    
+}
+
 =begin pod
 
 =head1 NAME
@@ -49,6 +61,10 @@ Generates a random chromosome
 =head2 max-ones( @chromosome )
 
 Returns the number of trues or ones in the chromosome
+
+=head2 mutation( @chromosome )
+
+Returns the chromosome with a random bit flipped
 
 =head1 AUTHOR
 

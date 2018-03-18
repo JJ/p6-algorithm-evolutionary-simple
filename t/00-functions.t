@@ -19,16 +19,27 @@ my @initial-population;
 my %fitness-of;
 for 1..$population-size -> $p {
     @initial-population.push: random-chromosome( $length );
+    cmp-ok( @initial-population[$p-1], "==", mutation( @initial-population[$p-1] ), "Mutation works" );
 }
 
 my $population = evaluate( population => @initial-population,
 			   fitness-of => %fitness-of );
 
+say "Values ", $population.values;
+my $initial-fitness = $population.values.sum;
+
 my $one-of-them = $population.pick();
 ok( %fitness-of{$one-of-them}, "Evaluated to " ~ %fitness-of{$one-of-them});
 
-dd $population;
 my @new-population = get-pool-roulette-wheel( $population, $population-size);
-dd @new-population;
+cmp-ok( @new-population.elems, "==", $population-size, "Correct number of elements" );
 
+
+$population =  evaluate( population => @new-population,
+			 fitness-of => %fitness-of );
+
+say "Initial fitness " ~ $initial-fitness ~ " now " ~ $population.values.sum;
+
+say "Values ", $population.values;
+cmp-ok( $population.values.sum, ">=", $initial-fitness, "Improving fitness" );
 done-testing;
