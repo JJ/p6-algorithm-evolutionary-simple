@@ -10,6 +10,22 @@ sub max-ones( @chromosome ) is export {
     return @chromosome.sum;
 }
 
+sub evaluate( :@population, :%fitness-of --> BagHash ) is export {
+    my BagHash $pop-bag;
+    for @population -> $p {
+	if  ! %fitness-of{$p}.defined {
+	    %fitness-of{$p} = max-ones( $p );
+	}
+	$pop-bag{$p} = %fitness-of{$p};
+    }
+    return $pop-bag;
+}
+
+sub get-pool-roulette-wheel( BagHash $population,
+			     UInt $need = $population.elems ) is export {
+    return $population.pick: $need;
+}
+
 =begin pod
 
 =head1 NAME
