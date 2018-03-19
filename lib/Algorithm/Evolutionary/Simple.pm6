@@ -12,7 +12,7 @@ sub max-ones( @chromosome ) is export {
 
 sub evaluate( :@population,
 	      :%fitness-of,
-	      :$evaluator --> BagHash ) is export {
+	      :$evaluator --> Bag ) is export {
     my BagHash $pop-bag;
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
@@ -20,10 +20,10 @@ sub evaluate( :@population,
 	}
 	$pop-bag{$p} = %fitness-of{$p};
     }
-    return $pop-bag;
+    return $pop-bag.Bag;
 }
 
-sub get-pool-roulette-wheel( BagHash $population,
+sub get-pool-roulette-wheel( Bag $population,
 			     UInt $need = $population.elems ) is export {
     return $population.pick: $need;
 }
@@ -59,13 +59,13 @@ sub produce-offspring( @pool,
 sub generation( :$population,
 		:%fitness-of,
 		:$evaluator,
-		:$population-size = $population.elems--> BagHash ) is export {
+		:$population-size = $population.elems--> Bag ) is export {
 
-    my $best = $population.sort(*.value).reverse.[0..1].BagHash;
+    my $best = $population.sort(*.value).reverse.[0..1].Bag;
     say $best;
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
-    return  BagHash(evaluate( population => @new-population,
+    return  Bag(evaluate( population => @new-population,
 			      fitness-of => %fitness-of,
 			      evaluator => $evaluator ) ∪ $best );
     
@@ -107,11 +107,11 @@ Returns the number of trues or ones in the chromosome
 
 =head2 evaluate( :@population,
 		 :%fitness-of,
-		 :$evaluator --> BagHash ) is export
+		 :$evaluator --> Bag ) is export
 
 Evaluates the chromosomes, storing values in the fitness cache. 
 
-=head2 get-pool-roulette-wheel( BagHash $population,
+=head2 get-pool-roulette-wheel( Bag $population,
 				UInt $need = $population.elems ) is export
 
 Roulette wheel selection. 
@@ -131,14 +131,14 @@ Produces offspring from a pool array
 
 =head2 generation(  :@population,
 		    :%fitness-of,
-		    :$evaluator --> BagHash )
+		    :$evaluator --> Bag )
 
-Single generation of an evolutionary algorithm. The initial BagHash
+Single generation of an evolutionary algorithm. The initial Bag
 has to be evaluated before entering here using the C<evaluate> function.
 
 =head1 SEE ALSO
 
-There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out
+There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out. This is also a port of L<Algorithm::Evolutionary::Simple in Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies. 
 
 =head1 AUTHOR
 

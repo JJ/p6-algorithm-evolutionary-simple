@@ -1,5 +1,12 @@
 2018-03-19  Juan J. merelo  <jmerelo@penny>
 
+	* lib/Algorithm/Evolutionary/Simple.pm6 (Algorithm): Getting ready for the next version. I'll try to make a few adjustments.
+	Result of timing it:
+
+	perl6 -Ilib examples/max-ones.p6  8,70s user 0,10s system 104% cpu 8,419 total
+
+	It will probably have to improve a little bit.
+	
 	* example/max-ones.p6: Example tested and ready to run
 
 Revision history for Algorithm-Evolutionary-Simple
