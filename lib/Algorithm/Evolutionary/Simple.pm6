@@ -56,6 +56,21 @@ sub produce-offspring( @pool,
     
 }
 
+sub generation( :$population,
+		:%fitness-of,
+		:$evaluator,
+		:$population-size = $population.elems--> BagHash ) is export {
+
+    my $best = $population.sort(*.value).reverse.[0..1].BagHash;
+    say $best;
+    my @pool = get-pool-roulette-wheel( $population, $population-size-2);
+    my @new-population= produce-offspring( @pool, $population-size );
+    return  BagHash(evaluate( population => @new-population,
+			      fitness-of => %fitness-of,
+			      evaluator => $evaluator ) ∪ $best );
+    
+    
+}
 
 =begin pod
 
@@ -84,6 +99,13 @@ Returns the number of trues or ones in the chromosome
 =head2 mutation( @chromosome )
 
 Returns the chromosome with a random bit flipped
+
+=head2 generation(  :@population,
+		    :%fitness-of,
+		    :$evaluator --> BagHash )
+
+Single generation of an evolutionary algorithm. The initial BagHash has to be evaluated
+
 
 =head1 AUTHOR
 
