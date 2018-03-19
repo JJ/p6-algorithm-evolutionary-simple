@@ -15,12 +15,20 @@ my $channel-two = $pairs-supply.Channel;
 
 my $single = start {
     react  {
-        whenever $channel-one -> $population is copy {
+        whenever $channel-one -> $crew {
             say "via Channel 1:";
 	    my $count = 0;
-	    my %fitness-of;
-	    while $count++ < $generations && $population.sort(*.value).reverse.[0].value < $length {
-		LAST { $supplier.emit( $population ) if $count < $generations };
+	    my $population = $crew.Bag;
+	    my %fitness-of = $population.Hash;
+	    say "Population ", $population.^name;
+	    while $count++ < $generations && best-fitness($population) < $length {
+		LAST {
+		    if best-fitness($population) >= $length {
+			say "Solution found";
+		    } else {
+			$supplier.emit( $population );
+		    }
+		};
 		$population = generation( population => $population,
 					  fitness-of => %fitness-of,
 					  evaluator => &max-ones,
@@ -36,7 +44,8 @@ my $single = start {
 my $pairs = start {
     react  {
         whenever $channel-two -> @pair {
-	    say "In Channel 2: ", crossover( @pair[0], @pair[1] );
+	    say "In Channel 2: ";
+	    $supplier.emit(mix( @pair[0], @pair[1], $population-size ));
         }
     }
 }
