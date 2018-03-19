@@ -29,7 +29,7 @@ my $pairs = start {
 
 await (^100).map: -> $r {
     start {
-	sleep $r/100.0;
+	sleep $r/1000.0;
         $supplier.emit(random-chromosome($length));
     }
 }
