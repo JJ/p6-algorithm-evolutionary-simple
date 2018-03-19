@@ -6,6 +6,15 @@ sub random-chromosome( UInt $length ) is export {
     return Bool.pick() xx $length;
 }
 
+sub initialize( UInt :$size,
+		UInt :$genome-length ) is export {
+    my @initial-population;
+    for 1..$size -> $p {
+	@initial-population.push: random-chromosome( $genome-length );
+    }
+    return @initial-population;
+}
+
 sub max-ones( @chromosome ) is export {
     return @chromosome.sum;
 }
@@ -62,12 +71,11 @@ sub generation( :$population,
 		:$population-size = $population.elems--> Bag ) is export {
 
     my $best = $population.sort(*.value).reverse.[0..1].Bag;
-    say $best;
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
     return  Bag(evaluate( population => @new-population,
-			      fitness-of => %fitness-of,
-			      evaluator => $evaluator ) ∪ $best );
+			  fitness-of => %fitness-of,
+			  evaluator => $evaluator ) ∪ $best );
     
     
 }

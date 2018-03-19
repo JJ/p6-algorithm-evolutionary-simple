@@ -6,11 +6,8 @@ use Algorithm::Evolutionary::Simple;
 my $length = 64;
 my $population-size = 64;
 
-my @initial-population;
-my %fitness-of;
-for 1..$population-size -> $p {
-    @initial-population.push: random-chromosome( $length );
-}
+my (@initial-population, %fitness-of) = initialize( size => $population-size,
+						    genome-length => $length );
 
 my $population = evaluate( population => @initial-population,
 			   fitness-of => %fitness-of,
