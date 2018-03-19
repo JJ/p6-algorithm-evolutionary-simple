@@ -22,6 +22,11 @@ It uses a fitness cache for storing and not reevaluating, so take care of memory
 METHODS
 =======
 
+initialize( UInt :$size, UInt :$genome-length ) is export
+---------------------------------------------------------
+
+Creates the initial population
+
 random-chromosome( $length )
 ----------------------------
 
@@ -32,13 +37,13 @@ max-ones( @chromosome )
 
 Returns the number of trues or ones in the chromosome
 
-evaluate( :@population, :%fitness-of, :$evaluator --> BagHash ) is export
--------------------------------------------------------------------------
+evaluate( :@population, :%fitness-of, :$evaluator --> Bag ) is export
+---------------------------------------------------------------------
 
 Evaluates the chromosomes, storing values in the fitness cache. 
 
-get-pool-roulette-wheel( BagHash $population, UInt $need = $population.elems ) is export
-----------------------------------------------------------------------------------------
+get-pool-roulette-wheel( Bag $population, UInt $need = $population.elems ) is export
+------------------------------------------------------------------------------------
 
 Roulette wheel selection. 
 
@@ -57,10 +62,15 @@ produce-offspring( @pool, $size = @pool.elems ) is export
 
 Produces offspring from a pool array
 
-generation( :@population, :%fitness-of, :$evaluator --> BagHash )
------------------------------------------------------------------
+generation( :@population, :%fitness-of, :$evaluator --> Bag )
+-------------------------------------------------------------
 
-Single generation of an evolutionary algorithm. The initial BagHash has to be evaluated before entering here using the `evaluate` function.
+Single generation of an evolutionary algorithm. The initial Bag has to be evaluated before entering here using the `evaluate` function.
+
+SEE ALSO
+========
+
+There is a very interesting implementation of an evolutionary algorithm in [Algorithm::Genetic](Algorithm::Genetic). Check it out. This is also a port of [Algorithm::Evolutionary::Simple in Perl6](https://metacpan.org/release/Algorithm-Evolutionary-Simple), which has a few more goodies. 
 
 AUTHOR
 ======

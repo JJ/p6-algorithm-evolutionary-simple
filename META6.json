@@ -1,4 +1,5 @@
 {
+  "auth" : "github:JJ",
   "authors" : [
     "JJ Merelo"
   ],
@@ -11,13 +12,19 @@
   "provides" : {
     "Algorithm::Evolutionary::Simple" : "lib/Algorithm/Evolutionary/Simple.pm6"
   },
-  "resources" : [ "examples/*" ],
-  "source-url" : "https://github.com/JJ/p6-algorithm-evolutionary-simple.git",
-    "tags" : [ "evolutionary algorithms", "genetic algorithms", "optimization", "computational inteligence"],
-  "test-depends" : [
-        "Test",
-      "Test::META"
+  "resources" : [
+    "examples/*"
   ],
-    "version" : "0.0.2",
-    "auth": "github:JJ",
+  "source-url" : "https://github.com/JJ/p6-algorithm-evolutionary-simple.git",
+  "tags" : [
+    "evolutionary algorithms",
+    "genetic algorithms",
+    "optimization",
+    "computational inteligence"
+  ],
+  "test-depends" : [
+    "Test",
+    "Test::META"
+  ],
+  "version" : "0.0.1"
 }

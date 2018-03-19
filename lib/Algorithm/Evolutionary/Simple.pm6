@@ -105,6 +105,11 @@ so take care of memory bloat.
    
 =head1 METHODS
 
+=head2 initialize( UInt :$size,
+		   UInt :$genome-length ) is export
+
+Creates the initial population
+
 =head2 random-chromosome( $length )
 
 Generates a random chromosome
