@@ -12,7 +12,7 @@
     "Algorithm::Evolutionary::Simple" : "lib/Algorithm/Evolutionary/Simple.pm6"
   },
   "resources" : [ ],
-  "source-url" : "https://github.com/JJ/p6-algorithm-evolutionary-simple",
+  "source-url" : "https://github.com/JJ/p6-algorithm-evolutionary-simple.git",
   "tags" : [ ],
   "test-depends" : [ ],
   "version" : "0.0.1"
