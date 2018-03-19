@@ -20,12 +20,12 @@ my $single = start {
 	    my $count = 0;
 	    my $population = $crew.Bag;
 	    my %fitness-of = $population.Hash;
-	    say "Population ", $population.^name;
 	    while $count++ < $generations && best-fitness($population) < $length {
 		LAST {
 		    if best-fitness($population) >= $length {
 			say "Solution found";
 		    } else {
+			say "Emitting";
 			$supplier.emit( $population );
 		    }
 		};
