@@ -14,7 +14,7 @@ my $channel-two = $pairs-supply.Channel;
 my $single = start {
     react  {
         whenever $channel-one -> $item {
-            say "via Channel 1:", $item;
+            say "via Channel 1:", max-ones($item);
         }
     }
 }
@@ -22,25 +22,21 @@ my $single = start {
 my $pairs = start {
     react  {
         whenever $channel-two -> @pair {
-	    say "In Channel 2: ", crossover( @pair[0], @pair[1] );
+	    my @new-chromosome = crossover( @pair[0], @pair[1] );
+	    say "In Channel 2: ", @new-chromosome;
+	    $channel-one.send( @new-chromosome[0]);
+	    $channel-one.send( @new-chromosome[1]);
         }
     }
 }
 
-await (^3).map: -> $r {
+await (^10).map: -> $r {
     start {
-	sleep $r/1000.0;
-	my @initial-population = initialize( size => $population-size,
-					     genome-length => $length );
-	my %fitness-of;
-	
-	my $population = evaluate( population => @initial-population,
-				   fitness-of => %fitness-of,
-				   evaluator => &max-ones );
-        $supplier.emit( $population );
+	sleep $r/100.0;
+        $supplier.emit( random-chromosome($length) );
     }
 }
 
-$supplier.done;
-await $single;
+#$supplier.done;
+#await $single;
 await $pairs;

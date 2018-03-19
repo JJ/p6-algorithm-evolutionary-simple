@@ -24,6 +24,7 @@ my $single = start {
 		LAST {
 		    if best-fitness($population) >= $length {
 			say "Solution found";
+			$channel-one.close;
 		    } else {
 			say "Emitting";
 			$supplier.emit( $population );
