@@ -10,11 +10,13 @@ sub max-ones( @chromosome ) is export {
     return @chromosome.sum;
 }
 
-sub evaluate( :@population, :%fitness-of --> BagHash ) is export {
+sub evaluate( :@population,
+	      :%fitness-of,
+	      :$evaluator --> BagHash ) is export {
     my BagHash $pop-bag;
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
-	    %fitness-of{$p} = max-ones( $p );
+	    %fitness-of{$p} = $evaluator( $p );
 	}
 	$pop-bag{$p} = %fitness-of{$p};
     }
@@ -53,6 +55,7 @@ sub produce-offspring( @pool,
     return @new-population.map( { mutation( $^þ ) } );
     
 }
+
 
 =begin pod
 

@@ -27,7 +27,8 @@ my @χs = crossover( @initial-population[0], @initial-population[1]);
 cmp-ok( @initial-population[$_], &[!eqv], @χs[$_], "$_ chromosome xovered" ) for 0..1;
 
 my $population = evaluate( population => @initial-population,
-			   fitness-of => %fitness-of );
+			   fitness-of => %fitness-of,
+			   evaluator => &max-ones );
 my $initial-fitness = $population.values.sum;
 
 my $one-of-them = $population.pick();
@@ -44,7 +45,8 @@ my @new-population= produce-offspring( @pool );
 cmp-ok( @new-population.elems, "==", $population-size-2, "Correct number of elements in reproduction" );
 
 $population =  evaluate( population => @new-population,
-			 fitness-of => %fitness-of ) ∪ @best;
+			 fitness-of => %fitness-of,
+			 evaluator => &max-ones ) ∪ @best;
 
 cmp-ok( $population.elems, "<=", $population-size, "Correct number of elements in new generation" );
 
