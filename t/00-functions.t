@@ -21,10 +21,10 @@ for 1..$population-size -> $p {
     cmp-ok( @initial-population[$p-1], "==", mutation( @initial-population[$p-1] ), "Mutation works" );
 }
 
-@initial-population = initialize( size => $population-size,
-				  genome-length => $length );
+my @another-population = initialize( size => $population-size,
+				     genome-length => $length );
 
-cmp-ok( @initial-population.elems, "==", $population-size );
+cmp-ok( @another-population.elems, "==", $population-size );
 
 # Crossover
 my @χs = crossover( @initial-population[0], @initial-population[1]);
@@ -65,6 +65,17 @@ $population = generation( population => $population,
 			  evaluator => &max-ones,
 			  population-size => $population-size);
 
-cmp-ok( $population.sort(*.value).reverse.[0].value, ">=", $now-fitness, "Improving fitness " );
+my $evolved-fitness = $population.sort(*.value).reverse.[0].value;
+
+cmp-ok( $evolved-fitness, ">=", $now-fitness, "Improving fitness by evolving " );
+
+# Merge populations
+my $another-population =  evaluate( population => @another-population,
+				    fitness-of => %fitness-of,
+				    evaluator => &max-ones );
+
+my $merged = mix( $population, $another-population, $population-size);
+cmp-ok( best-fitness($merged), ">=", $evolved-fitness, "Improving fitness by mixing " );
+
 
 done-testing;

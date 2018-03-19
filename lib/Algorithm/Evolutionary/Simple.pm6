@@ -65,6 +65,10 @@ sub produce-offspring( @pool,
     
 }
 
+sub best-fitness( $population ) is export {
+    return $population.sort(*.value).reverse.[0].value;
+}
+
 sub generation( :$population,
 		:%fitness-of,
 		:$evaluator,
@@ -78,6 +82,12 @@ sub generation( :$population,
 			  evaluator => $evaluator ) ∪ $best );
     
     
+}
+
+sub mix( $population1, $population2, $size ) is export {
+    my $new-population = $population1  ∪ $population2;
+    my $best = $new-population.sort(*.value).reverse.[0..($size-1)];
+    return $best;
 }
 
 =begin pod
@@ -142,6 +152,10 @@ Returns two cromosomes, with parts of it crossed over
 
 Produces offspring from a pool array
 
+=head2 best-fitness( $population )
+
+Returns the fitness of the first element.
+
 =head2 generation(  :@population,
 		    :%fitness-of,
 		    :$evaluator --> Bag )
@@ -149,6 +163,10 @@ Produces offspring from a pool array
 Single generation of an evolutionary algorithm. The initial Bag
 has to be evaluated before entering here using the C<evaluate> function.
 
+=head2 mix( $population1, $population2, $size ) is export 
+   
+Mixes the two populations, returning a single one of the indicated size
+				     
 =head1 SEE ALSO
 
 There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out. This is also a port of L<Algorithm::Evolutionary::Simple in Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies. 

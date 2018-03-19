@@ -62,10 +62,20 @@ produce-offspring( @pool, $size = @pool.elems ) is export
 
 Produces offspring from a pool array
 
+best-fitness( $population )
+---------------------------
+
+Returns the fitness of the first element.
+
 generation( :@population, :%fitness-of, :$evaluator --> Bag )
 -------------------------------------------------------------
 
 Single generation of an evolutionary algorithm. The initial Bag has to be evaluated before entering here using the `evaluate` function.
+
+mix( $population1, $population2, $size ) is export 
+---------------------------------------------------
+
+Mixes the two populations, returning a single one of the indicated size
 
 SEE ALSO
 ========
