@@ -136,6 +136,9 @@ Produces offspring from a pool array
 Single generation of an evolutionary algorithm. The initial BagHash
 has to be evaluated before entering here using the C<evaluate> function.
 
+=head1 SEE ALSO
+
+There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out
 
 =head1 AUTHOR
 
