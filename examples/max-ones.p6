@@ -6,8 +6,9 @@ use Algorithm::Evolutionary::Simple;
 my $length = 64;
 my $population-size = 64;
 
-my (@initial-population, %fitness-of) = initialize( size => $population-size,
-						    genome-length => $length );
+my @initial-population = initialize( size => $population-size,
+				     genome-length => $length );
+my %fitness-of;
 
 my $population = evaluate( population => @initial-population,
 			   fitness-of => %fitness-of,
