@@ -6,16 +6,14 @@ use Algorithm::Evolutionary::Simple;
 
 my $length = 64;
 my $population-size = 64;
-my $generations = 16;
+my $generations = 8;
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
 my $channel-one = $supply.Channel;
 my $pairs-supply = $supply.batch( elems => 2 );
 my $channel-two = $pairs-supply.Channel;
 
-my $single = start {
-    react  {
-        whenever $channel-one -> $crew {
+my $single = start react whenever $channel-one -> $crew {
             say "via Channel 1:";
 	    my $count = 0;
 	    my $population = $crew.Bag;
@@ -38,17 +36,11 @@ my $single = start {
 		say "Best → ", $population.sort(*.value).reverse.[0];
 	    }
 	    
-        }
-    }
 }
 
-my $pairs = start {
-    react  {
-        whenever $channel-two -> @pair {
-	    say "In Channel 2: ";
-	    $supplier.emit(mix( @pair[0], @pair[1], $population-size ));
-        }
-    }
+my $pairs = start react whenever $channel-two -> @pair {
+    say "In Channel 2: ";
+    $supplier.emit(mix( @pair[0], @pair[1], $population-size ));
 }
 
 await (^3).map: -> $r {
