@@ -7,11 +7,7 @@ use Algorithm::Evolutionary::Simple;
 my $length = 64;
 my $population-size = 64;
 my $generations = 8;
-my $supplier = Supplier.new;
-my $supply   = $supplier.Supply;
-my $channel-one = $supply.Channel;
-my $pairs-supply = $supply.batch( elems => 2 );
-my $channel-two = $pairs-supply.Channel;
+my Channel $channel-one = .new;
 
 my $single = start react whenever $channel-one -> $crew {
             say "via Channel 1:";
@@ -25,7 +21,7 @@ my $single = start react whenever $channel-one -> $crew {
 			$channel-one.close;
 		    } else {
 			say "Emitting";
-			$supplier.emit( $population );
+			$channel-one.emit( $population );
 		    }
 		};
 		$population = generation( population => $population,
@@ -38,9 +34,9 @@ my $single = start react whenever $channel-one -> $crew {
 	    
 }
 
-my $pairs = start react whenever $channel-two -> @pair {
+my $pairs = start react whenever $channel-one.List.rotor(2) -> @pair {
     say "In Channel 2: ";
-    $supplier.emit(mix( @pair[0], @pair[1], $population-size ));
+    $channel-one.emit(mix( @pair[0], @pair[1], $population-size ));
 }
 
 await (^3).map: -> $r {
@@ -52,10 +48,9 @@ await (^3).map: -> $r {
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
-        $supplier.emit( $population );
+        $channel-one.emit( $population );
     }
 }
 
-$supplier.done;
 await $single;
 await $pairs;

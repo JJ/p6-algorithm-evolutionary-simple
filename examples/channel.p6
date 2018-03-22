@@ -5,15 +5,24 @@ use v6;
 use Algorithm::Evolutionary::Simple;
 
 my $length = 32;
-my $supplier = Supplier.new;
-my $supply   = $supplier.Supply;
-my $channel-one = $supply.Channel;
-my $pairs-supply = $supply.batch( elems => 2 );
-my $channel-two = $pairs-supply.Channel;
+my Channel $channel-pop .= new;
+my Channel $channel-two .= new;
+
+my $count = 0;
+my $work = start {
+    say "Count → $count\n\n";
+    $channel-two.send: $_ for $channel-pop.List.rotor(2);
+    $channel-pop.close if $count++ >= 100;
+    CATCH {
+	default {
+	    $channel-two.fail($_)
+	}
+    }
+};
 
 my $single = start {
     react  {
-        whenever $channel-one -> $item {
+        whenever $channel-pop -> $item {
             say "via Channel 1:", max-ones($item);
         }
     }
@@ -24,19 +33,13 @@ my $pairs = start {
         whenever $channel-two -> @pair {
 	    my @new-chromosome = crossover( @pair[0], @pair[1] );
 	    say "In Channel 2: ", @new-chromosome;
-	    $channel-one.send( @new-chromosome[0]);
-	    $channel-one.send( @new-chromosome[1]);
+	    $channel-pop.send( @new-chromosome[0]);
+	    $channel-pop.send( @new-chromosome[1]);
         }
     }
 }
 
-await (^10).map: -> $r {
-    start {
-	sleep $r/100.0;
-        $supplier.emit( random-chromosome($length) );
-    }
-}
+$channel-pop.send( random-chromosome($length) ) for ^10;
 
-#$supplier.done;
-#await $single;
+await $single;
 await $pairs;
