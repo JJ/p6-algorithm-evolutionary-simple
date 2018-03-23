@@ -10,12 +10,12 @@ my Channel $channel-batch = $channel-pop.Supply.batch( elems => 2).Channel;
 my Channel $output .= new;
 
 my $count = 0;
-$channel-pop.send( random-chromosome($length).list ) for ^101;
+$channel-pop.send( random-chromosome($length).list ) for ^11;
 
 my $pairs = start react whenever $channel-batch -> @pair {
     if ( $count++ < 100 ) {
 	say "In Channel 2: ", @pair;
-	$output.send( $_ => max-ones($_) ) for @pair;
+	$output.send(  $_ => max-ones($_)  ) for @pair;
 	my @new-chromosome = crossover( @pair[0], @pair[1] );
 	$channel-pop.send( $_.list ) for @new-chromosome;
     } else {
@@ -26,8 +26,8 @@ my $pairs = start react whenever $channel-batch -> @pair {
 
 await $pairs;
 loop {
-    if my %item = $output.poll {
-	%item.say;
+    if my $item = $output.poll {
+	$item.say;
     } else {
 	$output.close;
     }
