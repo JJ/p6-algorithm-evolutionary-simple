@@ -6,40 +6,34 @@ use Algorithm::Evolutionary::Simple;
 
 my $length = 32;
 my Channel $channel-pop .= new;
-my Channel $channel-two .= new;
+my Channel $channel-batch = $channel-pop.Supply.batch( elems => 2).Channel;
+my Channel $output .= new;
 
 my $count = 0;
-my $work = start {
-    say "Count → $count\n\n";
-    $channel-two.send: $_ for $channel-pop.List.rotor(2);
-    $channel-pop.close if $count++ >= 100;
-    CATCH {
-	default {
-	    $channel-two.fail($_)
-	}
-    }
-};
-
-my $single = start {
-    react  {
-        whenever $channel-pop -> $item {
-            say "via Channel 1:", max-ones($item);
-        }
-    }
-}
-
-my $pairs = start {
-    react  {
-        whenever $channel-two -> @pair {
-	    my @new-chromosome = crossover( @pair[0], @pair[1] );
-	    say "In Channel 2: ", @new-chromosome;
-	    $channel-pop.send( @new-chromosome[0]);
-	    $channel-pop.send( @new-chromosome[1]);
-        }
-    }
-}
-
 $channel-pop.send( random-chromosome($length) ) for ^10;
 
-await $single;
+my $pairs = start {
+    react {
+        whenever $channel-batch -> @pair {
+	    if ( $count++ < 100 ) {
+		say "In Channel 2: ", @pair;
+		$output.send( $_ => max-ones($_) ) for @pair;
+		my @new-chromosome = crossover( @pair[0], @pair[1] );
+		$channel-pop.send( $_ ) for @new-chromosome;
+            } else {
+		$channel-pop.close;
+	    }
+	}
+    }
+}
+
 await $pairs;
+loop {
+    if my %item = $output.poll {
+	%item.say;
+    } else {
+	$output.close;
+    }
+    if $output.closed  { last };
+}
+
