@@ -4,7 +4,7 @@ use v6;
 
 use Algorithm::Evolutionary::Simple;
 
-my $length = 32;
+my $length = 16;
 my Channel $channel-pop .= new;
 my Channel $channel-batch = $channel-pop.Supply.batch( elems => 2).Channel;
 my Channel $output .= new;
