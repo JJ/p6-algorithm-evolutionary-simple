@@ -5,7 +5,7 @@ use v6;
 use Algorithm::Evolutionary::Simple;
 
 my $length = 64;
-my $population-size = 128;
+my $population-size = 256;
 my Channel $raw .= new;
 my Channel $evaluated .= new;
 my Channel $channel-three = $evaluated.Supply.batch( elems => 4).Channel;
