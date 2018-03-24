@@ -13,23 +13,26 @@ my Channel $output .= new;
 
 $raw.send( random-chromosome($length).list ) for ^$population-size;
 
+my $count = 0;
+
 my $evaluation = start react whenever $raw -> $one {
     my $with-fitness = $one => max-ones($one);
     $output.send( $with-fitness );
     $evaluated.send( $with-fitness);
-    say "Evaluation ", $with-fitness;
-    $raw.close if $with-fitness.value == $length;
+    say "$count → $with-fitness";
+    if $with-fitness.value == $length {
+	$raw.close;
+	say "Solution found";
+    }
 }
 
 my $selection = start react whenever $channel-three -> @three {
-    say "Tournament ", @three.sort( .values ).reverse;
-    my @ranked = @three.sort( .values ).reverse;
-    say "Ranked ", @ranked;
-    $evaluated.send( $_ ) for @ranked[0,1];
-    $raw.send( $_ ) for crossover(|@ranked[0,1]);
+    my @ranked = @three.sort( { .values } ).reverse;
+    $evaluated.send( $_ ) for @ranked[0..1];
+    $raw.send( $_.list ) for crossover(@ranked[0].key,@ranked[1].key);
 }
 
-await $evaluation;
+await $selection;
 loop {
     if my $item = $output.poll {
 	$item.say;
