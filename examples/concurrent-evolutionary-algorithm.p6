@@ -8,7 +8,7 @@ my $length = 64;
 my $population-size = 64;
 my Channel $raw .= new;
 my Channel $evaluated .= new;
-my Channel $channel-three = $evaluated.Supply.batch( elems => 3).Channel;
+my Channel $channel-three = $evaluated.Supply.batch( elems => 4).Channel;
 my Channel $output .= new;
 
 $raw.send( random-chromosome($length).list ) for ^$population-size;
@@ -26,8 +26,8 @@ my $evaluation = start react whenever $raw -> $one {
     }
 }
 
-my $selection = start react whenever $channel-three -> @three {
-    my @ranked = @three.sort( { .values } ).reverse;
+my $selection = start react whenever $channel-three -> @tournament {
+    my @ranked = @tournament.sort( { .values } ).reverse;
     $evaluated.send( $_ ) for @ranked[0..1];
     $raw.send( $_.list ) for crossover(@ranked[0].key,@ranked[1].key);
 }
