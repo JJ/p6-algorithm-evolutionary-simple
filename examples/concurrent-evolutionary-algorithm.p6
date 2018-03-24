@@ -19,7 +19,7 @@ my $evaluation = start react whenever $raw -> $one {
     my $with-fitness = $one => max-ones($one);
     $output.send( $with-fitness );
     $evaluated.send( $with-fitness);
-    say "$count → $with-fitness";
+    say $count++, " → $with-fitness";
     if $with-fitness.value == $length {
 	$raw.close;
 	say "Solution found";
