@@ -38,7 +38,9 @@ sub MAIN ( UInt :$length = 64,
     my $selection = start react whenever $channel-three -> @tournament {
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
-	$raw.send( $_.list ) for crossover(@ranked[0].key,@ranked[1].key);
+	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
+	say @crossed;
+	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
     }
     
     await $evaluation;
