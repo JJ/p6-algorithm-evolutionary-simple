@@ -2,5 +2,8 @@
 
 	* concurrent-selecto-recombinative-EA.p6: Start making experiments
 	for finding out the population needed in a selecto-recombinative
-	algorithm.  
+	algorithm.
+	For population size = 256, Result 0.9
+
+	
 
