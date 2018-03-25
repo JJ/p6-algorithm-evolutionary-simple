@@ -4,6 +4,18 @@
 	for finding out the population needed in a selecto-recombinative
 	algorithm.
 	For population size = 256, Result 0.9
+	Result 0.9 --diversify-size=16
+
+	perl6 -Ilib
+	examples/concurrent-selecto-recombinative-EA.p6
+	--population-size=512 ➜ Result 1
+
+	perl6 -Ilib examples/concurrent-selecto-recombinative-EA.p6
+	--diversify-size=4 → 0.933333
+	
+
+
+
 
 	
 
