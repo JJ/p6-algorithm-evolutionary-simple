@@ -1,0 +1,6 @@
+2018-03-25  JJMerelo  <jmerelo@bojack>
+
+	* concurrent-selecto-recombinative-EA.p6: Start making experiments
+	for finding out the population needed in a selecto-recombinative
+	algorithm.  
+
