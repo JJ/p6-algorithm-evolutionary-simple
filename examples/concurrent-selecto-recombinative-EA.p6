@@ -12,12 +12,6 @@ sub selecto-recombinative-EA( |parameters (
 				    UInt :$tournament-size = 4
 				)) {
 
-    say "Parameters ==";
-    for parameters.kv -> $key, $value {
-	say "$key → $value";
-    };
-    say "=============";
-
     # Channel definition
     my Channel $raw .= new;
     my Channel $evaluated .= new;
@@ -67,6 +61,13 @@ sub selecto-recombinative-EA( |parameters (
 	if $output.closed  { last };
     }
     return $end;
+    
+    say "Parameters ==";
+    say "Evaluations => $count";
+    for parameters.kv -> $key, $value {
+	say "$key → $value";
+    };
+    say "=============";
 
 }
 sub MAIN ( UInt :$repetitions = 30,

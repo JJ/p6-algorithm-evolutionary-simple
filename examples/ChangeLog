@@ -1,7 +1,9 @@
 2018-03-26  JJMerelo  <jmerelo@bojack>
 
 	* concurrent-selecto-recombinative-EA.p6: Adds parameter printing
-	for experiments. 
+	for experiments. Testing now with tournament-size = 3. No good
+	result is coming...
+	Tournament size has to be either 3 or 4. It hangs up with 5.
 
 2018-03-25  JJMerelo  <jmerelo@bojack>
 
