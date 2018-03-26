@@ -4,18 +4,28 @@ use v6;
 
 use Algorithm::Evolutionary::Simple;
 
-sub selecto-recombinative-EA( UInt :$length = 64,
-			      UInt :$population-size = 256,
-			      UInt :$diversify-size = 8,
-			      UInt :$max-evaluations = 10000,
-			      UInt :$tournament-size = 4 ) {
+sub selecto-recombinative-EA( |parameters (
+				    UInt :$length = 64,
+				    UInt :$population-size = 256,
+				    UInt :$diversify-size = 8,
+				    UInt :$max-evaluations = 10000,
+				    UInt :$tournament-size = 4
+				)) {
 
+    say "Parameters ==";
+    for parameters.kv -> $key, $value {
+	say "$key → $value";
+    };
+    say "=============";
+
+    # Channel definition
     my Channel $raw .= new;
     my Channel $evaluated .= new;
     my Channel $channel-three = $evaluated.Supply.batch( elems => $tournament-size).Channel;
     my Channel $shuffler = $raw.Supply.batch( elems => $diversify-size).Channel;
     my Channel $output .= new;
-    
+
+    # Creates initial population
     $raw.send( random-chromosome($length).list ) for ^$population-size;
     
     my $count = 0;

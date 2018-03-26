@@ -1,3 +1,8 @@
+2018-03-26  JJMerelo  <jmerelo@bojack>
+
+	* concurrent-selecto-recombinative-EA.p6: Adds parameter printing
+	for experiments. 
+
 2018-03-25  JJMerelo  <jmerelo@bojack>
 
 	* concurrent-selecto-recombinative-EA.p6: Start making experiments
