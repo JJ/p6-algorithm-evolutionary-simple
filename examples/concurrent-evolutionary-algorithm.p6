@@ -3,21 +3,23 @@
 use v6;
 
 use Algorithm::Evolutionary::Simple;
+constant tournament-size = 4;
 
-sub MAIN ( UInt :$length = 64,
-	   UInt :$population-size = 256,
-	   UInt :$diversify-size = 8,
-	   UInt :$tournament-size = 4 ) {
+sub regular-EA ( UInt :$length = 64,
+		 UInt :$population-size = 256,
+		 UInt :$diversify-size = 8,
+		 UInt :$max-evaluations = 10000, ) {
     
     my Channel $raw .= new;
     my Channel $evaluated .= new;
-    my Channel $channel-three = $evaluated.Supply.batch( elems => $tournament-size).Channel;
+    my Channel $channel-three = $evaluated.Supply.batch( elems => tournament-size).Channel;
     my Channel $shuffler = $raw.Supply.batch( elems => $diversify-size).Channel;
     my Channel $output .= new;
     
     $raw.send( random-chromosome($length).list ) for ^$population-size;
     
     my $count = 0;
+    my $end;
     
     my $shuffle = start react whenever $shuffler -> @group {
 	my @shuffled = @group.pick(*);
@@ -31,7 +33,11 @@ sub MAIN ( UInt :$length = 64,
 	say $count++, " → $with-fitness";
 	if $with-fitness.value == $length {
 	    $raw.close;
-	    say "Solution found";
+	    $end = "Found" => $count;
+	}
+	if $count >= $max-evaluations {
+	    $raw.close;
+	    $end = "Found" => False;
 	}
     }
     
@@ -39,7 +45,6 @@ sub MAIN ( UInt :$length = 64,
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
-	say @crossed;
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
     }
     
@@ -53,4 +58,23 @@ sub MAIN ( UInt :$length = 64,
 	}
 	if $output.closed  { last };
     }
+}
+
+sub MAIN ( UInt :$repetitions = 30,
+           UInt :$length = 64,
+	   UInt :$population-size = 256,
+	   UInt :$diversify-size = 8,
+	   UInt :$max-evaluations = 10000 ) {
+
+    my @found;
+    for ^$repetitions {
+	my $result = regular-EA( length => $length,
+				 population-size => $population-size,
+				 diversify-size => $diversify-size,
+				 max-evaluations => $max-evaluations );
+	
+	@found.push( $result );
+    }
+    say "Result ", @found;
+
 }

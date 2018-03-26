@@ -70,9 +70,11 @@ sub selecto-recombinative-EA( |parameters (
     say "=============";
 
 }
+
+
 sub MAIN ( UInt :$repetitions = 30,
            UInt :$length = 64,
-	   UInt :$population-size = 256,
+	   UInt :$population-size = 512,
 	   UInt :$diversify-size = 8,
 	   UInt :$max-evaluations = 10000,
 	   UInt :$tournament-size = 4 ) {
