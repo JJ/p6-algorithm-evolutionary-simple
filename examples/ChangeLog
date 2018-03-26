@@ -3,7 +3,10 @@
 	* concurrent-selecto-recombinative-EA.p6: Adds parameter printing
 	for experiments. Testing now with tournament-size = 3. No good
 	result is coming...
-	Tournament size has to be either 3 or 4. It hangs up with 5.
+	Tournament size has to be either 3 or 4. It hangs up with 5. It
+	goes down to 0 with 3. Too slow, individuals are getting pushed
+	back Result 0
+
 
 2018-03-25  JJMerelo  <jmerelo@bojack>
 
