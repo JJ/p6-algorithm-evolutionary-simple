@@ -20,9 +20,9 @@ for ^3 {
     $channel-one.send( $population );
 }
 
-my $single = start react whenever $channel-one -> $crew {
+my $single = start react whenever $mixer -> $population {
+    say "Evolver";
     my $count = 0;
-    my $population = $crew.Bag;
     my %fitness-of = $population.Hash;
     while $count++ < $generations && best-fitness($population) < $length {
 	LAST {
@@ -46,6 +46,7 @@ my $single = start react whenever $channel-one -> $crew {
 
 my $pairs = start react whenever $mixer -> @pair {
     say "Mixer ";
+    $channel-one.send($_) for @pair; # Restore in channel
     $channel-one.send(mix( @pair[0], @pair[1], $population-size ));
 }
 
