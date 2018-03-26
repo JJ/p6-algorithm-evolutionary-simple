@@ -60,7 +60,6 @@ sub selecto-recombinative-EA( |parameters (
 	}
 	if $output.closed  { last };
     }
-    return $end;
     
     say "Parameters ==";
     say "Evaluations => $count";
@@ -68,7 +67,7 @@ sub selecto-recombinative-EA( |parameters (
 	say "$key → $value";
     };
     say "=============";
-
+    return $end;
 }
 
 

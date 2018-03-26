@@ -5,10 +5,12 @@ use v6;
 use Algorithm::Evolutionary::Simple;
 constant tournament-size = 4;
 
-sub regular-EA ( UInt :$length = 64,
-		 UInt :$population-size = 256,
-		 UInt :$diversify-size = 8,
-		 UInt :$max-evaluations = 10000, ) {
+sub regular-EA ( |parameters (
+		       UInt :$length = 64,
+		       UInt :$population-size = 256,
+		       UInt :$diversify-size = 8,
+		       UInt :$max-evaluations = 10000 )
+		 ) {
     
     my Channel $raw .= new;
     my Channel $evaluated .= new;
@@ -30,12 +32,12 @@ sub regular-EA ( UInt :$length = 64,
 	my $with-fitness = $one => max-ones($one);
 	$output.send( $with-fitness );
 	$evaluated.send( $with-fitness);
-	say $count++, " → $with-fitness";
+#	say $count++, " → $with-fitness";
 	if $with-fitness.value == $length {
 	    $raw.close;
 	    $end = "Found" => $count;
 	}
-	if $count >= $max-evaluations {
+	if $count++ >= $max-evaluations {
 	    $raw.close;
 	    $end = "Found" => False;
 	}
@@ -58,6 +60,14 @@ sub regular-EA ( UInt :$length = 64,
 	}
 	if $output.closed  { last };
     }
+    
+    say "Parameters ==";
+    say "Evaluations => $count";
+    for parameters.kv -> $key, $value {
+	say "$key → $value";
+    };
+    say "=============";
+    return $end;
 }
 
 sub MAIN ( UInt :$repetitions = 30,
@@ -72,7 +82,7 @@ sub MAIN ( UInt :$repetitions = 30,
 				 population-size => $population-size,
 				 diversify-size => $diversify-size,
 				 max-evaluations => $max-evaluations );
-	
+	say( $result );
 	@found.push( $result );
     }
     say "Result ", @found;
