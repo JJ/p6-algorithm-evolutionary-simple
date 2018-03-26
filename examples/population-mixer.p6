@@ -10,8 +10,17 @@ my $generations = 8;
 my Channel $channel-one .= new;
 my Channel $mixer =  $channel-one.Supply.batch( elems => 2).Channel;
 
+for ^3 {
+    my @initial-population = initialize( size => $population-size,
+					 genome-length => $length );
+    my %fitness-of;	
+    my $population = evaluate( population => @initial-population,
+			       fitness-of => %fitness-of,
+			       evaluator => &max-ones );
+    $channel-one.send( $population );
+}
+
 my $single = start react whenever $channel-one -> $crew {
-    say "via Channel 1:";
     my $count = 0;
     my $population = $crew.Bag;
     my %fitness-of = $population.Hash;
@@ -36,22 +45,10 @@ my $single = start react whenever $channel-one -> $crew {
 }
 
 my $pairs = start react whenever $mixer -> @pair {
-    say "In Channel 2: ";
+    say "Mixer ";
     $channel-one.send(mix( @pair[0], @pair[1], $population-size ));
 }
 
-await (^3).map: -> $r {
-    start {
-	sleep $r/1000.0;
-	my @initial-population = initialize( size => $population-size,
-					     genome-length => $length );
-	my %fitness-of;	
-	my $population = evaluate( population => @initial-population,
-				   fitness-of => %fitness-of,
-				   evaluator => &max-ones );
-        $channel-one.send( $population );
-    }
-}
 
 await $single;
-await $pairs;
+
