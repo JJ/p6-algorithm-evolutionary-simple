@@ -74,8 +74,8 @@ sub generation(Bag :$population,
 	       :$evaluator,
 	       :$population-size = $population.elems --> Bag ) is export {
 
+    say "Elems in generation ", $population.elems;
     my $best = $population.sort(*.value).reverse.[0..1].Bag;
-    say "Best $best";
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
     return  Bag(evaluate( population => @new-population,
