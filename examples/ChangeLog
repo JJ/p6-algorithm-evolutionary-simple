@@ -1,5 +1,11 @@
 2018-03-26  JJMerelo  <jmerelo@bojack>
 
+	* concurrent-evolutionary-algorithm.p6: New algorithm which includes mutation. Testing for number of evaluations. Results
+
+	Result [Found => 5043 Found => 5033 Found => 5584 Found => 5343 Found => 5588 Found => 4631 Found => 5117 Found => 4232 Found => 4371 Found => 5133 Found => 4741 Found => 4745 Found => 5269 Found => 4047 Found => 4292 Found => 4918 Found => 4165 Found => 4488 Found => 4413 Found => 4914 Found => 4177 Found => 4279 Found => 4255 Found => 4373 Found => 4358 Found => 4648 Found => 5740 Found => 4327 Found => 5284 Found => 4073]
+
+	Testing now for bigger chromosomes: perl6 -I../lib ./concurrent-evolutionary-algorithm.p6 --max-evaluations=50000 --population-size=512 --length=128
+
 	* concurrent-selecto-recombinative-EA.p6: Adds parameter printing
 	for experiments. Testing now with tournament-size = 3. No good
 	result is coming...

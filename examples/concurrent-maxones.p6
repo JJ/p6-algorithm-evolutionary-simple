@@ -7,36 +7,37 @@ use Algorithm::Evolutionary::Simple;
 my $length = 64;
 my $population-size = 64;
 my $generations = 8;
-my Channel $channel-one = .new;
+my Channel $channel-one .= new;
+my Channel $mixer =  $channel-one.Supply.batch( elems => 2).Channel;
 
 my $single = start react whenever $channel-one -> $crew {
-            say "via Channel 1:";
-	    my $count = 0;
-	    my $population = $crew.Bag;
-	    my %fitness-of = $population.Hash;
-	    while $count++ < $generations && best-fitness($population) < $length {
-		LAST {
-		    if best-fitness($population) >= $length {
-			say "Solution found";
-			$channel-one.close;
-		    } else {
-			say "Emitting";
-			$channel-one.emit( $population );
-		    }
-		};
-		$population = generation( population => $population,
-					  fitness-of => %fitness-of,
-					  evaluator => &max-ones,
-					  population-size => $population-size) ;
-		
-		say "Best → ", $population.sort(*.value).reverse.[0];
+    say "via Channel 1:";
+    my $count = 0;
+    my $population = $crew.Bag;
+    my %fitness-of = $population.Hash;
+    while $count++ < $generations && best-fitness($population) < $length {
+	LAST {
+	    if best-fitness($population) >= $length {
+		say "Solution found";
+		$channel-one.close;
+	    } else {
+		say "Emitting";
+		$channel-one.send( $population );
 	    }
-	    
+	};
+	$population = generation( population => $population,
+				  fitness-of => %fitness-of,
+				  evaluator => &max-ones,
+				  population-size => $population-size) ;
+	
+	say "Best → ", $population.sort(*.value).reverse.[0];
+    }
+    
 }
 
-my $pairs = start react whenever $channel-one.List.rotor(2) -> @pair {
+my $pairs = start react whenever $mixer -> @pair {
     say "In Channel 2: ";
-    $channel-one.emit(mix( @pair[0], @pair[1], $population-size ));
+    $channel-one.send(mix( @pair[0], @pair[1], $population-size ));
 }
 
 await (^3).map: -> $r {
@@ -48,7 +49,7 @@ await (^3).map: -> $r {
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
-        $channel-one.emit( $population );
+        $channel-one.send( $population );
     }
 }
 
