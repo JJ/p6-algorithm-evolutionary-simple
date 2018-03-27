@@ -51,7 +51,7 @@ sub mixer-EA( |parameters (
 	    say "Best → ", $population.sort(*.value).reverse.[0];
 	}
     
-    }
+    } for ^2;
     
     my $pairs = start react whenever $mixer -> @pair {
 	$channel-one.send(@pair.pick);
