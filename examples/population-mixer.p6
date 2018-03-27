@@ -6,9 +6,11 @@ use Algorithm::Evolutionary::Simple;
 
 my $length = 64;
 my $population-size = 64;
-my $generations = 8;
+my $generations = 16;
 my Channel $channel-one .= new;
 my Channel $mixer =  $channel-one.Supply.batch( elems => 2).Channel;
+
+my $evaluations = 0;
 
 for ^3 {
     my @initial-population = initialize( size => $population-size,
@@ -17,6 +19,7 @@ for ^3 {
     my $population = evaluate( population => @initial-population,
 			       fitness-of => %fitness-of,
 			       evaluator => &max-ones );
+    $evaluations += $population.elems;
     $channel-one.send( $population );
 }
 
@@ -28,10 +31,10 @@ my $single = start react whenever $channel-one -> $crew {
     while $count++ < $generations && best-fitness($population) < $length {
 	LAST {
 	    if best-fitness($population) >= $length {
-		say "Solution found";
+		say "Solution found" => $evaluations;
 		$channel-one.close;
 	    } else {
-		say "Emitting";
+		say "Emitting $count";
 		$channel-one.send( $population );
 	    }
 	};
@@ -39,7 +42,7 @@ my $single = start react whenever $channel-one -> $crew {
 				  fitness-of => %fitness-of,
 				  evaluator => &max-ones,
 				  population-size => $population-size) ;
-	
+	$evaluations += $population.elems;
 	say "Best → ", $population.sort(*.value).reverse.[0];
     }
     
