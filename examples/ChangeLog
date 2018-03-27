@@ -1,3 +1,9 @@
+2018-03-27  JJMerelo  <jmerelo@bojack>
+
+	* population-mixer.p6: Testing a possibly multithreaded population mixer, with not a lot of success, because the evolutionary algorithm gets stuck eventually. Not a good sign. 
+
+	It takes a good while to find the solution, ~60000 generations, and that lowering the "generation gap" to just 8. We will have to do something about this... Maybe test population sizes until they work..
+	
 2018-03-26  JJMerelo  <jmerelo@bojack>
 
 	* concurrent-evolutionary-algorithm.p6: New algorithm which includes mutation. Testing for number of evaluations. Results

@@ -6,8 +6,9 @@ use Algorithm::Evolutionary::Simple;
 
 sub mixer-EA( |parameters (
 		    UInt :$length = 64,
-		    UInt :$population-size = 64;
-		    UInt :$generations = 16
+		    UInt :$population-size = 256,
+		    UInt :$generations = 8,
+		    UInt :$threads = 1
 		)
 	    ) {
     
@@ -39,7 +40,7 @@ sub mixer-EA( |parameters (
 		    say "Solution found" => $evaluations;
 		    $channel-one.close;
 		} else {
-		    say "Emitting $count";
+		    say "Emitting after $count generations";
 		    $channel-one.send( $population );
 		}
 	    };
@@ -51,7 +52,7 @@ sub mixer-EA( |parameters (
 	    say "Best → ", $population.sort(*.value).reverse.[0];
 	}
     
-    } for ^2;
+    } for ^$threads;
     
     my $pairs = start react whenever $mixer -> @pair {
 	$channel-one.send(@pair.pick);
@@ -60,19 +61,27 @@ sub mixer-EA( |parameters (
     
     
     await $single;
+    say "Parameters ==";
+    say "Evaluations => $evaluations";
+    for parameters.kv -> $key, $value {
+	say "$key → $value";
+    };
+    say "=============";
     return $evaluations;
 }
 
 sub MAIN ( UInt :$repetitions = 30,
            UInt :$length = 64,
-	   UInt :$population-size = 128,
-	   UInt :$generations=16) {
+	   UInt :$population-size = 256,
+	   UInt :$generations=8,
+	   UInt :$threads = 1 ) {
 
     my @results;
     for ^$repetitions {
 	my $result = mixer-EA( length => $length,
 			       population-size => $population-size,
-			       generations => $generations);
+			       generations => $generations,
+			       threads => $threads );
 	push @results, $result;
     }
 
