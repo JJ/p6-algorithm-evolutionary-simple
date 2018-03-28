@@ -6,6 +6,7 @@ use Algorithm::Evolutionary::Simple;
 
 sub mixer-EA( |parameters (
 		    UInt :$length = 64,
+		    UInt :$initial-populations = 3,
 		    UInt :$population-size = 256,
 		    UInt :$generations = 8,
 		    UInt :$threads = 1
@@ -18,7 +19,7 @@ sub mixer-EA( |parameters (
     my $evaluations = 0;
 
     # Initialize three populations for the mixer
-    for ^3 {
+    for ^$initial-populations {
 	my @initial-population = initialize( size => $population-size,
 					     genome-length => $length );
 	my %fitness-of;	
@@ -72,6 +73,7 @@ sub mixer-EA( |parameters (
 }
 
 sub MAIN ( UInt :$repetitions = 30,
+	   UInt :$initial-populations = 3,
            UInt :$length = 64,
 	   UInt :$population-size = 256,
 	   UInt :$generations=8,
@@ -80,6 +82,7 @@ sub MAIN ( UInt :$repetitions = 30,
     my @results;
     for ^$repetitions {
 	my $result = mixer-EA( length => $length,
+			       initial-populations => $initial-populations,
 			       population-size => $population-size,
 			       generations => $generations,
 			       threads => $threads );
