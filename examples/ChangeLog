@@ -2,6 +2,7 @@
 
 	* population-mixer.p6: Checking with more threads and less mixing
 	$ perl6 -I../lib population-mixer.p6 --generations=32 --threads=4
+	
 
 	Parameters ==
 Evaluations => 84102
@@ -39,7 +40,19 @@ length → 64
 =============
 [60360 69906 47202 51330 96738 84354 34818 44364 74550 54942 52620 65520 45912 67842 33528 46686 44364 55974 33786 46944 51846 72486 74034 61908 51330 63972 53910 59586 63198 25530]
 
+	Not a lot of improvement with 8 populations..
 
+	Parameters ==
+Evaluations => 91058
+population-size → 256
+generations → 8
+threads → 1
+initial-populations → 8
+length → 64
+=============
+[62678 73772 34814 45650 47198 51842 56744 48746 58034 55970 69128 70160 57518 61388 72482 66548 63452 74804 40232 82028 50810 69644 42296 62162 50036 47972 59582 58034 50036 91058]
+
+	
 2018-03-27  JJMerelo  <jmerelo@bojack>
 
 	* population-mixer.p6: Testing a possibly multithreaded population mixer, with not a lot of success, because the evolutionary algorithm gets stuck eventually. Not a good sign. 
