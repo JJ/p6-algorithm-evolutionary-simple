@@ -3,6 +3,16 @@
 	* population-mixer.p6: Checking with more threads and less mixing
 	$ perl6 -I../lib population-mixer.p6 --generations=32 --threads=4
 
+	Parameters ==
+Evaluations => 84102
+population-size → 256
+generations → 32
+threads → 4
+length → 64
+=============
+[94164 95712 167178 100356 92874 79716 86166 57012 123318 111450 117900 106806 88746 81264 154794 64236 111708 149118 138798 75846 126930 160728 157890 144732 91326 155310 80748 80232 57528 84102]
+
+	This is the (rather bad) result. 
 
 2018-03-27  JJMerelo  <jmerelo@bojack>
 
