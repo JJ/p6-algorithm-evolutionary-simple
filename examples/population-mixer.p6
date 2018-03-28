@@ -47,7 +47,8 @@ sub mixer-EA( |parameters (
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
 				      evaluator => &max-ones,
-				      population-size => $population-size) ;
+				      population-size => $population-size);
+	    
 	    $evaluations += $population.elems;
 	    say "Best → ", $population.sort(*.value).reverse.[0];
 	}

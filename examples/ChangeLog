@@ -1,3 +1,9 @@
+2018-03-28  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer.p6: Checking with more threads and less mixing
+	$ perl6 -I../lib population-mixer.p6 --generations=32 --threads=4
+
+
 2018-03-27  JJMerelo  <jmerelo@bojack>
 
 	* population-mixer.p6: Testing a possibly multithreaded population mixer, with not a lot of success, because the evolutionary algorithm gets stuck eventually. Not a good sign. 
