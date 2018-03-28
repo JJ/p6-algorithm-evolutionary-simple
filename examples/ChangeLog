@@ -12,7 +12,33 @@ length → 64
 =============
 [94164 95712 167178 100356 92874 79716 86166 57012 123318 111450 117900 106806 88746 81264 154794 64236 111708 149118 138798 75846 126930 160728 157890 144732 91326 155310 80748 80232 57528 84102]
 
-	This is the (rather bad) result. 
+	This is the (rather bad) result. Change to:
+	$ perl6 -I../lib population-mixer.p6 --initial-populations=4
+
+	With result
+Parameters ==
+Evaluations => 61654
+population-size → 256
+generations → 8
+threads → 1
+initial-populations → 4
+length → 64
+=============
+	[67846 49012 79714 32242 57010 30436 83842 65524 71458 63718 61138 54430 65266 43852 66556 54172 39466 42562 53398 52882 44368 50302 42820 65266 50044 59332 59074 49012 47980 61654]
+
+	Testing with more populations:
+
+	Solution found => 25530
+Parameters ==
+Evaluations => 25530
+population-size → 256
+generations → 8
+threads → 1
+initial-populations → 6
+length → 64
+=============
+[60360 69906 47202 51330 96738 84354 34818 44364 74550 54942 52620 65520 45912 67842 33528 46686 44364 55974 33786 46944 51846 72486 74034 61908 51330 63972 53910 59586 63198 25530]
+
 
 2018-03-27  JJMerelo  <jmerelo@bojack>
 
