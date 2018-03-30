@@ -1,3 +1,7 @@
+2018-03-30  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer.p6: Testing for different number of threads, settling on 2 initial populations, which seems to offer the best result.
+
 2018-03-28  Juan J. merelo  <jmerelo@penny>
 
 	* population-mixer.p6: Checking with more threads and less mixing

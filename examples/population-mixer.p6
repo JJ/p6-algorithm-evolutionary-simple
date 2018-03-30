@@ -31,7 +31,6 @@ sub mixer-EA( |parameters (
     }
     
     my $single = start react whenever $channel-one -> $crew {
-	say "Evolver";
 	my $population = $crew.Bag;
 	my $count = 0;
 	my %fitness-of = $population.Hash;
@@ -51,7 +50,6 @@ sub mixer-EA( |parameters (
 				      population-size => $population-size);
 	    
 	    $evaluations += $population.elems;
-	    say "Best → ", $population.sort(*.value).reverse.[0];
 	}
     
     } for ^$threads;
