@@ -31,7 +31,8 @@ sub mixer-EA( |parameters (
 	$channel-one.send( $population );
     }
     
-    my $single = start react whenever $channel-one -> $crew {
+    my $single = ( start react whenever $channel-one -> $crew {
+	say  "Reacting - single ", $*THREAD.id;
 	my $population = $crew.Bag;
 	my $count = 0;
 	my %fitness-of = $population.Hash;
@@ -41,7 +42,7 @@ sub mixer-EA( |parameters (
 		    say "Solution found" => $evaluations;
 		    $channel-one.close;
 		} else {
-		    say "Emitting after $count generations in thread ", $*THREAD.id;
+		    say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
 		    $channel-one.send( $population );
 		    $to-mix.send( $population );
 		}
@@ -54,7 +55,7 @@ sub mixer-EA( |parameters (
 	    $evaluations += $population.elems;
 	}
     
-    } for ^$threads;
+    } ) for ^$threads;
     
     my $pairs = start react whenever $mixer -> @pair {
 	$channel-one.send(mix( @pair[0], @pair[1], $population-size ));
