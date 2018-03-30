@@ -1,6 +1,20 @@
 2018-03-30  Juan J. merelo  <jmerelo@penny>
 
 	* population-mixer.p6: Testing for different number of threads, settling on 2 initial populations, which seems to offer the best result.
+	[42050 52628 56756 46436 35084 81524 42050 32246 48758 27860 32246 48758 28118 63206 62690 65528 39470 70430 42566 66818 77912 73268 30956 38180 94424 56498 41276 41018 32246 54950]
+	perl6 -I../lib population-mixer.p6 --initial-populations=2  1096,73s user 3,53s system 101% cpu 18:02,59 total
+
+	Parameters ==
+Evaluations => 42050
+population-size → 256
+generations → 8
+threads → 2
+initial-populations → 2
+length → 64
+=============
+[87458 21152 54434 31988 49274 50564 49016 44372 43856 60626 44372 89006 31730 51854 44372 35858 39986 62174 39470 57014 54434 103970 51854 72494 29666 34568 79202 36890 46178 42050]
+perl6 -I../lib population-mixer.p6 --initial-populations=2 --threads=2  1199,18s user 5,83s system 101% cpu 19:42,18 total
+
 
 2018-03-28  Juan J. merelo  <jmerelo@penny>
 
