@@ -14,7 +14,8 @@ sub mixer-EA( |parameters (
 	    ) {
     
     my Channel $channel-one .= new;
-    my Channel $mixer =  $channel-one.Supply.batch( elems => 2).Channel;
+    my Channel $to-mix .= new;
+    my Channel $mixer = $to-mix.Supply.batch( elems => 2).Channel;
     
     my $evaluations = 0;
 
@@ -40,8 +41,9 @@ sub mixer-EA( |parameters (
 		    say "Solution found" => $evaluations;
 		    $channel-one.close;
 		} else {
-		    say "Emitting after $count generations";
+		    say "Emitting after $count generations in thread ", $*THREAD.id;
 		    $channel-one.send( $population );
+		    $to-mix.send( $population );
 		}
 	    };
 	    $population = generation( population => $population,
@@ -55,9 +57,9 @@ sub mixer-EA( |parameters (
     } for ^$threads;
     
     my $pairs = start react whenever $mixer -> @pair {
-	$channel-one.send(@pair.pick);
 	$channel-one.send(mix( @pair[0], @pair[1], $population-size ));
-    }
+	say "Mixing in ", $*THREAD.id;
+    };
     
     
     await $single;

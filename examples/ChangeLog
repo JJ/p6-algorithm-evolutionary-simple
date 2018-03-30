@@ -1,8 +1,9 @@
 2018-03-30  Juan J. merelo  <jmerelo@penny>
 
-	* population-mixer.p6: Testing for different number of threads, settling on 2 initial populations, which seems to offer the best result.
+	* population-mixer.p6: Testing for different number of threads, settling on 2 initial populations, which seems to offer the best result. This one for 1 thread.
 	[42050 52628 56756 46436 35084 81524 42050 32246 48758 27860 32246 48758 28118 63206 62690 65528 39470 70430 42566 66818 77912 73268 30956 38180 94424 56498 41276 41018 32246 54950]
 	perl6 -I../lib population-mixer.p6 --initial-populations=2  1096,73s user 3,53s system 101% cpu 18:02,59 total
+	This program has a big problem: it gets mixing and mixing, it's too greedy, and the evolution part simply is not there. Let's try the same with two channels. 
 
 	Parameters ==
 Evaluations => 42050
@@ -14,6 +15,23 @@ length → 64
 =============
 [87458 21152 54434 31988 49274 50564 49016 44372 43856 60626 44372 89006 31730 51854 44372 35858 39986 62174 39470 57014 54434 103970 51854 72494 29666 34568 79202 36890 46178 42050]
 perl6 -I../lib population-mixer.p6 --initial-populations=2 --threads=2  1199,18s user 5,83s system 101% cpu 19:42,18 total
+
+	Parameters ==
+Evaluations => 86426
+population-size → 256
+generations → 8
+threads → 4
+initial-populations → 2
+length → 64
+=============
+[29408 51338 56498 47468 72752 62948 65528 42050 43856 56240 47210 46178 34052 59336 62690 51854 58562 52628 56498 52370 60110 38438 29924 37664 77138 91070 69140 50564 68624 86426]
+perl6 -I../lib population-mixer.p6 --initial-populations=2 --threads=4  1237,02s user 4,20s system 96% cpu 21:23,05 total
+
+	I am going to stop here, since there's no improvement whatsoever. It gets worse. The channel seems to be the problem...
+
+	Because it got worse...
+[68878 59590 44368 76618 55204 100354 57010 59074 42562 80230 52882 42820 78166 67330 77908 55204 52624 50560 52882 52624 41014 44884 54688 48238 42304 49012 65524 44884 61396 61138]
+perl6 -I../lib population-mixer.p6 --initial-populations=4 --threads=4  3720,84s user 18,51s system 170% cpu 36:30,17 total
 
 
 2018-03-28  Juan J. merelo  <jmerelo@penny>
