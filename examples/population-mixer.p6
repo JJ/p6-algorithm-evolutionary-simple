@@ -32,7 +32,6 @@ sub mixer-EA( |parameters (
     }
     
     my $single = ( start react whenever $channel-one -> $crew {
-	say  "Reacting - single ", $*THREAD.id;
 	my $population = $crew.Bag;
 	my $count = 0;
 	my %fitness-of = $population.Hash;
@@ -43,7 +42,6 @@ sub mixer-EA( |parameters (
 		    $channel-one.close;
 		} else {
 		    say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
-		    $channel-one.send( $population );
 		    $to-mix.send( $population );
 		}
 	    };
@@ -58,6 +56,7 @@ sub mixer-EA( |parameters (
     } ) for ^$threads;
     
     my $pairs = start react whenever $mixer -> @pair {
+	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
 	$channel-one.send(mix( @pair[0], @pair[1], $population-size ));
 	say "Mixing in ", $*THREAD.id;
     };
