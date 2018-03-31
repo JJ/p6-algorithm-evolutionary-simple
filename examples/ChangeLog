@@ -1,5 +1,7 @@
 2018-03-30  Juan J. merelo  <jmerelo@penny>
 
+	* ../lib/Algorithm/Evolutionary/Simple.pm6: Eliminates debug code
+
 	* population-mixer.p6: Testing for different number of threads, settling on 2 initial populations, which seems to offer the best result. This one for 1 thread.
 	[42050 52628 56756 46436 35084 81524 42050 32246 48758 27860 32246 48758 28118 63206 62690 65528 39470 70430 42566 66818 77912 73268 30956 38180 94424 56498 41276 41018 32246 54950]
 	perl6 -I../lib population-mixer.p6 --initial-populations=2  1096,73s user 3,53s system 101% cpu 18:02,59 total
