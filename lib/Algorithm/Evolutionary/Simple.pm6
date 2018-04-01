@@ -19,6 +19,12 @@ sub max-ones( @chromosome ) is export {
     return @chromosome.sum;
 }
 
+sub royal-road( @chromosome ) is export {
+    return @chromosome.rotor(4).grep( so (*.all == True|False) ).elems;
+}
+
+
+
 sub evaluate( :@population,
 	      :%fitness-of,
 	      :$evaluator --> Bag ) is export {
