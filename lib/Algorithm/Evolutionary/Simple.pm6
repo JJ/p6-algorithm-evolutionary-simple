@@ -23,8 +23,6 @@ sub royal-road( @chromosome ) is export {
     return @chromosome.rotor(4).grep( so (*.all == True|False) ).elems;
 }
 
-
-
 sub evaluate( :@population,
 	      :%fitness-of,
 	      :$evaluator --> Bag ) is export {
@@ -133,6 +131,10 @@ Generates a random chromosome
 =head2 max-ones( @chromosome )
 
 Returns the number of trues or ones in the chromosome
+
+=head2 royal-road( @chromosome )
+
+That's a bumpy road, returns 1 for each block of 4 which has the same true or false value.
 
 =head2 evaluate( :@population,
 		 :%fitness-of,
