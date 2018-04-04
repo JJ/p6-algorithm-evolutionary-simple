@@ -1,3 +1,7 @@
+2018-04-04  JJMerelo  <jmerelo@bojack>
+
+	* max-ones.p6: Adapts this to run several experiments and repeat them. 
+
 2018-03-30  Juan J. merelo  <jmerelo@penny>
 
 	* ../lib/Algorithm/Evolutionary/Simple.pm6: Eliminates debug code

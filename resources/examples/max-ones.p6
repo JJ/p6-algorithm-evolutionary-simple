@@ -3,23 +3,32 @@
 use v6;
 use Algorithm::Evolutionary::Simple;
 
-my $length = 64;
-my $population-size = 64;
 
-my @initial-population = initialize( size => $population-size,
-				     genome-length => $length );
-my %fitness-of;
+sub MAIN ( UInt :$repetitions = 30,
+           UInt :$length = 64,
+	   UInt :$population-size = 256 ) {
 
-my $population = evaluate( population => @initial-population,
-			   fitness-of => %fitness-of,
-			   evaluator => &max-ones );
-
-say "Best → ", $population.sort(*.value).reverse.[0];
-while $population.sort(*.value).reverse.[0].value < $length {
-    $population = generation( population => $population,
-			       fitness-of => %fitness-of,
-			       evaluator => &max-ones,
-			       population-size => $population-size) ;
-
-    say "Best → ", $population.sort(*.value).reverse.[0];
+    my @found;
+    for ^$repetitions {
+	my @initial-population = initialize( size => $population-size,
+					     genome-length => $length );
+	my %fitness-of;
+	
+	my $population = evaluate( population => @initial-population,
+				   fitness-of => %fitness-of,
+				   evaluator => &max-ones );
+	
+	my $result = 0;
+	while $population.sort(*.value).reverse.[0].value < $length {
+	    $population = generation( population => $population,
+				      fitness-of => %fitness-of,
+				      evaluator => &max-ones,
+				      population-size => $population-size) ;
+	    $result += $population-size;
+	    
+	}
+	say "Found → $population.sort(*.value).reverse.[0]";
+	@found.push( $result );
+    }
+    say "Found ", @found;
 }
