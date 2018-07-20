@@ -2,7 +2,7 @@ use v6.c;
 
 unit class Algorithm::Evolutionary::Simple:ver<0.0.4>;
 
-sub random-chromosome( UInt $length ) is export {
+sub random-chromosome( UInt $length --> Seq ) is export {
     return Bool.pick() xx $length;
 }
 
@@ -127,13 +127,13 @@ so take care of memory bloat.
 
 Creates the initial population of binary chromosomes with the indicated length; returns an array. 
 
-=head2 random-chromosome( $length )
+=head2 random-chromosome(  UInt $length --> Seq )
 
-Generates a random chromosome
+Generates a random chromosome of indicated length. Returns a C<Seq> of C<Bool>s
 
-=head2 max-ones( @chromosome )
+=head2 max-ones( @chromosome --> Int )
 
-Returns the number of trues or ones in the chromosome
+Returns the number of trues (or ones) in the chromosome.
 
 =head2 royal-road( @chromosome )
 
