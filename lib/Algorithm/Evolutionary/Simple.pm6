@@ -15,11 +15,11 @@ sub initialize( UInt :$size,
     return @initial-population;
 }
 
-sub max-ones( @chromosome ) is export {
+sub max-ones( @chromosome --> Int ) is export {
     return @chromosome.sum;
 }
 
-sub royal-road( @chromosome ) is export {
+sub royal-road( @chromosome --> Int ) is export {
     return @chromosome.rotor(4).grep( so (*.all == True|False) ).elems;
 }
 
@@ -41,13 +41,16 @@ sub get-pool-roulette-wheel( Bag $population,
     return $population.pick: $need;
 }
 
-sub mutation ( @chromosome is copy ) is export {
+sub mutation ( @chromosome is copy --> Array ) is export {
     my $pick = (^@chromosome.elems).pick;
     @chromosome[ $pick ] = !@chromosome[ $pick ];
     return @chromosome;
 }
 
-sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
+sub crossover ( @chromosome1 is copy,
+		@chromosome2 is copy )
+                returns List
+                is export {
     my $length = @chromosome1.elems;
     my $xover1 = (^($length-2)).pick;
     my $xover2 = ($xover1^..^$length).pick;
@@ -59,7 +62,7 @@ sub crossover ( @chromosome1 is copy, @chromosome2 is copy ) is export {
 }
 
 sub produce-offspring( @pool,
-		       $size = @pool.elems ) is export {
+		       $size = @pool.elems --> Seq ) is export {
     my @new-population;
     for 1..($size/2) {
 	my @χx = @pool.pick: 2;
