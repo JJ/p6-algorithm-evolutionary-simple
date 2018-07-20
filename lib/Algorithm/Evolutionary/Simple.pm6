@@ -1,6 +1,6 @@
 use v6.c;
 
-unit class Algorithm::Evolutionary::Simple:ver<0.0.4>;
+unit module Algorithm::Evolutionary::Simple:ver<0.0.4>;
 
 sub random-chromosome( UInt $length --> Seq ) is export {
     return Bool.pick() xx $length;
