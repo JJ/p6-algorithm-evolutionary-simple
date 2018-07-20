@@ -8,13 +8,6 @@ use Algorithm::Evolutionary::Simple;
 
 my $length = 32;
 
-my @χ = random-chromosome( $length );
-cmp-ok( @χ, "ne", random-chromosome($length), "Random chromosomes");
-
-my $number-ones = reduce { $^b + $^a }, 0, |@χ;
-
-cmp-ok( max-ones( @χ ), "==", $number-ones, "Max ones correct");
-
 my $population-size = 32;
 my @initial-population;
 for 1..$population-size -> $p {
