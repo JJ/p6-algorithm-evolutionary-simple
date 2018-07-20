@@ -15,5 +15,10 @@ cmp-ok $p-peaks, "~~", Algorithm::Evolutionary::Fitness::P-Peaks, "Correct objec
 
 cmp-ok $p-peaks.peaks().elems, "==", $number-of-peaks, "Number of peaks correct";
 
+cmp-ok $p-peaks.peaks[0].elems, "==", $length, "Length of peaks correct";
+
+my @random-chromosome = Bool.pick xx $length ;
+
+cmp-ok $p-peaks.distance( @random-chromosome), ">=", 0, "Distance computed";
 
 done-testing;

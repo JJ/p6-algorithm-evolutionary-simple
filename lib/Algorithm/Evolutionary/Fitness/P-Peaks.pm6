@@ -6,11 +6,16 @@ has UInt $.number-of-peaks;
 has UInt $.bits;
 has      @.peaks = ();
 
-method  TWEAK() {
+method TWEAK() {
     for ^$!number-of-peaks {
 	@!peaks.push: Bool.pick xx $!bits;
     }
 
+}
+
+method distance( @chromosome --> Rat) {
+    my @distances = @!peaks.map: (*.list Z== @chromosome).sum;
+    return @distances.min / @chromosome.elems;
 }
 
 =begin pod
