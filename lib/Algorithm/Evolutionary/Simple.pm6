@@ -22,7 +22,7 @@ multi sub max-ones( @chromosome where .elems < 1024 --> Int ) is export {
 }
 
 multi sub max-ones( @chromosome where .elems >= 1024 --> Int ) is export {
-    return @chromosome.map( *.so).race.sum;
+    return @chromosome.race.map( *.so).sum;
 }
 
 sub royal-road( @chromosome --> Int ) is export {
