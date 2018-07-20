@@ -15,8 +15,14 @@ sub initialize( UInt :$size,
     return @initial-population;
 }
 
-sub max-ones( @chromosome --> Int ) is export {
+proto max-ones ( | ) is export { * }
+
+multi sub max-ones( @chromosome where .elems < 1024 --> Int ) is export {
     return @chromosome.map( *.so).sum;
+}
+
+multi sub max-ones( @chromosome where .elems >= 1024 --> Int ) is export {
+    return @chromosome.map( *.so).race.sum;
 }
 
 sub royal-road( @chromosome --> Int ) is export {
@@ -133,7 +139,7 @@ Generates a random chromosome of indicated length. Returns a C<Seq> of C<Bool>s
 
 =head2 max-ones( @chromosome --> Int )
 
-Returns the number of trues (or ones) in the chromosome.
+Returns the number of trues (or ones) in the chromosome. If the length of the chromosome is bigger or equal 1024, it will be automatically paralellizes in several threads using C<race>
 
 =head2 royal-road( @chromosome )
 
