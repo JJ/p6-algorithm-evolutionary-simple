@@ -7,7 +7,7 @@ sub random-chromosome( UInt $length ) is export {
 }
 
 sub initialize( UInt :$size,
-		UInt :$genome-length ) is export {
+		UInt :$genome-length --> Array ) is export {
     my @initial-population;
     for 1..$size -> $p {
 	@initial-population.push: random-chromosome( $genome-length );
@@ -120,9 +120,9 @@ so take care of memory bloat.
 =head1 METHODS
 
 =head2 initialize( UInt :$size,
-		   UInt :$genome-length ) is export
+		   UInt :$genome-length --> Array ) is export
 
-Creates the initial population
+Creates the initial population of binary chromosomes with the indicated length; returns an array. 
 
 =head2 random-chromosome( $length )
 
