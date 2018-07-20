@@ -16,7 +16,7 @@ sub initialize( UInt :$size,
 }
 
 sub max-ones( @chromosome --> Int ) is export {
-    return @chromosome.sum;
+    return @chromosome.map( *.so).sum;
 }
 
 sub royal-road( @chromosome --> Int ) is export {

@@ -14,10 +14,9 @@ for @length -> $l {
     @zeros = 0 xx $l;
     cmp-ok( max-ones( @zeros ), "==", 0, "0-ed chromosome evaluated");
     my @ones = True xx $l;
-    cmp-ok( max-ones( @ones ), "==", 0, "True-ed chromosome evaluated");
+    cmp-ok( max-ones( @ones ), "==", $l, "True-ed chromosome evaluated");
     @zeros = 1 xx $l;
-    cmp-ok( max-ones( @ones ), "==", 0, "1-ed chromosome evaluated");
-
+    cmp-ok( max-ones( @ones ), "==", $l, "1-ed chromosome evaluated");
     for ^$l {
 	my @χ = random-chromosome( $l );
 	cmp-ok( @χ, "ne", random-chromosome($l), "Random chromosome size $l");
@@ -28,4 +27,6 @@ for @length -> $l {
     }
 }
 
+cmp-ok( max-ones( [0,True,False,1]), "==", 2, "Mixed chromosome tested" );
+cmp-ok( max-ones( [3,24,0,i]), "==", 3, "Error chromosome tested" );
 done-testing;
