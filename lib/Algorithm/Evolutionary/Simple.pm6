@@ -69,7 +69,7 @@ sub produce-offspring( @pool,
 	@new-population.push: crossover(@χx[0], @χx[1]).Slip;
     }
     return @new-population.map( { mutation( $^þ ) } );
-    
+
 }
 
 sub best-fitness(Bag $population ) is export {
@@ -88,8 +88,6 @@ sub generation(Bag :$population,
     return  Bag(evaluate( population => @new-population,
 			  fitness-of => %fitness-of,
 			  evaluator => $evaluator ) ∪ $best );
-    
-    
 }
 
 sub mix( $population1, $population2, $size --> Bag) is export {
@@ -150,37 +148,40 @@ Evaluates the chromosomes, storing values in the fitness cache.
 
 Roulette wheel selection. 
 
-=head2 mutation( @chromosome )
+=head2 mutation( @chromosome is copy --> Array )
 
-Returns the chromosome with a random bit flipped
+Returns the chromosome with a random bit flipped.
 
-=head2 crossover ( @chromosome1 is copy, @chromosome2 is copy )
+=head2 crossover ( @chromosome1 is copy, @chromosome2 is copy ) returns List
 
-Returns two cromosomes, with parts of it crossed over
+Returns two chromosomes, with parts of it crossed over. Generally you will want to do crossover first, then mutation. 
 
 =head2 produce-offspring( @pool,
-		          $size = @pool.elems ) is export
+		          $size = @pool.elems --> Seq ) is export
 
-Produces offspring from a pool array
+Produces offspring from an array that contains the reproductive pool; it returns a C<Seq>.
 
 =head2 best-fitness( $population )
 
-Returns the fitness of the first element.
+Returns the fitness of the first element. Mainly useful to check if the algorithm is finished.
 
 =head2 generation(  :@population,
 		    :%fitness-of,
-		    :$evaluator --> Bag )
+		    :$evaluator,
+	            :$population-size = $population.elems  --> Bag )
 
 Single generation of an evolutionary algorithm. The initial Bag
 has to be evaluated before entering here using the C<evaluate> function.
 
-=head2 mix( $population1, $population2, $size ) is export 
-   
+=head2 mix( $population1, $population2, $size --> Bag ) is export 
+  
 Mixes the two populations, returning a single one of the indicated size
-				     
+
 =head1 SEE ALSO
 
-There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out. This is also a port of L<Algorithm::Evolutionary::Simple in Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies. 
+There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out.
+
+This is also a port of L<Algorithm::Evolutionary::Simple to Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies. 
 
 =head1 AUTHOR
 
