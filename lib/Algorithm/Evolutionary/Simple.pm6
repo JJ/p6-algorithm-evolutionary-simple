@@ -26,12 +26,13 @@ sub royal-road( @chromosome --> Int ) is export {
 sub evaluate( :@population,
 	      :%fitness-of,
 	      :$evaluator --> Bag ) is export {
-    my BagHash $pop-bag;
+    my MixHash $pop-bag;
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
 	    %fitness-of{$p} = $evaluator( $p );
 
 	}
+        say  %fitness-of{$p};
 	$pop-bag{$p} = %fitness-of{$p};
         say "pop-bag: ", $pop-bag{$p};        
     }
