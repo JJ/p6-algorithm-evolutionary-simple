@@ -64,9 +64,10 @@ my $evolved-fitness = $population.sort(*.value).reverse.[0].value;
 cmp-ok( $evolved-fitness, ">=", $now-fitness, "Improving fitness by evolving " );
 
 # Merge populations
-my $another-population =  evaluate-auto( population => @another-population,
-				         fitness-of => %fitness-of,
-				         evaluator => &max-ones );
+my $another-population =  evaluate( population => @another-population,
+				    fitness-of => %fitness-of,
+				    evaluator => &max-ones,
+                                    auto-t => True);
 
 my $merged = mix( $population, $another-population, $population-size);
 cmp-ok( best-fitness($merged), ">=", $evolved-fitness, "Improving fitness by mixing " );

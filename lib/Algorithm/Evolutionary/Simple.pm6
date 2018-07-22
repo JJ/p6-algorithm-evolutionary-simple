@@ -23,9 +23,14 @@ sub royal-road( @chromosome --> Int ) is export {
     return @chromosome.rotor(4).grep( so (*.all == True|False) ).elems;
 }
 
-sub evaluate( :@population,
-	      :%fitness-of,
-	      :$evaluator --> Mix ) is export {
+proto evaluate( :@population,
+	        :%fitness-of,
+	        :$evaluator,
+                |) { * };
+
+multi sub evaluate( :@population,
+	            :%fitness-of,
+	            :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
@@ -37,9 +42,10 @@ sub evaluate( :@population,
     return $pop-bag.Mix;
 }
 
-sub evaluate-auto( :@population,
-	           :%fitness-of,
-	           :$evaluator --> Mix ) is export {
+multi sub evaluate( :@population,
+	            :%fitness-of,
+	            :$evaluator,
+                    Bool :$auto-t --> Mix ) is export {
     my MixHash $pop-bag;
     @population.race.map( { $pop-bag{$^p} = %fitness-of{$^p} =  %fitness-of{$^p} // $evaluator( $^p ) } );
     say $pop-bag.perl;
@@ -91,12 +97,12 @@ sub generation(Mix :$population,
 	       :$evaluator,
 	       :$population-size = $population.elems --> Mix ) is export {
 
-    my $best = $population.sort(*.value).reverse.[0..1].Mix;
+    my $best = $population.sort(*.value).reverse.[0..1].Mix; # Keep the best as elite
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
     return Mix(evaluate( population => @new-population,
-			  fitness-of => %fitness-of,
-			  evaluator => $evaluator ) ∪ $best );
+			 fitness-of => %fitness-of,
+			 evaluator => $evaluator ) ∪ $best );
 }
 
 sub mix( $population1, $population2, $size --> Mix ) is export {
@@ -146,11 +152,11 @@ Returns the number of trues (or ones) in the chromosome.
 
 That's a bumpy road, returns 1 for each block of 4 which has the same true or false value.
 
-=head2 evaluate( :@population,
-		 :%fitness-of,
-		 :$evaluator --> Mix ) is export
+=head2 evaluate|evaluate-auto( :@population,
+		               :%fitness-of,
+		               :$evaluator --> Mix ) is export
 
-Evaluates the chromosomes, storing values in the fitness cache. 
+Evaluates the chromosomes, storing values in the fitness cache. C<evaluate-auto> uses autothreading for faster operation (if needed).
 
 =head2 get-pool-roulette-wheel( Mix $population,
 				UInt $need = $population.elems ) is export
