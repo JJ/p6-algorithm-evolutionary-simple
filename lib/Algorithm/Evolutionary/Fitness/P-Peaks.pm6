@@ -4,7 +4,7 @@ unit class Algorithm::Evolutionary::Fitness::P-Peaks:ver<0.0.1>;
 
 has UInt $.number-of-peaks;
 has UInt $.bits;
-has      @.peaks = ();
+has      @.peaks;
 
 method TWEAK() {
     for ^$!number-of-peaks {
@@ -13,9 +13,8 @@ method TWEAK() {
 }
 
 method distance( @chromosome --> Rat) {
-    say @chromosome.^name;
-    my @distances = @!peaks.map: (* Z== @chromosome).sum;
-    return @distances.min / @chromosome.elems;
+    my @distances = @!peaks.map: (*.list Z== @chromosome).sum;
+    return 1-@distances.min / @chromosome.elems;
 }
 
 =begin pod

@@ -18,19 +18,18 @@ sub MAIN ( UInt :$repetitions = 30,
 					     genome-length => $length );
 	my %fitness-of;
 
-	
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
 				   evaluator => $length-peaks );
-	
+
 	my $result = 0;
+        say %fitness-of.values;
 	while $population.sort(*.value).reverse.[0].value >= 0 {
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
 				      evaluator => $length-peaks,
 				      population-size => $population-size) ;
 	    $result += $population-size;
-	    
 	}
 	say "Found → $population.sort(*.value).reverse.[0]";
 	@found.push( $result );
