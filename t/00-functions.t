@@ -31,10 +31,10 @@ my $population = evaluate( population => @initial-population,
 			   evaluator => &max-ones );
 
 
-my $one-of-them = $population.pick();
+my $one-of-them = $population.roll();
 ok( %fitness-of{$one-of-them}, "Evaluated to " ~ %fitness-of{$one-of-them});
 
-my $best = $population.sort(*.value).reverse.[0..1].Bag;
+my $best = $population.sort(*.value).reverse.[0..1].Mix;
 my $initial-fitness = $best.values.[0];
 
 my @pool = get-pool-roulette-wheel( $population, $population-size-2);
@@ -44,9 +44,9 @@ cmp-ok( @pool.elems, "==", $population-size-2, "Correct number of elements" );
 my @new-population= produce-offspring( @pool );
 cmp-ok( @new-population.elems, "==", $population-size-2, "Correct number of elements in reproduction" );
 
-$population =  Bag(evaluate( population => @new-population,
+$population =  (evaluate( population => @new-population,
 			     fitness-of => %fitness-of,
-			     evaluator => &max-ones ) ∪ $best );
+			     evaluator => &max-ones ) ∪ $best).Mix;
 
 cmp-ok( $population.elems, "<=", $population-size, "Correct number of elements in new generation" );
 

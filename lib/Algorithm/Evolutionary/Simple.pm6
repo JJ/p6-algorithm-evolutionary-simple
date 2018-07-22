@@ -25,7 +25,7 @@ sub royal-road( @chromosome --> Int ) is export {
 
 sub evaluate( :@population,
 	      :%fitness-of,
-	      :$evaluator --> Bag ) is export {
+	      :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
@@ -37,15 +37,15 @@ sub evaluate( :@population,
         say "pop-bag: ", $pop-bag{$p};        
     }
     say $pop-bag.perl;
-    return $pop-bag.Bag;
+    return $pop-bag.Mix;
 }
 
-sub get-pool-roulette-wheel( Bag $population,
+sub get-pool-roulette-wheel( Mix $population,
 			     UInt $need = $population.elems ) is export {
-    return $population.pick: $need;
+    return $population.roll: $need;
 }
 
-sub mutation ( @chromosome is copy --> Array ) is export {
+sub mutation ( @chromosome is copy --> List ) is export {
     my $pick = (^@chromosome.elems).pick;
     @chromosome[ $pick ] = !@chromosome[ $pick ];
     return @chromosome;
@@ -76,27 +76,27 @@ sub produce-offspring( @pool,
 
 }
 
-sub best-fitness(Bag $population ) is export {
+sub best-fitness(Mix $population ) is export {
     return $population.sort(*.value).reverse.[0].value;
 }
 
-sub generation(Bag :$population,
+sub generation(Mix :$population,
 	       :%fitness-of,
 	       :$evaluator,
-	       :$population-size = $population.elems --> Bag ) is export {
+	       :$population-size = $population.elems --> Mix ) is export {
 
 #    say "Elems in generation ", $population.elems;
-    my $best = $population.sort(*.value).reverse.[0..1].Bag;
+    my $best = $population.sort(*.value).reverse.[0..1].Mix;
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
-    return  Bag(evaluate( population => @new-population,
+    return  Mix(evaluate( population => @new-population,
 			  fitness-of => %fitness-of,
 			  evaluator => $evaluator ) ∪ $best );
 }
 
-sub mix( $population1, $population2, $size --> Bag) is export {
+sub mix( $population1, $population2, $size --> Mix ) is export {
     my $new-population = $population1 ∪ $population2;
-    return $new-population.sort(*.value).reverse.[0..($size-1)].Bag;
+    return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
 =begin pod
@@ -143,11 +143,11 @@ That's a bumpy road, returns 1 for each block of 4 which has the same true or fa
 
 =head2 evaluate( :@population,
 		 :%fitness-of,
-		 :$evaluator --> Bag ) is export
+		 :$evaluator --> Mix ) is export
 
 Evaluates the chromosomes, storing values in the fitness cache. 
 
-=head2 get-pool-roulette-wheel( Bag $population,
+=head2 get-pool-roulette-wheel( Mix $population,
 				UInt $need = $population.elems ) is export
 
 Roulette wheel selection. 
@@ -172,12 +172,12 @@ Returns the fitness of the first element. Mainly useful to check if the algorith
 =head2 generation(  :@population,
 		    :%fitness-of,
 		    :$evaluator,
-	            :$population-size = $population.elems  --> Bag )
+	            :$population-size = $population.elems  --> Mix )
 
-Single generation of an evolutionary algorithm. The initial Bag
+Single generation of an evolutionary algorithm. The initial C<Mix>
 has to be evaluated before entering here using the C<evaluate> function.
 
-=head2 mix( $population1, $population2, $size --> Bag ) is export 
+=head2 mix( $population1, $population2, $size --> Mix ) is export 
   
 Mixes the two populations, returning a single one of the indicated size
 
