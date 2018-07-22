@@ -6,7 +6,7 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 
 
 sub MAIN ( UInt :$repetitions = 30,
-           UInt :$length = 64,
+           UInt :$length = 32,
            UInt :$number-of-peaks = 100,
 	   UInt :$population-size = 512 ) {
 
@@ -23,7 +23,7 @@ sub MAIN ( UInt :$repetitions = 30,
 				   evaluator => $length-peaks );
 
 	my $result = 0;
-	while $population.sort(*.value).reverse.[0].value <= 1 {
+	while $population.sort(*.value).reverse.[0].value < 1 {
             say $population.sort(*.value).reverse.[0].value;
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
