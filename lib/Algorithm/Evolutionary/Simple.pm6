@@ -32,11 +32,8 @@ sub evaluate( :@population,
 	    %fitness-of{$p} = $evaluator( $p );
 
 	}
-        say  %fitness-of{$p};
 	$pop-bag{$p} = %fitness-of{$p};
-        say "pop-bag: ", $pop-bag{$p};        
     }
-    say $pop-bag.perl;
     return $pop-bag.Mix;
 }
 
@@ -85,7 +82,6 @@ sub generation(Mix :$population,
 	       :$evaluator,
 	       :$population-size = $population.elems --> Mix ) is export {
 
-#    say "Elems in generation ", $population.elems;
     my $best = $population.sort(*.value).reverse.[0..1].Mix;
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
