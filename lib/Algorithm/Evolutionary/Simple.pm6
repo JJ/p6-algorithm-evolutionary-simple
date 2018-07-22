@@ -2,7 +2,7 @@ use v6.c;
 
 unit module Algorithm::Evolutionary::Simple:ver<0.0.4>;
 
-sub random-chromosome( UInt $length --> Seq ) is export {
+sub random-chromosome( UInt $length --> List(Seq) ) is export {
     return Bool.pick() xx $length;
 }
 
@@ -30,9 +30,12 @@ sub evaluate( :@population,
     for @population -> $p {
 	if  ! %fitness-of{$p}.defined {
 	    %fitness-of{$p} = $evaluator( $p );
+
 	}
 	$pop-bag{$p} = %fitness-of{$p};
+        say "pop-bag: ", $pop-bag{$p};        
     }
+    say $pop-bag.perl;
     return $pop-bag.Bag;
 }
 
@@ -125,7 +128,7 @@ so take care of memory bloat.
 
 Creates the initial population of binary chromosomes with the indicated length; returns an array. 
 
-=head2 random-chromosome(  UInt $length --> Seq )
+=head2 random-chromosome(  UInt $length --> List )
 
 Generates a random chromosome of indicated length. Returns a C<Seq> of C<Bool>s
 
