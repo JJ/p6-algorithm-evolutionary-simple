@@ -24,7 +24,7 @@ sub MAIN ( UInt :$repetitions = 30,
 
 	my $result = 0;
 	while $population.sort(*.value).reverse.[0].value < 1 {
-            say $population.sort(*.value).reverse.[0].value;
+            say "Best  → ", $population.sort(*.value).reverse.[0].value;
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
 				      evaluator => $length-peaks,

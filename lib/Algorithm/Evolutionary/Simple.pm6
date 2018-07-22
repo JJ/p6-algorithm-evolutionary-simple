@@ -37,6 +37,15 @@ sub evaluate( :@population,
     return $pop-bag.Mix;
 }
 
+sub evaluate-auto( :@population,
+	           :%fitness-of,
+	           :$evaluator --> Mix ) is export {
+    my MixHash $pop-bag;
+    @population.race.map( { $pop-bag{$^p} = %fitness-of{$^p} =  %fitness-of{$^p} // $evaluator( $^p ) } );
+    say $pop-bag.perl;
+    return $pop-bag.Mix;
+}
+
 sub get-pool-roulette-wheel( Mix $population,
 			     UInt $need = $population.elems ) is export {
     return $population.roll: $need;
@@ -85,7 +94,7 @@ sub generation(Mix :$population,
     my $best = $population.sort(*.value).reverse.[0..1].Mix;
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
-    return  Mix(evaluate( population => @new-population,
+    return Mix(evaluate( population => @new-population,
 			  fitness-of => %fitness-of,
 			  evaluator => $evaluator ) ∪ $best );
 }
