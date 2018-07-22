@@ -46,9 +46,12 @@ multi sub evaluate( :@population,
 	            :%fitness-of,
 	            :$evaluator,
                     Bool :$auto-t --> Mix ) is export {
-    my MixHash $pop-bag;
     my @unique-population = @population.unique;
-    @unique-population.race.map( { $pop-bag{$^p} = $evaluator( $^p ) } );
+    my @evaluations = @unique-population.hyper.map( { $^p => $evaluator( $^p ) } );
+    my MixHash $pop-bag;
+    for @evaluations -> $pair {
+        $pop-bag{$pair.key.item} = $pair.value;
+    }
     return $pop-bag.Mix;
 }
 
