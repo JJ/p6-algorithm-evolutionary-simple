@@ -47,7 +47,7 @@ multi sub evaluate( :@population,
 	            :$evaluator,
                     Bool :$auto-t --> Mix ) is export {
     my MixHash $pop-bag;
-    @population.race.map( { $pop-bag{$^p} = %fitness-of{$^p} =  %fitness-of{$^p} // $evaluator( $^p ) } );
+    @population.race.map( { $pop-bag{$^p} = $evaluator( $^p ) } );
     return $pop-bag.Mix;
 }
 

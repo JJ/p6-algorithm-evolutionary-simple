@@ -5,10 +5,10 @@ use Algorithm::Evolutionary::Simple;
 use Algorithm::Evolutionary::Fitness::P-Peaks;
 
 
-sub MAIN ( UInt :$repetitions = 30,
+sub MAIN ( UInt :$repetitions = 15,
            UInt :$length = 32,
            UInt :$number-of-peaks = 100,
-	   UInt :$population-size = 512 ) {
+	   UInt :$population-size = 1024 ) {
 
     my @found;
     my $p-peaks = Algorithm::Evolutionary::Fitness::P-Peaks.new: number-of-peaks => $number-of-peaks, bits => $length;
@@ -20,7 +20,8 @@ sub MAIN ( UInt :$repetitions = 30,
 
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
-				   evaluator => $length-peaks );
+				   evaluator => $length-peaks,
+                                   auto-t => True );
 
 	my $result = 0;
 	while $population.sort(*.value).reverse.[0].value < 1 {
@@ -28,7 +29,8 @@ sub MAIN ( UInt :$repetitions = 30,
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
 				      evaluator => $length-peaks,
-				      population-size => $population-size) ;
+				      population-size => $population-size,
+                                      auto-t => True ) ;
 	    $result += $population-size;
 	}
 	say "Found → $population.sort(*.value).reverse.[0]";
