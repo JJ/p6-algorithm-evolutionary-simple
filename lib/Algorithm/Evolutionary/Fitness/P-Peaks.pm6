@@ -8,13 +8,13 @@ has      @.peaks = ();
 
 method TWEAK() {
     for ^$!number-of-peaks {
-	@!peaks.push: Bool.pick xx $!bits;
+	@!peaks.push: (Bool.pick xx $!bits).list;
     }
-
 }
 
 method distance( @chromosome --> Rat) {
-    my @distances = @!peaks.map: (*.list Z== @chromosome).sum;
+    say @chromosome.^name;
+    my @distances = @!peaks.map: (* Z== @chromosome).sum;
     return @distances.min / @chromosome.elems;
 }
 
@@ -33,6 +33,9 @@ Algorithm::Evolutionary::Fitness::P-Peaks - Implementation of Kennedy's and Spea
 
 =head1 METHODS
 
+=head2 method distance( @chromosome --> Rat)
+
+Returns the minimum distance to the closest of the peaks.
 
 =head1 SEE ALSO
 
