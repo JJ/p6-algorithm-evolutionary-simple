@@ -1,3 +1,11 @@
+2018-07-23  Juan J. merelo  <jmerelo@penny>
+
+	* concurrent-evolutionary-algorithm.p6: Testing without printing, which I think is slowing down the whole thing. In fact, this result
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  498,64s user 20,71s system 208% cpu 4:09,23 total
+
+	is already 30% faster that without it. So let's try with more threads.
+	
 2018-04-04  JJMerelo  <jmerelo@bojack>
 
 	* max-ones.p6: Adapts this to run several experiments and repeat them. 

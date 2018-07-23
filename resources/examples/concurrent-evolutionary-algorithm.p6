@@ -25,7 +25,7 @@ sub regular-EA ( |parameters (
     my $end;
     
     my $shuffle = ( start react whenever $shuffler -> @group {
-	say "Mixing in ", $*THREAD.id;
+#	say "Mixing in ", $*THREAD.id;
 	my @shuffled = @group.pick(*);
 	$raw.send( $_ ) for @shuffled;
     } ) for ^$threads;
@@ -43,11 +43,11 @@ sub regular-EA ( |parameters (
 	    $raw.close;
 	    $end = "Found" => False;
 	}
-	say "Evaluating in " , $*THREAD.id;
+#	say "Evaluating in " , $*THREAD.id;
     } ) for ^$threads;
     
     my $selection = ( start react whenever $channel-three -> @tournament {
-	say "Selecting in " , $*THREAD.id;
+#	say "Selecting in " , $*THREAD.id;
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
