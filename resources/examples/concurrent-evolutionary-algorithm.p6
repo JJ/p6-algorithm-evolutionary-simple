@@ -3,7 +3,7 @@
 use v6.d.PREVIEW;
 
 use Algorithm::Evolutionary::Simple;
-constant tournament-size = 4;
+constant tournament-size = 2;
 
 sub regular-EA ( |parameters (
 		       UInt :$length = 64,
@@ -46,13 +46,13 @@ sub regular-EA ( |parameters (
 #	say "Evaluating in " , $*THREAD.id;
     } ) for ^$threads;
     
-    my $selection = start react whenever $channel-three -> @tournament {
+    my $selection = ( start react whenever $channel-three -> @tournament {
 #	say "Selecting in " , $*THREAD.id;
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
-    };
+    } ) for ^($threads/2);
     
     await @evaluation;
     

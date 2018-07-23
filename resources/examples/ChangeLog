@@ -49,7 +49,13 @@ perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  375,59s use
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  149,42s user 3,30s system 243% cpu 1:02,81 total
 
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=8  188,10s user 4,56s system 262% cpu 1:13,44 total
-	
+
+	Dividing by 2 the number of threads:
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  170,26s user 2,37s system 278% cpu 1:01,97 total
+
+	Changing now tournament size:
+
 2018-04-04  JJMerelo  <jmerelo@bojack>
 
 	* max-ones.p6: Adapts this to run several experiments and repeat them. 
