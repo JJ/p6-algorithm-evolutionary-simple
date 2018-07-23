@@ -5,7 +5,25 @@
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  498,64s user 20,71s system 208% cpu 4:09,23 total
 
 	is already 30% faster that without it. So let's try with more threads.
-	
+
+	But it does not improve with threads:
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  505,62s user 13,42s system 226% cpu 3:49,33 total
+
+	Taking out population printing saves a little bit more:
+
+perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  375,59s user 12,11s system 353% cpu 1:49,73 total
+
+	It's slightly better than for 1 thread:
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  413,20s user 20,00s system 287% cpu 2:30,45 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  468,54s user 12,28s system 364% cpu 2:11,92 total
+
+	And the last
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=8  539,81s user 17,47s system 358% cpu 2:35,38 total
+
 2018-04-04  JJMerelo  <jmerelo@bojack>
 
 	* max-ones.p6: Adapts this to run several experiments and repeat them. 

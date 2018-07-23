@@ -58,7 +58,7 @@ sub regular-EA ( |parameters (
     
     loop {
 	if my $item = $output.poll {
-	    $item.say;
+	    say "Found";
 	} else {
 	    $output.close;
 	}
