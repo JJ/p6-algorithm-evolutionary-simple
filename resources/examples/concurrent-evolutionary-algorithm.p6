@@ -24,11 +24,11 @@ sub regular-EA ( |parameters (
     my $count = 0;
     my $end;
     
-    my $shuffle = ( start react whenever $shuffler -> @group {
+    my $shuffle = start react whenever $shuffler -> @group {
 #	say "Mixing in ", $*THREAD.id;
 	my @shuffled = @group.pick(*);
 	$raw.send( $_ ) for @shuffled;
-    } ) for ^$threads;
+    };
     
     my @evaluation = ( start react whenever $raw -> $one {
 	my $with-fitness = $one => max-ones($one);
@@ -46,13 +46,13 @@ sub regular-EA ( |parameters (
 #	say "Evaluating in " , $*THREAD.id;
     } ) for ^$threads;
     
-    my $selection = ( start react whenever $channel-three -> @tournament {
+    my $selection = start react whenever $channel-three -> @tournament {
 #	say "Selecting in " , $*THREAD.id;
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
-    } ) for ^$threads;
+    };
     
     await @evaluation;
     
@@ -74,7 +74,7 @@ sub regular-EA ( |parameters (
     return $end;
 }
 
-sub MAIN ( UInt :$repetitions = 30,
+sub MAIN ( UInt :$repetitions = 15,
            UInt :$length = 64,
 	   UInt :$population-size = 256,
 	   UInt :$diversify-size = 8,

@@ -1,6 +1,7 @@
 2018-07-23  Juan J. merelo  <jmerelo@penny>
 
-	* concurrent-evolutionary-algorithm.p6: Testing without printing, which I think is slowing down the whole thing. In fact, this result
+	* concurrent-evolutionary-algorithm.p6:
+	Testing without printing, which I think is slowing down the whole thing. In fact, this result
 
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  498,64s user 20,71s system 208% cpu 4:09,23 total
 
@@ -33,7 +34,22 @@ perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  375,59s use
 
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  311,00s user 4,02s system 320% cpu 1:38,20 total
 
+	8 threads is not improving
 
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=8  502,34s user 7,12s system 343% cpu 2:28,38 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  311,99s user 3,17s system 184% cpu 2:50,98 total
+
+	== Changing the number of threads so that they only affect evaluation. Changing also the number of repetitions to 15:
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6  155,62s user 3,28s system 218% cpu 1:12,59 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  136,88s user 2,51s system 245% cpu 56,799 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  149,42s user 3,30s system 243% cpu 1:02,81 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=8  188,10s user 4,56s system 262% cpu 1:13,44 total
+	
 2018-04-04  JJMerelo  <jmerelo@bojack>
 
 	* max-ones.p6: Adapts this to run several experiments and repeat them. 
