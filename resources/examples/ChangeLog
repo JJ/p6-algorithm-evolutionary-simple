@@ -24,6 +24,16 @@ perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  375,59s use
 
 	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=8  539,81s user 17,47s system 358% cpu 2:35,38 total
 
+	==================================================================
+	Good stuff here
+	==================================================================
+	Using now 6.d preview since it seems to have a bette thread code, as advised by timotimo and zoffix in the IRC channel. First results with 2 threads:
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=2  370,53s user 3,61s system 251% cpu 2:28,89 total
+
+	perl6 -I ../../lib concurrent-evolutionary-algorithm.p6 --threads=4  311,00s user 4,02s system 320% cpu 1:38,20 total
+
+
 2018-04-04  JJMerelo  <jmerelo@bojack>
 
 	* max-ones.p6: Adapts this to run several experiments and repeat them. 

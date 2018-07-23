@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use v6;
+use v6.d.PREVIEW;
 
 use Algorithm::Evolutionary::Simple;
 constant tournament-size = 4;
@@ -30,7 +30,7 @@ sub regular-EA ( |parameters (
 	$raw.send( $_ ) for @shuffled;
     } ) for ^$threads;
     
-    my $evaluation = ( start react whenever $raw -> $one {
+    my @evaluation = ( start react whenever $raw -> $one {
 	my $with-fitness = $one => max-ones($one);
 	$output.send( $with-fitness );
 	$evaluated.send( $with-fitness);
@@ -54,7 +54,7 @@ sub regular-EA ( |parameters (
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
     } ) for ^$threads;
     
-    await $evaluation;
+    await @evaluation;
     
     loop {
 	if my $item = $output.poll {
