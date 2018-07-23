@@ -10,6 +10,7 @@
   "name" : "Algorithm::Evolutionary::Simple",
   "perl" : "6.*",
   "provides" : {
+    "Algorithm::Evolutionary::Fitness::P-Peaks" : "lib/Algorithm/Evolutionary/Fitness/P-Peaks.pm6",
     "Algorithm::Evolutionary::Simple" : "lib/Algorithm/Evolutionary/Simple.pm6"
   },
   "resources" : [
@@ -29,5 +30,5 @@
     "Test",
     "Test::META"
   ],
-  "version" : "0.0.4"
+  "version" : "0.0.5"
 }
