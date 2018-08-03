@@ -10,10 +10,34 @@ SYNOPSIS
 
     use Algorithm::Evolutionary::Simple;
 
+	# Example in resources/examples/max-ones.p6
+    my @found;
+    for ^$repetitions {
+	my @initial-population = initialize( size => $population-size,
+					     genome-length => $length );
+	my %fitness-of;
+	
+	my $population = evaluate( population => @initial-population,
+				   fitness-of => %fitness-of,
+				   evaluator => &max-ones );
+	
+	my $result = 0;
+	while $population.sort(*.value).reverse.[0].value < $length {
+	    $population = generation( population => $population,
+				      fitness-of => %fitness-of,
+				      evaluator => &max-ones,
+				      population-size => $population-size) ;
+	    $result += $population-size;
+	    
+	}
+	say "Found → $population.sort(*.value).reverse.[0]";
+	@found.push( $result );
+
+
 DESCRIPTION
 ===========
 
-Algorithm::Evolutionary::Simple is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
 It is intended mainly for demo purposes. In the future, more versions will be available. 
 
