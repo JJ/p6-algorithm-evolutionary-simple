@@ -186,7 +186,7 @@ Evaluates the chromosomes, storing values in the fitness cache. If C<auto-t> is 
 =head2 get-pool-roulette-wheel( Mix $population,
 				UInt $need = $population.elems ) is export
 
-Roulette wheel selection. 
+Returns C<$need> elements with probability proportional to its I<weight>, which is fitness in this case.
 
 =head2 mutation( @chromosome is copy --> Array )
 
@@ -205,17 +205,19 @@ Produces offspring from an array that contains the reproductive pool; it returns
 
 Returns the fitness of the first element. Mainly useful to check if the algorithm is finished.
 
-=head2 generation(  :@population,
-		    :%fitness-of,
-		    :$evaluator,
-	            :$population-size = $population.elems  --> Mix )
+=head2 multi sub generation(  :@population,
+		              :%fitness-of,
+		              :$evaluator,
+	                      :$population-size = $population.elems,
+                              Bool :$auto-t --> Mix )
 
 Single generation of an evolutionary algorithm. The initial C<Mix>
-has to be evaluated before entering here using the C<evaluate> function.
+has to be evaluated before entering here using the C<evaluate> function. Will use auto-threading if C<$auto-t> is C<True>.
 
 =head2 mix( $population1, $population2, $size --> Mix ) is export 
   
 Mixes the two populations, returning a single one of the indicated size
+
 
 =head1 SEE ALSO
 
