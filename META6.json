@@ -4,7 +4,7 @@
     "JJ Merelo"
   ],
   "build-depends" : [ ],
-  "depends" : [ ],
+  "depends" : [ "Log::Async" ],
   "description" : "A simple evolutionary algorithm",
   "license" : "Artistic-2.0",
   "name" : "Algorithm::Evolutionary::Simple",

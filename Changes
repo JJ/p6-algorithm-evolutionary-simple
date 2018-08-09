@@ -1,3 +1,7 @@
+2018-08-09  Juan J. merelo  <jmerelo@penny>
+
+	* META6.json: Adds a new dependency, a logger, to the set of dependencies. 
+
 2018-03-19  Juan J. merelo  <jmerelo@penny>
 
 	* examples/max-ones.p6: Tests with new Perl6 version and Bags
