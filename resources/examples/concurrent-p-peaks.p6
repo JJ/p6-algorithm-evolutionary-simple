@@ -8,7 +8,7 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 constant tournament-size = 2;
 
 sub regular-EA ( |parameters (
-		       UInt :$length = 64,
+		       UInt :$length = 32,
 		       UInt :$population-size = 1024,
 		       UInt :$diversify-size = 8,
 		       UInt :$max-evaluations = 100000,
@@ -59,7 +59,7 @@ sub regular-EA ( |parameters (
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
-    } ) for ^($threads/2);
+    } ) for ^$threads;
     
     await @evaluation;
     
@@ -82,7 +82,7 @@ sub regular-EA ( |parameters (
 }
 
 sub MAIN ( UInt :$repetitions = 15,
-           UInt :$length = 64,
+           UInt :$length = 32,
 	   UInt :$population-size = 1024,
 	   UInt :$diversify-size = 8,
            UInt :$number-of-peaks = 100,
