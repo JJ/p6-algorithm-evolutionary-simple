@@ -1,5 +1,7 @@
 #!/usr/bin/env p6
 
+# Examples of using auto-threading with a heavy function, P-Peaks.
+
 use v6;
 use Algorithm::Evolutionary::Simple;
 use Algorithm::Evolutionary::Fitness::P-Peaks;

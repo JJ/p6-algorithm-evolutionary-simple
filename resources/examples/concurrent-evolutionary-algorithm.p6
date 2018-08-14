@@ -79,7 +79,7 @@ sub MAIN ( UInt :$repetitions = 15,
 	   UInt :$population-size = 256,
 	   UInt :$diversify-size = 8,
 	   UInt :$max-evaluations = 10000,
-           UInt :$threads = 1) {
+           UInt :$threads = 2) {
 
     my @found;
     for ^$repetitions {
