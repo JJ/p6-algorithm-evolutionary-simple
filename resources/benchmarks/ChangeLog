@@ -3,6 +3,16 @@
 	* evaluation.p6: Adds a benchmark for testing the difference between hyper and race, and also, when done, different threads and batch size.
 	Using race: Time → 115.2381328
 	Now changed to hyper.
-	
+	Hyper: Time → 122.016497
+
+	Only slightly worse, but definitely worse.
+
+	Changing back to race, but increasing the batch to 8.
+	Time → 125.9312309
+
+	That was probably not a good call. Let's change the degree to 8.
+	Time → 112.4315437
+
+	That was slightly (but noticeably) better.
 
 
