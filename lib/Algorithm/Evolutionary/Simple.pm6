@@ -47,7 +47,7 @@ multi sub evaluate( :@population,
 	            :$evaluator,
                     Bool :$auto-t --> Mix ) is export {
     my @unique-population = @population.unique;
-    my @evaluations = @unique-population.race.map( { $^p => $evaluator( $^p ) } );
+    my @evaluations = @unique-population.hyper.map( { $^p => $evaluator( $^p ) } );
     my MixHash $pop-bag;
     for @evaluations -> $pair {
         $pop-bag{$pair.key.item} = $pair.value;

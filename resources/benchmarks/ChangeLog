@@ -1,0 +1,8 @@
+2018-08-14  JJMerelo  <jmerelo@bojack>
+
+	* evaluation.p6: Adds a benchmark for testing the difference between hyper and race, and also, when done, different threads and batch size.
+	Using race: Time → 115.2381328
+	Now changed to hyper.
+	
+
+
