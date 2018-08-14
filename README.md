@@ -10,14 +10,68 @@ SYNOPSIS
 
     use Algorithm::Evolutionary::Simple;
 
+	# Example in resources/examples/max-ones.p6
+    my @found;
+    for ^$repetitions {
+	my @initial-population = initialize( size => $population-size,
+					     genome-length => $length );
+	my %fitness-of;
+	
+	my $population = evaluate( population => @initial-population,
+				   fitness-of => %fitness-of,
+				   evaluator => &max-ones );
+	
+	my $result = 0;
+	while $population.sort(*.value).reverse.[0].value < $length {
+	    $population = generation( population => $population,
+				      fitness-of => %fitness-of,
+				      evaluator => &max-ones,
+				      population-size => $population-size) ;
+	    $result += $population-size;
+	    
+	}
+	say "Found → $population.sort(*.value).reverse.[0]";
+	@found.push( $result );
+
+
 DESCRIPTION
 ===========
 
-Algorithm::Evolutionary::Simple is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
 It is intended mainly for demo purposes. In the future, more versions will be available. 
 
-It uses a fitness cache for storing and not reevaluating, so take care of memory bloat.
+It uses a fitness cache for storing and not reevaluating, so take care
+of memory bloat.
+
+REFERENCING THIS MODULE
+=======================
+
+If you use this module somehow for a paper, I would be very grateful
+if you used the following reference for it:
+
+```
+@inproceedings{Merelo-Guervos:2018:PIE:3205651.3208273,
+ author = {Merelo-Guerv\'{o}s, Juan-Juli\'{a}n and Garc\'{\i}a-Valdez, Jos{\'e}-Mario},
+ title = {Performance Improvements of Evolutionary Algorithms in Perl 6},
+ booktitle = {Proceedings of the Genetic and Evolutionary Computation Conference Companion},
+ series = {GECCO '18},
+ year = {2018},
+ isbn = {978-1-4503-5764-7},
+ location = {Kyoto, Japan},
+ pages = {1371--1378},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/3205651.3208273},
+ doi = {10.1145/3205651.3208273},
+ acmid = {3208273},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {benchmarking, computer languages, concurrency, evolutionary algorithms, perl, perl 6},
+} 
+
+```
+
+The artículo is avaliable from [ACM in an open access model](https://dl.acm.org/citation.cfm?id=3208273)
 
 METHODS
 =======
