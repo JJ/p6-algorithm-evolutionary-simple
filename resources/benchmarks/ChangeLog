@@ -1,3 +1,11 @@
+2018-08-16  JJMerelo  <jmerelo@bojack>
+
+	* evaluation.p6: Testing after adding "is pure" to the function. This is the result:
+
+	Time → 102.70408615
+
+	It's almost a 10% improvement, a bit more over the initial, hyper-based thing. I like that.
+	
 2018-08-14  JJMerelo  <jmerelo@bojack>
 
 	* evaluation.p6: Adds a benchmark for testing the difference between hyper and race, and also, when done, different threads and batch size.
