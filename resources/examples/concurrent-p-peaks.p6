@@ -3,13 +3,16 @@
 use v6.d.PREVIEW;
 
 use Algorithm::Evolutionary::Simple;
+use Algorithm::Evolutionary::Fitness::P-Peaks;
+
 constant tournament-size = 2;
 
 sub regular-EA ( |parameters (
-		       UInt :$length = 64,
-		       UInt :$population-size = 256,
+		       UInt :$length = 32,
+		       UInt :$population-size = 1024,
 		       UInt :$diversify-size = 8,
-		       UInt :$max-evaluations = 10000,
+		       UInt :$max-evaluations = 100000,
+                       UInt :$number-of-peaks = 100,
                        UInt :$threads = 1 )
 		 ) {
     
@@ -29,9 +32,13 @@ sub regular-EA ( |parameters (
 	my @shuffled = @group.pick(*);
 	$raw.send( $_ ) for @shuffled;
     };
+    my $p-peaks = Algorithm::Evolutionary::Fitness::P-Peaks.new:
+        number-of-peaks => $number-of-peaks,
+        bits => $length;
     
     my @evaluation = ( start react whenever $raw -> $one {
-	my $with-fitness = $one => max-ones($one);
+	my $with-fitness = $one => $p-peaks.distance($one);
+        say $with-fitness;
 	$output.send( $with-fitness );
 	$evaluated.send( $with-fitness);
 #	say $count++, " → $with-fitness";
@@ -43,16 +50,16 @@ sub regular-EA ( |parameters (
 	    $raw.close;
 	    $end = "Found" => False;
 	}
-#	say "Evaluating in " , $*THREAD.id;
+	say "Evaluating in " , $*THREAD.id;
     } ) for ^$threads;
     
     my $selection = ( start react whenever $channel-three -> @tournament {
-#	say "Selecting in " , $*THREAD.id;
+	say "Selecting in " , $*THREAD.id;
 	my @ranked = @tournament.sort( { .values } ).reverse;
 	$evaluated.send( $_ ) for @ranked[0..1];
 	my @crossed = crossover(@ranked[0].key,@ranked[1].key);
 	$raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
-    } ) for ^($threads/2);
+    } ) for ^$threads;
     
     await @evaluation;
     
@@ -75,19 +82,21 @@ sub regular-EA ( |parameters (
 }
 
 sub MAIN ( UInt :$repetitions = 15,
-           UInt :$length = 64,
-	   UInt :$population-size = 256,
+           UInt :$length = 32,
+	   UInt :$population-size = 1024,
 	   UInt :$diversify-size = 8,
+           UInt :$number-of-peaks = 100,
 	   UInt :$max-evaluations = 10000,
-           UInt :$threads = 2) {
+           UInt :$threads = 1) {
 
     my @found;
     for ^$repetitions {
-	my $result = regular-EA( length => $length,
-				 population-size => $population-size,
-				 diversify-size => $diversify-size,
-				 max-evaluations => $max-evaluations,
-                                 threads => $threads);
+	my $result = regular-EA( :$length,
+				 :$population-size,
+				 :$diversify-size,
+				 :$max-evaluations,
+                                 :$number-of-peaks,
+                                 :$threads);
 	say( $result );
 	@found.push( $result );
     }
