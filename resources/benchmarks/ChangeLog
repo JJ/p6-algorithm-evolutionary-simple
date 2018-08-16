@@ -1,5 +1,12 @@
 2018-08-16  JJMerelo  <jmerelo@bojack>
 
+	* sequential-evaluation.p6: Created this sequential to evaluate how much it takes without the auto-threading. Previous, using the same program, said 110 which might be reasonable but is not awesome. I expected twice as much. Trying now with its independent multi, to see how it goes.
+
+	 perl6 -I../../lib sequential-evaluation.p6        
+Time → 229.1418178
+
+	Yep, that makes sense.
+
 	* evaluation.p6: Testing after adding "is pure" to the function. This is the result:
 
 	Time → 102.70408615
