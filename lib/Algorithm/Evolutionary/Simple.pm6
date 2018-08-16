@@ -15,11 +15,11 @@ sub initialize( UInt :$size,
     return @initial-population;
 }
 
-sub max-ones( @chromosome --> Int ) is export {
+sub max-ones( @chromosome --> Int ) is export is pure {
     return @chromosome.map( *.so).sum;
 }
 
-sub royal-road( @chromosome --> Int ) is export {
+sub royal-road( @chromosome --> Int ) is export is pure {
     return @chromosome.rotor(4).grep( so (*.all == True|False) ).elems;
 }
 
@@ -91,7 +91,7 @@ sub produce-offspring( @pool,
 
 }
 
-sub best-fitness(Mix $population ) is export {
+sub best-fitness(Mix $population ) is export is pure {
     return $population.sort(*.value).reverse.[0].value;
 }
 
