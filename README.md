@@ -37,7 +37,7 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
 It is intended mainly for demo purposes. In the future, more versions will be available. 
 
@@ -72,6 +72,16 @@ if you used the following reference for it:
 ```
 
 The artículo is avaliable from [ACM in an open access model](https://dl.acm.org/citation.cfm?id=3208273)
+
+EXAMPLES
+========
+
+The [`resources/examples`](resources/examples) subdirectory includes a few examples, including how to use it in a concurrent way. If you want to test the speed, the [`resources/benchmarks`](resources/benchmarks) subdirectory includes also a few speed tests.
+
+PRESENTATIONS
+=============
+
+[Concurrent evolutionary algorithms in Perl 6](https://jj.github.io/evosoft-concurrent-perl6/#/) was presented for the last time at the [TPC in Glasgow](http://act.perlconference.org/tpc-2018-glasgow/)
 
 METHODS
 =======
