@@ -44,6 +44,19 @@ It is intended mainly for demo purposes. In the future, more versions will be av
 It uses a fitness cache for storing and not reevaluating, so take care
 of memory bloat.
 
+INSTALLATION
+============
+
+This module is [available in the Perl 6 ecosystem](https://modules.perl6.org/dist/Algorithm::Evolutionary::Simple:cpan:JMERELO), so the usual
+
+	zef install Algorithm::Evolutionary::Simple
+
+should do the trick, or
+
+	zef install --deps-only .
+
+if you want to hack on a copy.
+
 REFERENCING THIS MODULE
 =======================
 
