@@ -7,7 +7,10 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 use Log::Async;
 
 sub json-formatter ( $m, :$fh ) {
-    $fh.say: $m<msg> ~ to-json( { time => $m<when>.Str });
+  my ($chromosome,$fitness) = from-json $m<msg>;
+  $fh.say: to-json( { c => $chromosome,
+                      fitness => $fitness,
+                      time => $m<when>.Str });
 }
 
 logger.send-to("test.json", formatter => &json-formatter);
@@ -35,17 +38,18 @@ sub regular-EA ( |parameters (
 
     my $shuffle = start react whenever $shuffler -> @group {
 #    say "Mixing in ", $*THREAD.id;
-    my @shuffled = @group.pick(*);
-    $raw.send( $_ ) for @shuffled;
+      my @shuffled = @group.pick(*);
+      $raw.send( $_ ) for @shuffled;
     };
     my $p-peaks = Algorithm::Evolutionary::Fitness::P-Peaks.new:
         number-of-peaks => $number-of-peaks,
         bits => $length;
 
     my @evaluation = ( start react whenever $raw -> $one {
-        my $with-fitness = $one => $p-peaks.distance($one);
+        my $distance = $p-peaks.distance($one);
+        my $with-fitness = $one => $distance;
         say $with-fitness;
-        info( to-json($with-fitness) );
+        info( to-json([$one,$distance]) );
         $evaluated.send( $with-fitness);
     #    say $count++, " → $with-fitness";
         if $with-fitness.value == $length {
@@ -67,7 +71,7 @@ sub regular-EA ( |parameters (
         my @crossed = crossover(@ranked[0].key,@ranked[1].key);
         $raw.send( $_.list ) for @crossed.map: { mutation($^þ)};
       }
-    ) for ^$threads;
+    ) for ^$threads/2;
 
     await @evaluation;
 
@@ -88,7 +92,7 @@ sub MAIN ( UInt :$repetitions = 15,
            UInt :$diversify-size = 8,
            UInt :$number-of-peaks = 100,
            UInt :$max-evaluations = 10000,
-           UInt :$threads = 1) {
+           UInt :$threads = 2) {
 
     my @found;
     for ^$repetitions {
