@@ -7,8 +7,7 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 use Log::Async;
 
 sub json-formatter ( $m, :$fh ) {
-    $fh.say: to-json
-        $m<level msg when>:kv.Hash
+    $fh.say: $m<msg> ~ to-json( { time => $m<when>.Str });
 }
 
 logger.send-to("test.json", formatter => &json-formatter);
@@ -44,20 +43,20 @@ sub regular-EA ( |parameters (
         bits => $length;
 
     my @evaluation = ( start react whenever $raw -> $one {
-    my $with-fitness = $one => $p-peaks.distance($one);
-    say $with-fitness;
-    info( $with-fitness );
-    $evaluated.send( $with-fitness);
-#    say $count++, " → $with-fitness";
-    if $with-fitness.value == $length {
-        $raw.close;
-        $end = "Found" => $count;
-    }
-    if $count++ >= $max-evaluations {
-        $raw.close;
-        $end = "Found" => False;
-    }
-    say "Evaluating in " , $*THREAD.id;
+        my $with-fitness = $one => $p-peaks.distance($one);
+        say $with-fitness;
+        info( to-json($with-fitness) );
+        $evaluated.send( $with-fitness);
+    #    say $count++, " → $with-fitness";
+        if $with-fitness.value == $length {
+            $raw.close;
+            $end = "Found" => $count;
+        }
+        if $count++ >= $max-evaluations {
+            $raw.close;
+            $end = "Found" => False;
+        }
+        say "Evaluating in " , $*THREAD.id;
     } ) for ^$threads;
 
     my $selection = (
