@@ -1,4 +1,4 @@
-#!/usr/bin/env p6
+#!/usr/bin/env perl6
 
 # Examples of using auto-threading with a heavy function, P-Peaks.
 
