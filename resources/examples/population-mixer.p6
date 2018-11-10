@@ -2,6 +2,8 @@
 
 use v6;
 
+use lib <../../lib>;
+
 use Algorithm::Evolutionary::Simple;
 use Log::Async;
 
