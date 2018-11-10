@@ -10,7 +10,7 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 sub MAIN ( UInt :$repetitions = 15,
            UInt :$length = 32,
            UInt :$number-of-peaks = 100,
-	   UInt :$population-size = 1024 ) {
+	   UInt :$population-size = 4096 ) {
 
     my @found;
     my $p-peaks = Algorithm::Evolutionary::Fitness::P-Peaks.new: number-of-peaks => $number-of-peaks, bits => $length;
