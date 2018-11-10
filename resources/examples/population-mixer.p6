@@ -11,7 +11,7 @@ sub json-formatter ( $m, :$fh ) {
 			time => $m<when>.Str });
 }
 
-logger.send-to("pop-test.json", formatter => &json-formatter);
+logger.send-to("population-mixer-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub mixer-EA( |parameters (
 		    UInt :$length = 64,
@@ -21,6 +21,13 @@ sub mixer-EA( |parameters (
 		    UInt :$threads = 1
 		)
 	    ) {
+
+    info(to-json( { length => $length,
+		    initial-populations => $initial-populations,
+		    population-size => $population-size,
+		    generations => $generations,
+		    threads => $threads,
+		    start-at => DateTime.now.Str} ));
     
     my Channel $channel-one .= new;
     my Channel $to-mix .= new;
