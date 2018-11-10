@@ -8,7 +8,7 @@ use Log::Async;
 
 sub json-formatter ( $m, :$fh ) {
   my ($chromosome,$fitness) = from-json $m<msg>;
-  $fh.say: to-json( { c => $chromosome,
+  $fh.say: to-json( { chromosome => $chromosome,
                       fitness => $fitness,
                       time => $m<when>.Str });
 }
@@ -22,8 +22,8 @@ sub regular-EA ( |parameters (
                UInt :$population-size = 1024,
                UInt :$diversify-size = 8,
                UInt :$max-evaluations = 100000,
-                       UInt :$number-of-peaks = 100,
-                       UInt :$threads = 1 )
+               UInt :$number-of-peaks = 100,
+               UInt :$threads = 1 )
          ) {
 
     my Channel $raw .= new;
@@ -31,6 +31,12 @@ sub regular-EA ( |parameters (
     my Channel $channel-three = $evaluated.Supply.batch( elems => tournament-size).Channel;
     my Channel $shuffler = $raw.Supply.batch( elems => $diversify-size).Channel;
 
+    info(to-json({ length => $length,
+		   population-size => $population-size,
+		   diversify-size => $diversify-size,
+		   threads => $threads,
+		   start => DateTime.now.sTR }
+		));
     $raw.send( random-chromosome($length).list ) for ^$population-size;
 
     my $count = 0;
@@ -88,8 +94,8 @@ sub regular-EA ( |parameters (
 
 sub MAIN ( UInt :$repetitions = 15,
            UInt :$length = 32,
-           UInt :$population-size = 1024,
-           UInt :$diversify-size = 8,
+           UInt :$population-size = 2048,
+           UInt :$diversify-size = 32,
            UInt :$number-of-peaks = 100,
            UInt :$max-evaluations = 10000,
            UInt :$threads = 2) {
