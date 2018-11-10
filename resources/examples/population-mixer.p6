@@ -69,7 +69,7 @@ sub mixer-EA( |parameters (
 	    $evaluations += $population.elems;
 	}
     
-    } ) for ^$threads;
+    } for ^$threads );
     
     my $pairs = start react whenever $mixer -> @pair {
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
