@@ -7,10 +7,9 @@ use Algorithm::Evolutionary::Fitness::P-Peaks;
 use Log::Async;
 
 sub json-formatter ( $m, :$fh ) {
-  my ($chromosome,$fitness) = from-json $m<msg>;
-  $fh.say: to-json( { chromosome => $chromosome,
-                      fitness => $fitness,
-                      time => $m<when>.Str });
+    say $m;
+    $fh.say: to-json( { msg => from-json($m<msg>),
+			time => $m<when>.Str });
 }
 
 logger.send-to("test.json", formatter => &json-formatter);
@@ -35,7 +34,7 @@ sub regular-EA ( |parameters (
 		   population-size => $population-size,
 		   diversify-size => $diversify-size,
 		   threads => $threads,
-		   start => DateTime.now.sTR }
+		   start => True }
 		));
     $raw.send( random-chromosome($length).list ) for ^$population-size;
 
