@@ -1,8 +1,8 @@
 #!/bin/bash
 
-gap='16 64'
+gap='8 16 32 64'
 for g in $gap
 do
     echo $g
-    ./population-mixer.p6 --repetitions=150 --generations=$g
+    ./population-mixer.p6 --generations=$g --population-size
 done
