@@ -49,37 +49,41 @@ sub mixer-EA( |parameters (
 	$evaluations += $population.elems;
 	$channel-one.send( $population );
     }
-    
-    my $single = ( start react whenever $channel-one -> $crew {
-	my $population = $crew.Mix;
-	my $count = 0;
-	my %fitness-of = $population.Hash;
-	while $count++ < $generations && best-fitness($population) < $length {
-	    LAST {
-		if best-fitness($population) >= $length {
-		    info(to-json( { id => $*THREAD.id,
-				    best => best-fitness($population),
-				    found => True,
-				    finishing-at => DateTime.now.Str} ));
 
-		    say "Solution found" => $evaluations;
-		    $channel-one.close;
-		} else {
-		    say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
-		    info(to-json( { id => $*THREAD.id,
-				    best => best-fitness($population) }));
-		    $to-mix.send( $population );
-		}
-	    };
-	    $population = generation( population => $population,
-				      fitness-of => %fitness-of,
-				      evaluator => &max-ones,
-				      population-size => $population-size);
-	    
-	    $evaluations += $population.elems;
-	}
-    
-    } ) for ^$threads ;
+    my @promises;
+    for ^$threads {
+        my $promise = start react whenever $channel-one -> $crew {
+	    my $population = $crew.Mix;
+	    my $count = 0;
+	    my %fitness-of = $population.Hash;
+	    while $count++ < $generations && best-fitness($population) < $length {
+	        LAST {
+		    if best-fitness($population) >= $length {
+		        info(to-json( { id => $*THREAD.id,
+			                best => best-fitness($population),
+			                found => True,
+			                finishing-at => DateTime.now.Str} ));
+                
+		        say "Solution found" => $evaluations;
+		        $channel-one.close;
+	            } else {
+		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
+		        info(to-json( { id => $*THREAD.id,
+			                best => best-fitness($population) }));
+		        $to-mix.send( $population );
+	            }
+	        };
+	        $population = generation( population => $population,
+				          fitness-of => %fitness-of,
+				          evaluator => &max-ones,
+				          population-size => $population-size);
+	        
+	        $evaluations += $population.elems;
+            };
+        };
+        @promises.push: $promise;
+
+    }
     
     my $pairs = start react whenever $mixer -> @pair {
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
@@ -88,7 +92,7 @@ sub mixer-EA( |parameters (
     };
     
     
-    await $single;
+    await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
     for parameters.kv -> $key, $value {
