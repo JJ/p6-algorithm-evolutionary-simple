@@ -3,7 +3,18 @@
 use v6.d.PREVIEW;
 
 use Algorithm::Evolutionary::Simple;
+use Log::Async;
+
 constant tournament-size = 2;
+
+
+sub json-formatter ( $m, :$fh ) {
+    say $m;
+    $fh.say: to-json( { msg => from-json($m<msg>),
+			time => $m<when>.Str });
+}
+
+logger.send-to("test.json", formatter => &json-formatter);
 
 sub regular-EA ( |parameters (
 		       UInt :$length = 64,
@@ -17,7 +28,7 @@ sub regular-EA ( |parameters (
     my Channel $evaluated .= new;
     my Channel $channel-three = $evaluated.Supply.batch( elems => tournament-size).Channel;
     my Channel $shuffler = $raw.Supply.batch( elems => $diversify-size).Channel;
-    my Channel $output .= new;
+
     
     $raw.send( random-chromosome($length).list ) for ^$population-size;
     
@@ -32,7 +43,7 @@ sub regular-EA ( |parameters (
     
     my @evaluation = ( start react whenever $raw -> $one {
 	my $with-fitness = $one => max-ones($one);
-	$output.send( $with-fitness );
+	info( to-json( $with-fitness ));
 	$evaluated.send( $with-fitness);
 #	say $count++, " → $with-fitness";
 	if $with-fitness.value == $length {
@@ -56,17 +67,7 @@ sub regular-EA ( |parameters (
     
     await @evaluation;
     
-    loop {
-	if my $item = $output.poll {
-	    say "Found";
-	} else {
-	    $output.close;
-	}
-	if $output.closed  { last };
-    }
-    
     say "Parameters ==";
-    say "Evaluations => $count";
     for parameters.kv -> $key, $value {
 	say "$key → $value";
     };
@@ -79,7 +80,7 @@ sub MAIN ( UInt :$repetitions = 15,
 	   UInt :$population-size = 256,
 	   UInt :$diversify-size = 8,
 	   UInt :$max-evaluations = 10000,
-           UInt :$threads = 1) {
+           UInt :$threads = 2) {
 
     my @found;
     for ^$repetitions {

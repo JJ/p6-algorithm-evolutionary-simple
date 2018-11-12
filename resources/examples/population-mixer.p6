@@ -2,7 +2,18 @@
 
 use v6;
 
+use lib <../../lib>;
+
 use Algorithm::Evolutionary::Simple;
+use Log::Async;
+
+sub json-formatter ( $m, :$fh ) {
+    say $m;
+    $fh.say: to-json( { msg => from-json($m<msg>),
+			time => $m<when>.Str });
+}
+
+logger.send-to("population-mixer-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub mixer-EA( |parameters (
 		    UInt :$length = 64,
@@ -12,6 +23,13 @@ sub mixer-EA( |parameters (
 		    UInt :$threads = 1
 		)
 	    ) {
+
+    info(to-json( { length => $length,
+		    initial-populations => $initial-populations,
+		    population-size => $population-size,
+		    generations => $generations,
+		    threads => $threads,
+		    start-at => DateTime.now.Str} ));
     
     my Channel $channel-one .= new;
     my Channel $to-mix .= new;
@@ -32,16 +50,23 @@ sub mixer-EA( |parameters (
     }
     
     my $single = ( start react whenever $channel-one -> $crew {
-	my $population = $crew.Bag;
+	my $population = $crew.Mix;
 	my $count = 0;
 	my %fitness-of = $population.Hash;
 	while $count++ < $generations && best-fitness($population) < $length {
 	    LAST {
 		if best-fitness($population) >= $length {
+		    info(to-json( { id => $*THREAD.id,
+				    best => best-fitness($population),
+				    found => True,
+				    finishing-at => DateTime.now.Str} ));
+
 		    say "Solution found" => $evaluations;
 		    $channel-one.close;
 		} else {
 		    say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
+		    info(to-json( { id => $*THREAD.id,
+				    best => best-fitness($population) }));
 		    $to-mix.send( $population );
 		}
 	    };
@@ -53,7 +78,7 @@ sub mixer-EA( |parameters (
 	    $evaluations += $population.elems;
 	}
     
-    } ) for ^$threads;
+    } ) for ^$threads ;
     
     my $pairs = start react whenever $mixer -> @pair {
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up

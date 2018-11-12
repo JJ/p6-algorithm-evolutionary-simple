@@ -12,7 +12,7 @@ method TWEAK() {
     }
 }
 
-method distance( @chromosome --> Rat) {
+method distance( @chromosome --> Rat) is pure {
     my @distances = @!peaks.map: (*.list Z== @chromosome).sum;
     return 1-@distances.min / @chromosome.elems;
 }
@@ -25,7 +25,7 @@ Algorithm::Evolutionary::Fitness::P-Peaks - Implementation of Kennedy's and Spea
 
 =head1 SYNOPSIS
 
-  use Algorithm::Evolutionary::Fitness::P-Peaks;
+     use Algorithm::Evolutionary::Fitness::P-Peaks;
 
 =head1 DESCRIPTION
 
