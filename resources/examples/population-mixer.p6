@@ -6,6 +6,7 @@ use lib <../../lib>;
 
 use Algorithm::Evolutionary::Simple;
 use Log::Async;
+use JSON::Fast;
 
 sub json-formatter ( $m, :$fh ) {
     say $m;
