@@ -134,6 +134,10 @@ sub mix( $population1, $population2, $size --> Mix ) is export {
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
+sub pack-individual( Array[Bool] $individual -> Blob ) {
+    my $str = $individual.map( ~ + *).join("");
+    return :2($str);
+}
 =begin pod
 
 =head1 NAME
