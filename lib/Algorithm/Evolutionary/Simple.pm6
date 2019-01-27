@@ -134,10 +134,16 @@ sub mix( $population1, $population2, $size --> Mix ) is export {
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
-sub pack-individual( Array[Bool] $individual -> Blob ) {
-    my $str = $individual.map( ~ + *).join("");
+sub pack-individual( @individual --> Int ) is export {
+    my $str = @individual.map( ~ + *).join("");
     return :2($str);
 }
+
+sub unpack-individual( Int $packed, UInt $bits --> Array(Seq)) is export {
+    my @unpacked = $packed.base(2).comb.map( so +* );
+    return (False xx ( $bits - @unpacked.elems), @unpacked).flat;
+}
+
 =begin pod
 
 =head1 NAME
