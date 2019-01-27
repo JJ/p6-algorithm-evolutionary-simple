@@ -216,7 +216,7 @@ has to be evaluated before entering here using the C<evaluate> function. Will us
 
 =head2 mix( $population1, $population2, $size --> Mix ) is export 
   
-Mixes the two populations, returning a single one of the indicated size
+Mixes the two populations, returning a single one of the indicated size and with type Mix.
 
 
 =head1 SEE ALSO
