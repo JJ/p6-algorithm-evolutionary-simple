@@ -10,6 +10,14 @@ my $packed-in-an-int = pack-individual( @random-chromosome);
 isa-ok( $packed-in-an-int, Int, "Individual is packed" );
 is-deeply( unpack-individual( $packed-in-an-int, length), @random-chromosome, "Individual unpacks OK" );
 
+@random-chromosome = random-chromosome( 64 );
+is( @random-chromosome.elems, 64, "Chromosome length 64 bits is OK" );
+$packed-in-an-int = pack-individual( @random-chromosome);
+isa-ok( $packed-in-an-int, Int, "Individual is packed in 64 bits" );
+is-deeply( unpack-individual( $packed-in-an-int, 64), @random-chromosome,
+	   "Individual 64 bits unpacks OK" );
+
+
 my $population-size = 32;
 my @initial-population;
 for 1..$population-size -> $p {
