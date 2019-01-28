@@ -144,6 +144,25 @@ sub unpack-individual( Int $packed, UInt $bits --> Array(Seq)) is export {
     return (False xx ( $bits - @unpacked.elems), @unpacked).flat;
 }
 
+sub pack-population( @population --> Buf) is export {
+    my @packed-individuals;
+    for @population -> $individual {
+	@packed-individuals.push: pack-individual( $individual);
+    }
+    say @packed-individuals;
+    return buf64.new( @packed-individuals);
+}
+
+sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
+    my @packed-individuals;
+    loop (my $i = 0; $i < $buffer.elems; $i++ ) {
+	@packed-individuals.push: unpack-individual( $buffer[$i], $bits);
+    }
+    say @packed-individuals;
+    return @packed-individuals;
+}
+
+
 =begin pod
 
 =head1 NAME
