@@ -144,12 +144,13 @@ sub mix-raw( @population1, @population2, $size, %fitness-of, $evaluator --> Mix 
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
-sub pack-individual( @individual --> Int ) is export {
+sub pack-individual( @individual --> uint64 ) is export {
     my $str = @individual.map( ~ + *).join("");
-    return :2($str);
+    my uint64 $temp = :2($str);
+    return $temp;
 }
 
-sub unpack-individual( Int $packed, UInt $bits --> Array(Seq)) is export {
+sub unpack-individual( uint64 $packed, UInt $bits --> Array(Seq)) is export {
     my @unpacked = $packed.base(2).comb.map( so +* );
     return (False xx ( $bits - @unpacked.elems), @unpacked).flat;
 }
@@ -158,6 +159,8 @@ sub pack-population( @population --> Buf) is export {
     my @packed-individuals;
     for @population -> $individual {
 	@packed-individuals.push: pack-individual( $individual);
+	say $individual;
+	say buf64.new( @packed-individuals );
     }
     return buf64.new( @packed-individuals);
 }

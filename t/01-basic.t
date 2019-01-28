@@ -3,30 +3,26 @@ use Test;
 
 use Algorithm::Evolutionary::Simple;
 
-constant length = 32;
-my @random-chromosome = random-chromosome( length );
-is( @random-chromosome.elems, length, "Chromosome length OK" );
-my $packed-in-an-int = pack-individual( @random-chromosome);
-isa-ok( $packed-in-an-int, Int, "Individual is packed" );
-is-deeply( unpack-individual( $packed-in-an-int, length), @random-chromosome, "Individual unpacks OK" );
-
-@random-chromosome = random-chromosome( 64 );
-is( @random-chromosome.elems, 64, "Chromosome length 64 bits is OK" );
-$packed-in-an-int = pack-individual( @random-chromosome);
-isa-ok( $packed-in-an-int, Int, "Individual is packed in 64 bits" );
-is-deeply( unpack-individual( $packed-in-an-int, 64), @random-chromosome,
-	   "Individual 64 bits unpacks OK" );
-
-
 my $population-size = 32;
-my @initial-population;
-for 1..$population-size -> $p {
-    @initial-population.push: random-chromosome( length );
+
+for <32 64> -> $length {
+    for ^$population-size {
+	my @random-chromosome = random-chromosome( $length );
+	is( @random-chromosome.elems, $length, "Chromosome length OK" );
+	my $packed-in-an-int = pack-individual( @random-chromosome);
+	isa-ok( $packed-in-an-int, Int, "Individual with @random-chromosome[0] is packed in $packed-in-an-int" );
+	is-deeply( unpack-individual( $packed-in-an-int, $length), @random-chromosome, "Individual unpacks OK" );
+    }
+
+    my @initial-population;
+    for 1..$population-size -> $p {
+	@initial-population.push: random-chromosome( $length );
+    }
+    my $packed-pop = pack-population( @initial-population);
+    does-ok( $packed-pop, Buf[uint64], "Population is packed");
+    is( $packed-pop.elems, $population-size, "Buf is the right size");
+    my @unpacked-pop = unpack-population( $packed-pop, $length);
+    is( @unpacked-pop.elems, $population-size, "Population unpacked OK");
+    is-deeply( @unpacked-pop[0], @initial-population[0].Array, "Unpacking works");
 }
-my $packed-pop = pack-population( @initial-population);
-does-ok( $packed-pop, Buf[uint64], "Population is packed");
-is( $packed-pop.elems, $population-size, "Buf is the right size");
-my @unpacked-pop = unpack-population( $packed-pop, length);
-is( @unpacked-pop.elems, length, "Population unpacked OK");
-is-deeply( @unpacked-pop[0], @initial-population[0].Array, "Unpacking works");
 done-testing;
