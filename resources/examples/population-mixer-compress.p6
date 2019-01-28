@@ -7,7 +7,6 @@ use lib <../../lib>;
 use Algorithm::Evolutionary::Simple;
 use Log::Async;
 use JSON::Fast;
-use Data::MessagePack;
 
 sub json-formatter ( $m, :$fh ) {
     say $m;
@@ -48,7 +47,7 @@ sub mixer-EA( |parameters (
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
 	$evaluations += $population.elems;
-	$channel-one.send( $population );
+	$channel-one.send( pack-population($population.keys) );
     }
 
     my @promises;
@@ -71,7 +70,7 @@ sub mixer-EA( |parameters (
 		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population) }));
-		        $to-mix.send( Data::MessagePack::pack($population) );
+		        $to-mix.send( pack-population($population.keys) );
 	            }
 	        };
 	        $population = generation( population => $population,
@@ -88,10 +87,10 @@ sub mixer-EA( |parameters (
     
     my $pairs = start react whenever $mixer -> @pair {
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
-	$channel-one.send(Data::MessagePack::pack(
-				 mix( Data::MessagePack::unpack(@pair[0]),
-				      Data::MessagePack::unpack(@pair[1]),
-				      $population-size ))
+	$channel-one.send(pack-population(
+				 mix-raw( unpack-population(@pair[0], $length),
+					  unpack-population(@pair[1], $length),
+					  $population-size ))
 			 );
 	say "Mixing in ", $*THREAD.id;
     };

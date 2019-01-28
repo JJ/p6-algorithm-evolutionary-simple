@@ -131,6 +131,16 @@ multi sub generation(Mix :$population,
 
 sub mix( $population1, $population2, $size --> Mix ) is export {
     my $new-population = $population1 ∪ $population2;
+    
+    return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
+}
+
+sub mix-raw( @population1, @population2, $size, %fitness-of, $evaluator --> Mix ) is export {
+    my @new-population = @population1 ∪ @population2;
+    my $new-population = evaluate( population => @new-population,
+				   :%fitness-of,
+				   :$evaluator);
+				   
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
