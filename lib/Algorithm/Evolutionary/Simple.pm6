@@ -159,8 +159,6 @@ sub pack-population( @population --> Buf) is export {
     my @packed-individuals;
     for @population -> $individual {
 	@packed-individuals.push: pack-individual( $individual);
-	say $individual;
-	say buf64.new( @packed-individuals );
     }
     return buf64.new( @packed-individuals);
 }

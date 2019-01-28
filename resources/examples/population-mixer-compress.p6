@@ -53,9 +53,10 @@ sub mixer-EA( |parameters (
     my @promises;
     for ^$threads {
         my $promise = start react whenever $channel-one -> $crew {
-	    my $population = $crew.Mix;
+	    my @unpacked-pop = unpack-population( $crew, $length );
+	    my $population = Mix.new(@unpacked-pop);
 	    my $count = 0;
-	    my %fitness-of = $population.Hash;
+	    my %fitness-of;
 	    while $count++ < $generations && best-fitness($population) < $length {
 	        LAST {
 		    if best-fitness($population) >= $length {
