@@ -149,7 +149,6 @@ sub pack-population( @population --> Buf) is export {
     for @population -> $individual {
 	@packed-individuals.push: pack-individual( $individual);
     }
-    say @packed-individuals;
     return buf64.new( @packed-individuals);
 }
 
@@ -158,7 +157,6 @@ sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
     loop (my $i = 0; $i < $buffer.elems; $i++ ) {
 	@packed-individuals.push: unpack-individual( $buffer[$i], $bits);
     }
-    say @packed-individuals;
     return @packed-individuals;
 }
 
@@ -247,6 +245,21 @@ has to be evaluated before entering here using the C<evaluate> function. Will us
   
 Mixes the two populations, returning a single one of the indicated size and with type Mix.
 
+=head2 sub pack-individual( @individual --> Int )
+
+Packs the individual in a single C<Int>. The invidual must be binary, and the maximum length is 64.
+
+=head2 sub unpack-individual( Int $packed, UInt $bits --> Array(Seq))
+
+Unpacks the individual that has been packed previously using C<pack-individual>
+
+=head2 sub pack-population( @population --> Buf) 
+
+Packs a population, producing a buffer which can be sent to a channel or stored in a compact form.
+
+=head2 sub unpack-population( Buf $buffer, UInt $bits --> Array )
+
+Unpacks the population that has been packed using C<pack-population>
 
 =head1 SEE ALSO
 

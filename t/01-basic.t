@@ -16,8 +16,7 @@ for 1..$population-size -> $p {
     @initial-population.push: random-chromosome( length );
 }
 my $packed-pop = pack-population( @initial-population);
-say $packed-pop;
-isa-ok( $packed-pop, Buf[uint64], "Population is packed");
+does-ok( $packed-pop, Buf[uint64], "Population is packed");
 is( $packed-pop.elems, $population-size, "Buf is the right size");
 my @unpacked-pop = unpack-population( $packed-pop, length);
 is( @unpacked-pop.elems, length, "Population unpacked OK");
