@@ -99,7 +99,7 @@ sub mixer-EA( |parameters (
 				      $population-size,
 				      &max-ones );
 	say "Packed population $new-population";
-	$channel-one.send( $new-population);
+	$channel-one.send( pack-population($new-population.keys));
 	say "Mixing in ", $*THREAD.id;
     };
     

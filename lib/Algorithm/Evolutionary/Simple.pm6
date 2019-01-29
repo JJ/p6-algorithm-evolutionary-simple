@@ -45,12 +45,16 @@ multi sub evaluate( :@population,
 multi sub evaluate-nocache( :@population,
 			    :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
+    say "Size ";
     for @population -> $p {
 	say "Evaluating ", $p;
-	if  ! $pop-bag{$p}.defined {
-	    $pop-bag{$p} = $evaluator( $p );
-	}
+	say "Defined ",  $pop-bag{$p}:exists;
+#	if  !$pop-bag{$p}:exists {
+	    say "Value ", $evaluator($p);
+	    $pop-bag{$p.key} = $evaluator( $p );
+#	}
     }
+    say "Finished evaluation";
     return $pop-bag.Mix;
 }
 
@@ -148,12 +152,12 @@ sub mix( $population1, $population2, $size --> Mix ) is export {
 }
 
 sub mix-raw( @population1, @population2, $size, $evaluator --> Mix ) is export {
-    say "Merging population";
-    my @new-population = (@population1 ∪ @population2).list;
+    my @new-population = push(@population1,@population2.Slip);
+    say "New population has ", @new-population.elems, " elements ";
     my $new-population = evaluate-nocache( population => @new-population,
 					   :$evaluator);
-    say "Population evaluated";
-    return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
+    say "New population ", $new-population;
+    return $new-population.sort(*.value).reverse.[^($size-1)];
 }
 
 sub pack-individual( @individual --> uint64 ) is export {

@@ -14,10 +14,10 @@ for <32 64> -> $length {
 	is-deeply( unpack-individual( $packed-in-an-int, $length), @random-chromosome, "Individual unpacks OK" );
     }
 
-    my @initial-population;
-    for 1..$population-size -> $p {
-	@initial-population.push: random-chromosome( $length );
-    }
+    my @initial-population = initialize( size => $population-size,
+					 genome-length => $length );
+    is( @initial-population.elems, $population-size, "Pop is the right size");
+
     my $packed-pop = pack-population( @initial-population);
     does-ok( $packed-pop, Buf[uint64], "Population is packed");
     is( $packed-pop.elems, $population-size, "Buf is the right size");
