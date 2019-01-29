@@ -41,4 +41,7 @@ does-ok($evaluated-pop, Mix, "Evaluated pop is the right class" );
 my @population-prime = initialize( size => $population-size,
 				   genome-length => 32 );
 
+my $new-pop = mix-raw( @population, @population-prime, $population-size, &max-ones);
+is( $new-pop.elems, $population-size, "Size is correct" );
+
 done-testing;

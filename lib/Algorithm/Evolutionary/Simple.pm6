@@ -153,11 +153,9 @@ sub mix( $population1, $population2, $size --> Mix ) is export {
 
 sub mix-raw( @population1, @population2, $size, $evaluator --> Mix ) is export {
     my @new-population = push(@population1,@population2.Slip);
-    say "New population has ", @new-population.elems, " elements ";
     my $new-population = evaluate-nocache( population => @new-population,
 					   :$evaluator);
-    say "New population ", $new-population;
-    return $new-population.sort(*.value).reverse.[^($size-1)];
+    return $new-population.sort(*.value).reverse.[^$size].Mix;
 }
 
 sub pack-individual( @individual --> uint64 ) is export {
