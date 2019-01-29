@@ -20,7 +20,7 @@ sub mixer-EA( |parameters (
 		    UInt :$initial-populations = 3,
 		    UInt :$population-size = 256,
 		    UInt :$generations = 8,
-		    UInt :$threads = 1
+		    UInt :$threads = 2
 		)
 	    ) {
 

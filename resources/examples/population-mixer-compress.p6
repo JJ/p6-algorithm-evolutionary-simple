@@ -21,7 +21,7 @@ sub mixer-EA( |parameters (
 		    UInt :$initial-populations = 3,
 		    UInt :$population-size = 256,
 		    UInt :$generations = 8,
-		    UInt :$threads = 1
+		    UInt :$threads = 2
 		)
 	    ) {
 
@@ -85,8 +85,11 @@ sub mixer-EA( |parameters (
         @promises.push: $promise;
 
     }
+
+    say "Threads initiated";
     
     my $pairs = start react whenever $mixer -> @pair {
+	say "Mixing ... @pair";
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
 	$channel-one.send(pack-population(
 				 mix-raw( unpack-population(@pair[0], $length),
@@ -112,7 +115,7 @@ sub MAIN ( UInt :$repetitions = 30,
            UInt :$length = 64,
 	   UInt :$population-size = 256,
 	   UInt :$generations=8,
-	   UInt :$threads = 1 ) {
+	   UInt :$threads = 2 ) {
 
     my @results;
     for ^$repetitions {
