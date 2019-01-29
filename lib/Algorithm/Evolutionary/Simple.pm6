@@ -49,10 +49,10 @@ multi sub evaluate-nocache( :@population,
     for @population -> $p {
 	say "Evaluating ", $p;
 	say "Defined ",  $pop-bag{$p}:exists;
-#	if  !$pop-bag{$p}:exists {
+	if  $pop-bag{$p}:!exists {
 	    say "Value ", $evaluator($p);
-	    $pop-bag{$p.key} = $evaluator( $p );
-#	}
+	    $pop-bag{$p} = $evaluator( $p );
+	}
     }
     say "Finished evaluation";
     return $pop-bag.Mix;

@@ -25,4 +25,20 @@ for <32 64> -> $length {
     is( @unpacked-pop.elems, $population-size, "Population unpacked OK");
     is-deeply( @unpacked-pop[0], @initial-population[0].Array, "Unpacking works");
 }
+
+my @population = initialize( size => $population-size,
+			     genome-length => 32 );
+
+my $evaluated-pop = evaluate-nocache(:@population,
+				     evaluator => &max-ones );
+
+for $evaluated-pop.keys -> $k {
+    is( $evaluated-pop{$k}, max-ones( $k ), "Evaluation is correct, {$evaluated-pop{$k}}");
+}
+
+does-ok($evaluated-pop, Mix, "Evaluated pop is the right class" );
+
+my @population-prime = initialize( size => $population-size,
+				   genome-length => 32 );
+
 done-testing;
