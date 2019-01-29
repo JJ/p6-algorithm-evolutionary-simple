@@ -42,6 +42,18 @@ multi sub evaluate( :@population,
     return $pop-bag.Mix;
 }
 
+multi sub evaluate-nocache( :@population,
+			    :$evaluator --> Mix ) is export {
+    my MixHash $pop-bag;
+    for @population -> $p {
+	say "Evaluating ", $p;
+	if  ! $pop-bag{$p}.defined {
+	    $pop-bag{$p} = $evaluator( $p );
+	}
+    }
+    return $pop-bag.Mix;
+}
+
 multi sub evaluate( :@population,
 	            :%fitness-of,
 	            :$evaluator,
@@ -135,12 +147,12 @@ sub mix( $population1, $population2, $size --> Mix ) is export {
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
-sub mix-raw( @population1, @population2, $size, %fitness-of, $evaluator --> Mix ) is export {
-    my @new-population = @population1 ∪ @population2;
-    my $new-population = evaluate( population => @new-population,
-				   :%fitness-of,
-				   :$evaluator);
-				   
+sub mix-raw( @population1, @population2, $size, $evaluator --> Mix ) is export {
+    say "Merging population";
+    my @new-population = (@population1 ∪ @population2).list;
+    my $new-population = evaluate-nocache( population => @new-population,
+					   :$evaluator);
+    say "Population evaluated";
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
 }
 
