@@ -86,19 +86,14 @@ sub mixer-EA( |parameters (
 
     }
 
-    say "Threads initiated";
-    
     my $pairs = start react whenever $mixer -> @pair {
-	say "Mixing ... @pair";
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
-	say "Sending done";
 	my @new-population = unpack-population(@pair[0], $length);
 	my @new-population-prime = unpack-population(@pair[1], $length);
 	my $new-population = mix-raw( @new-population,
 				      @new-population-prime,
 				      $population-size,
 				      &max-ones );
-	say "Packed population $new-population";
 	$channel-one.send( pack-population($new-population.keys));
 	say "Mixing in ", $*THREAD.id;
     };
