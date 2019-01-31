@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use v6.d.PREVIEW;
+use v6;
 
 use Algorithm::Evolutionary::Simple;
 use Log::Async;
@@ -29,7 +29,6 @@ sub regular-EA ( |parameters (
     my Channel $channel-three = $evaluated.Supply.batch( elems => tournament-size).Channel;
     my Channel $shuffler = $raw.Supply.batch( elems => $diversify-size).Channel;
 
-    
     $raw.send( random-chromosome($length).list ) for ^$population-size;
     
     my $count = 0;

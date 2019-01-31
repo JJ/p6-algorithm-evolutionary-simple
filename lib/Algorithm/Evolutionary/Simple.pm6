@@ -42,19 +42,15 @@ multi sub evaluate( :@population,
     return $pop-bag.Mix;
 }
 
-multi sub evaluate-nocache( :@population,
+sub evaluate-nocache( :@population,
 			    :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
     say "Size ";
     for @population -> $p {
-	say "Evaluating ", $p;
-	say "Defined ",  $pop-bag{$p}:exists;
 	if  $pop-bag{$p}:!exists {
-	    say "Value ", $evaluator($p);
 	    $pop-bag{$p} = $evaluator( $p );
 	}
     }
-    say "Finished evaluation";
     return $pop-bag.Mix;
 }
 
@@ -185,6 +181,16 @@ sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
     return @packed-individuals;
 }
 
+proto sub frequencies( |) { * };
+multi sub frequencies( @population --> Seq ) is export {
+    my @totals = 0 xx @population.elems;
+    { @totals Z+= @^p } for @population;
+    return @totals X/ @totals.elems;
+}
+
+multi sub frequencies( Mix $population --> Seq ) is export {
+    frequencies( $population.keys );
+}
 
 =begin pod
 

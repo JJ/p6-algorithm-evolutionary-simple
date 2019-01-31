@@ -44,4 +44,8 @@ my @population-prime = initialize( size => $population-size,
 my $new-pop = mix-raw( @population, @population-prime, $population-size, &max-ones);
 is( $new-pop.elems, $population-size, "Size is correct" );
 
+my @frequencies = frequencies( $new-pop );
+is( @frequencies.elems, $population-size, "Size is correct" );
+cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
+
 done-testing;
