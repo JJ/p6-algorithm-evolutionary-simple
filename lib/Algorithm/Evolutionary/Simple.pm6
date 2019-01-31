@@ -192,6 +192,17 @@ multi sub frequencies( Mix $population --> Seq ) is export {
     frequencies( $population.keys );
 }
 
+sub generate-by-frequencies( $population-size, @frequencies --> Array ) is export {
+    my @mix = @frequencies.map( { (Bool::True => $_, Bool::False => 1-$_ ).Mix } );
+    my @population = gather {
+        for ^$population-size {
+            my @one = @mix>>.roll;
+            take @one;
+        }
+    }
+    return @population;
+}
+
 =begin pod
 
 =head1 NAME
@@ -291,6 +302,10 @@ Packs a population, producing a buffer which can be sent to a channel or stored 
 =head2 sub unpack-population( Buf $buffer, UInt $bits --> Array )
 
 Unpacks the population that has been packed using C<pack-population>
+
+=head2 multi sub frequencies( $population)
+
+C<$population> can be an array or a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population. 
 
 =head1 SEE ALSO
 

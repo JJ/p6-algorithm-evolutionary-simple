@@ -48,4 +48,10 @@ my @frequencies = frequencies( $new-pop );
 is( @frequencies.elems, $population-size, "Size is correct" );
 cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
 
+@population = generate-by-frequencies( $population-size, @frequencies );
+is( @population.elems, $population-size, "Size is correct" );
+my @new-frequencies = frequencies( @population );
+my $difference =  [+] @new-frequencies Z- @frequencies;
+cmp-ok( $difference, "<", $population-size * 0.3, "Frequencies differ in $difference" );
+
 done-testing;
