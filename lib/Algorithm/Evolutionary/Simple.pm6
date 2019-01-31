@@ -307,6 +307,10 @@ Unpacks the population that has been packed using C<pack-population>
 
 C<$population> can be an array or a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population. 
 
+=head2 sub generate-by-frequencies( $population-size, @frequencies )
+
+Generates a population of that size with every gene according to the indicated frequency.
+
 =head1 SEE ALSO
 
 There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out.
