@@ -14,7 +14,7 @@ sub json-formatter ( $m, :$fh ) {
 			time => $m<when>.Str });
 }
 
-logger.send-to("population-mixer-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
+logger.send-to("pmf-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub mixer-EA( |parameters (
 		    UInt :$length = 64,
@@ -47,7 +47,7 @@ sub mixer-EA( |parameters (
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
 	$evaluations += $population.elems;
-	$channel-one.send( pack-population($population.keys) );
+	$channel-one.send( frequencies($population.keys) );
     }
 
     my @promises;
@@ -89,6 +89,7 @@ sub mixer-EA( |parameters (
     my $pairs = start react whenever $mixer -> @pair {
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
 	my @new-population =  (@pair[0] Z @pair[1])>>.pick;
+	say @new-population;
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;
     };
