@@ -45,6 +45,9 @@ my @population-prime = initialize( size => $population-size,
 my $new-pop = mix-raw( @population, @population-prime, $population-size, &max-ones);
 is( $new-pop.elems, $population-size, "Size is correct" );
 
+my @fake-population = [ [True,True,True,True],[True,True,True,False],[True,True,False,False],[True,False,False,False] ];
+my @frequencies = frequencies( @fake-population);
+is-deeply(@frequencies, [1.0,0.75,0.5,0.25], "Frequencies OK" );
 my @frequencies = frequencies( $new-pop );
 is( @frequencies.elems, $length, "Size is correct" );
 cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
