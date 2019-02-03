@@ -45,7 +45,6 @@ multi sub evaluate( :@population,
 sub evaluate-nocache( :@population,
 			    :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
-    say "Size ";
     for @population -> $p {
 	if  $pop-bag{$p}:!exists {
 	    $pop-bag{$p} = $evaluator( $p );
@@ -104,9 +103,6 @@ sub produce-offspring( @pool,
 }
 
 sub best-fitness(Mix $population ) is export is pure {
-    say "Computing best";
-    dd  $population.sort(*.value).reverse.[0];
-    say "------------------------";
     return $population.sort(*.value).reverse.[0].value;
 }
 
@@ -186,7 +182,7 @@ sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
 
 proto sub frequencies( |) { * };
 multi sub frequencies( @population --> List(Seq) ) is export {
-    my @totals = 0 xx @population.elems;
+    my @totals = 0 xx @population[0].elems;
     { @totals Z+= @^p } for @population;
     return @totals X/ @totals.elems;
 }

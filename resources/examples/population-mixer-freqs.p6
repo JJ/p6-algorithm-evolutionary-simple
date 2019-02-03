@@ -53,10 +53,12 @@ sub mixer-EA( |parameters (
     my @promises;
     for ^$threads {
         my $promise = start react whenever $channel-one -> @crew {
+            my %fitness-of;
 	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
-	    my $population = Mix.new(@unpacked-pop);
+	    my $population = evaluate( population => @unpacked-pop,
+                                       fitness-of => %fitness-of,
+				       evaluator => &max-ones);
 	    my $count = 0;
-	    my %fitness-of;
 	    while $count++ < $generations && best-fitness($population) < $length {
 	        LAST {
                     say $population;
@@ -90,13 +92,15 @@ sub mixer-EA( |parameters (
     my $pairs = start react whenever $mixer -> @pair {
         say "Mixing ", @pair;
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
+        say "Pair 0 ", @pair[0].elems;
         my @pairs = @pair[0] Z @pair[1];
+        say "Population size ", @pairs.elems;
 	my @new-population =  gather {
             for @pairs -> @pair {
                 take @pair.pick;
             }
         };
-	say @new-population;
+	say "New population  size", @new-population.elems;
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;
     };

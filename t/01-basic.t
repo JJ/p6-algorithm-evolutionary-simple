@@ -26,8 +26,9 @@ for <32 64> -> $length {
     is-deeply( @unpacked-pop[0], @initial-population[0].Array, "Unpacking works");
 }
 
+my $length = 32;
 my @population = initialize( size => $population-size,
-			     genome-length => 32 );
+			     genome-length => $length );
 
 my $evaluated-pop = evaluate-nocache(:@population,
 				     evaluator => &max-ones );
@@ -39,19 +40,19 @@ for $evaluated-pop.keys -> $k {
 does-ok($evaluated-pop, Mix, "Evaluated pop is the right class" );
 
 my @population-prime = initialize( size => $population-size,
-				   genome-length => 32 );
+				   genome-length => $length );
 
 my $new-pop = mix-raw( @population, @population-prime, $population-size, &max-ones);
 is( $new-pop.elems, $population-size, "Size is correct" );
 
 my @frequencies = frequencies( $new-pop );
-is( @frequencies.elems, $population-size, "Size is correct" );
+is( @frequencies.elems, $length, "Size is correct" );
 cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
 
 @population = generate-by-frequencies( $population-size, @frequencies );
 is( @population.elems, $population-size, "Size is correct" );
 for @population -> @p {
-    is( @p.elems, 32, "Size of generated elem is correct" );
+    is( @p.elems, $length, "Size of generated elem is correct" );
 }
 my @new-frequencies = frequencies( @population );
 my $difference =  [+] @new-frequencies Z- @frequencies;
