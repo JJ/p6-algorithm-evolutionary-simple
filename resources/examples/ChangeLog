@@ -1,3 +1,7 @@
+2019-02-03  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer-freqs.p6: This new version just sends frequencies to the channel, instead of sending the whole population. It's working now, does not hang, it's probably OK. Good thing, it scales pretty well with population size.
+
 2018-07-23  Juan J. merelo  <jmerelo@penny>
 
 	* concurrent-evolutionary-algorithm.p6:
