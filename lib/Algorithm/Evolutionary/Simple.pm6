@@ -202,6 +202,17 @@ sub generate-by-frequencies( $population-size, @frequencies --> Array ) is expor
     return @population;
 }
 
+sub crossover-frequencies( @frequencies, @frequencies-prime --> Array ) is export {
+    my @pairs = @frequencies Z @frequencies-prime;
+    my @new-population =  gather {
+        for @pairs -> @pair {
+            say @pair;
+            take @pair.pick;
+        }
+    };
+    return @new-population;
+}
+
 =begin pod
 
 =head1 NAME
