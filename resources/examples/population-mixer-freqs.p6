@@ -47,6 +47,7 @@ sub mixer-EA( |parameters (
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
 	$evaluations += $population.elems;
+        say frequencies($population.keys);
 	$channel-one.send( frequencies($population.keys) );
     }
 
@@ -71,6 +72,7 @@ sub mixer-EA( |parameters (
 		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population) }));
+                        say frequencies($population);
 		        $to-mix.send( frequencies($population) );
 	            }
 	        };
@@ -87,8 +89,19 @@ sub mixer-EA( |parameters (
     }
 
     my $pairs = start react whenever $mixer -> @pair {
+        say "Mixing ", @pair;
 	$to-mix.send( @pair.pick ); # To avoid getting it hanged up
-	my @new-population =  (@pair[0] Z @pair[1])>>.pick;
+        say "Creating new population";
+        dd @pair[0];
+        dd @pair[1];
+        my @pairs = @pair[0] Z @pair[1];
+        say "Pairs ", @pairs;
+	my @new-population =  gather {
+            for @pairs -> @pair {
+                say @pair;
+                take @pair.pick;
+            }
+        };
 	say @new-population;
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;

@@ -182,13 +182,13 @@ sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
 }
 
 proto sub frequencies( |) { * };
-multi sub frequencies( @population --> Seq ) is export {
+multi sub frequencies( @population --> List(Seq) ) is export {
     my @totals = 0 xx @population.elems;
     { @totals Z+= @^p } for @population;
     return @totals X/ @totals.elems;
 }
 
-multi sub frequencies( Mix $population --> Seq ) is export {
+multi sub frequencies( Mix $population --> List ) is export {
     frequencies( $population.keys );
 }
 
