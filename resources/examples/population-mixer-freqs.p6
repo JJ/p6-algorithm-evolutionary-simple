@@ -40,34 +40,20 @@ sub mixer-EA( |parameters (
 
     # Initialize three populations for the mixer
     for ^$initial-populations {
-	my @initial-population = initialize( size => $population-size,
-					     genome-length => $length );
-	my %fitness-of;
-	my $population = evaluate( population => @initial-population,
-				   fitness-of => %fitness-of,
-				   evaluator => &max-ones );
-	$evaluations += $population.elems;
-	$channel-one.send( frequencies($population) );
+	$channel-one.send( 1.rand xx $length );
     }
 
     my @promises;
     for ^$threads {
         my $promise = start react whenever $channel-one -> @crew {
             my %fitness-of;
-            say "Frequencies ";
-            dd @crew;
-            say " ---------------------------- ";
 	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
-            say "Generated pop ";
-            dd @unpacked-pop;
-            say "-----------------";
 	    my $population = evaluate( population => @unpacked-pop,
                                        fitness-of => %fitness-of,
 				       evaluator => &max-ones);
 	    my $count = 0;
 	    while $count++ < $generations && best-fitness($population) < $length {
 	        LAST {
-                    say $population;
 		    if best-fitness($population) >= $length {
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population),
@@ -96,8 +82,8 @@ sub mixer-EA( |parameters (
     }
 
     my $pairs = start react whenever $mixer -> @pair {
+        $to-mix.send( @pair.pick ); # To avoid getting it hanged up
 	my @new-population =  crossover-frequencies( @pair[0], @pair[1] );
-	say "New population  size", @new-population.elems;
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;
     };
