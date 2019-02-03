@@ -48,9 +48,14 @@ is( $new-pop.elems, $population-size, "Size is correct" );
 my @fake-population = [ [True,True,True,True],[True,True,True,False],[True,True,False,False],[True,False,False,False] ];
 my @frequencies = frequencies( @fake-population);
 is-deeply(@frequencies, [1.0,0.75,0.5,0.25], "Frequencies OK" );
-my @frequencies = frequencies( $new-pop );
+
+# Check on real pop
+@frequencies = frequencies( $new-pop );
 is( @frequencies.elems, $length, "Size is correct" );
 cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
+
+my @freqs-other-way = frequencies( $new-pop.keys );
+is-deeply( @freqs-other-way, @frequencies, "Checking frequencies both ways" );
 
 @population = generate-by-frequencies( $population-size, @frequencies );
 is( @population.elems, $population-size, "Size is correct" );
