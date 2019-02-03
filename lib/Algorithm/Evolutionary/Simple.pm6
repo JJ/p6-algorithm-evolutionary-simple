@@ -104,6 +104,9 @@ sub produce-offspring( @pool,
 }
 
 sub best-fitness(Mix $population ) is export is pure {
+    say "Computing best";
+    dd  $population.sort(*.value).reverse.[0];
+    say "------------------------";
     return $population.sort(*.value).reverse.[0].value;
 }
 
