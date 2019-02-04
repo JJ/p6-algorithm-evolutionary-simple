@@ -73,7 +73,6 @@ sub mixer-EA( |parameters (
 				          fitness-of => %fitness-of,
 				          evaluator => &max-ones,
 				          population-size => $population-size);
-	        
 	        $evaluations += $population.elems;
             };
         };
