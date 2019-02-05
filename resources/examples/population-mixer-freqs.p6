@@ -16,15 +16,14 @@ sub json-formatter ( $m, :$fh ) {
 
 logger.send-to("pmf-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
-sub MAIN( |parameters (
-		UInt :$length = 64,
-		UInt :$initial-populations = 3,
-		UInt :$population-size = 256,
-		UInt :$generations = 16,
-		UInt :$threads = 2
-	    )
+sub MAIN( UInt :$length = 64,
+	  UInt :$initial-populations = 3,
+	  UInt :$population-size = 256,
+	  UInt :$generations = 16,
+	  UInt :$threads = 2
 	) {
 
+    my $parameters = .Capture;
     info(to-json( { length => $length,
 		    initial-populations => $initial-populations,
 		    population-size => $population-size,
