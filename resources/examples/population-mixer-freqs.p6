@@ -66,7 +66,7 @@ sub MAIN( |parameters (
 		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population) }));
-		        $to-mix.send( frequencies-best($population) );
+		        $to-mix.send( frequencies-best($population, 8) );
 	            }
 	        };
 	        $population = generation( population => $population,

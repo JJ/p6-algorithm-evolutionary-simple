@@ -190,8 +190,8 @@ multi sub frequencies( Mix $population --> List ) is export {
     frequencies( $population.keys );
 }
 
-sub frequencies-best( Mix $population --> List ) is export {
-    my $best = $population.sort(*.value).reverse.[0..($population.elems/2)].Mix;
+sub frequencies-best( Mix $population, $elite = 2 --> List ) is export {
+    my $best = $population.sort(*.value).reverse.[0..($population.elems/$elite)].Mix;
     frequencies($best);
 }
 
@@ -320,6 +320,10 @@ Unpacks the population that has been packed using C<pack-population>
 
 C<$population> can be an array or a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population. 
 
+=head2 multi sub frequencies-best( $population, $proportion = 2)
+
+C<$population> is a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population of the best part of the population; the size of the population will be divided by the $proportion variable.
+                                            
 =head2 sub generate-by-frequencies( $population-size, @frequencies )
 
 Generates a population of that size with every gene according to the indicated frequency.
