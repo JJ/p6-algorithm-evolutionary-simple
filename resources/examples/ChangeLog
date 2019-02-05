@@ -1,3 +1,7 @@
+2019-02-05  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer-freqs.p6: Eliminates repetitions, will do at another level
+
 2019-02-04  Juan J. merelo  <jmerelo@penny>
 
 	* population-mixer-freqs.p6: Eliminates "mixing" channel. Now everything is done in the same channel. Tries to avoid memory hogging. Hangs up from the very beginning...

@@ -66,6 +66,9 @@ my @new-frequencies = frequencies( @population );
 my $difference =  [+] @new-frequencies Z- @frequencies;
 cmp-ok( $difference, "<", $population-size * 0.3, "Frequencies differ in $difference" );
 
+my @freqs-best = frequencies-best( $new-pop );
+is( @freqs-best.elems, $length, "Size of freqs-best is correct" );
+
 my @crossed = crossover-frequencies( @frequencies, @new-frequencies );
 is @crossed.elems, @frequencies.elems, "Same length frequencies";
 say @crossed;

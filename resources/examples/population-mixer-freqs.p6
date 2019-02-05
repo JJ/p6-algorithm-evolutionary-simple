@@ -16,14 +16,14 @@ sub json-formatter ( $m, :$fh ) {
 
 logger.send-to("pmf-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
-sub mixer-EA( |parameters (
-		    UInt :$length = 64,
-		    UInt :$initial-populations = 3,
-		    UInt :$population-size = 256,
-		    UInt :$generations = 8,
-		    UInt :$threads = 2
-		)
-	    ) {
+sub MAIN( |parameters (
+		UInt :$length = 64,
+		UInt :$initial-populations = 3,
+		UInt :$population-size = 256,
+		UInt :$generations = 16,
+		UInt :$threads = 2
+	    )
+	) {
 
     info(to-json( { length => $length,
 		    initial-populations => $initial-populations,
@@ -35,7 +35,6 @@ sub mixer-EA( |parameters (
     my Channel $channel-one .= new;
     my Channel $to-mix .= new;
     my Channel $mixer = $to-mix.Supply.batch( elems => 2).Channel;
-    
     my $evaluations = 0;
 
     # Initialize three populations for the mixer
@@ -47,6 +46,7 @@ sub mixer-EA( |parameters (
     for ^$threads {
         my $promise = start react whenever $channel-one -> @crew {
             my %fitness-of;
+            say @crew;
 	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
 	    my $population = evaluate( population => @unpacked-pop,
                                        fitness-of => %fitness-of,
@@ -66,7 +66,7 @@ sub mixer-EA( |parameters (
 		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population) }));
-		        $to-mix.send( frequencies($population) );
+		        $to-mix.send( frequencies-best($population) );
 	            }
 	        };
 	        $population = generation( population => $population,
@@ -95,25 +95,4 @@ sub mixer-EA( |parameters (
 	say "$key → $value";
     };
     say "=============";
-    return $evaluations;
-}
-
-sub MAIN ( UInt :$repetitions = 30,
-	   UInt :$initial-populations = 3,
-           UInt :$length = 64,
-	   UInt :$population-size = 256,
-	   UInt :$generations=8,
-	   UInt :$threads = 2 ) {
-
-    my @results;
-    for ^$repetitions {
-	my $result = mixer-EA( length => $length,
-			       initial-populations => $initial-populations,
-			       population-size => $population-size,
-			       generations => $generations,
-			       threads => $threads );
-	push @results, $result;
-    }
-
-    say @results;
 }

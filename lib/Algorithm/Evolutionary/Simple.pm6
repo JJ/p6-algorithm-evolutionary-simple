@@ -190,6 +190,11 @@ multi sub frequencies( Mix $population --> List ) is export {
     frequencies( $population.keys );
 }
 
+sub frequencies-best( Mix $population --> List ) is export {
+    my $best = $population.sort(*.value).reverse.[0..($population.elems/2)].Mix;
+    frequencies($best);
+}
+
 sub generate-by-frequencies( $population-size, @frequencies --> Array ) is export {
     my @mix = @frequencies.map( { (Bool::True => $_, Bool::False => 1-$_ ).Mix } );
     my @population = gather {
