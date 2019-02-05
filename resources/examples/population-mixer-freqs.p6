@@ -25,7 +25,6 @@ sub MAIN( UInt :$length = 64,
 
     my $parameters = .Capture;
     info(to-json( { length => $length,
-		    initial-populations => $initial-populations,
 		    population-size => $population-size,
 		    generations => $generations,
 		    threads => $threads,
@@ -36,6 +35,7 @@ sub MAIN( UInt :$length = 64,
     my Channel $mixer = $to-mix.Supply.batch( elems => 2).Channel;
     my $evaluations = 0;
 
+    my $initial-populations = $threads * 1.5;
     # Initialize three populations for the mixer
     for ^$initial-populations {
 	$channel-one.send( 1.rand xx $length );
