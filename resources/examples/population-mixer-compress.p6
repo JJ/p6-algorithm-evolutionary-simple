@@ -17,12 +17,12 @@ sub json-formatter ( $m, :$fh ) {
 logger.send-to("pmg-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub MAIN( UInt :$length = 64,
-	  UInt :$initial-populations = 3,
 	  UInt :$population-size = 256,
 	  UInt :$generations = 16,
 	  UInt :$threads = 2
 	) {
 
+    my $initial-populations = $threads * 1.5;
     info(to-json( { length => $length,
 		    initial-populations => $initial-populations,
 		    population-size => $population-size,
@@ -100,7 +100,8 @@ sub MAIN( UInt :$length = 64,
 	$channel-one.send( pack-population($new-population.keys));
 	say "Mixing in ", $*THREAD.id;
     };
-    
+
+    start { sleep 400; exit };   # Just in case it gets stuck
     await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
