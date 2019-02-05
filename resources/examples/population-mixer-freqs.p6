@@ -45,7 +45,6 @@ sub MAIN( UInt :$length = 64,
     for ^$threads {
         my $promise = start react whenever $channel-one -> @crew {
             my %fitness-of;
-            say @crew;
 	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
 	    my $population = evaluate( population => @unpacked-pop,
                                        fitness-of => %fitness-of,
@@ -90,7 +89,7 @@ sub MAIN( UInt :$length = 64,
     await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
-    for parameters.kv -> $key, $value {
+    for $parameters.kv -> $key, $value {
 	say "$key → $value";
     };
     say "=============";
