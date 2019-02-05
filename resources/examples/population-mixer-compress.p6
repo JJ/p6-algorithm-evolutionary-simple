@@ -14,16 +14,14 @@ sub json-formatter ( $m, :$fh ) {
 			time => $m<when>.Str });
 }
 
-logger.send-to("population-mixer-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
+logger.send-to("pmg-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
-sub mixer-EA( |parameters (
-		    UInt :$length = 64,
-		    UInt :$initial-populations = 3,
-		    UInt :$population-size = 256,
-		    UInt :$generations = 8,
-		    UInt :$threads = 2
-		)
-	    ) {
+sub MAIN( UInt :$length = 64,
+	  UInt :$initial-populations = 3,
+	  UInt :$population-size = 256,
+	  UInt :$generations = 16,
+	  UInt :$threads = 2
+	) {
 
     info(to-json( { length => $length,
 		    initial-populations => $initial-populations,
@@ -31,7 +29,8 @@ sub mixer-EA( |parameters (
 		    generations => $generations,
 		    threads => $threads,
 		    start-at => DateTime.now.Str} ));
-    
+
+    my $parameters = .Capture;
     my Channel $channel-one .= new;
     my Channel $to-mix .= new;
     my Channel $mixer = $to-mix.Supply.batch( elems => 2).Channel;
@@ -54,11 +53,15 @@ sub mixer-EA( |parameters (
     for ^$threads {
         my $promise = start react whenever $channel-one -> $crew {
 	    my @unpacked-pop = unpack-population( $crew, $length );
-	    my $population = Mix.new(@unpacked-pop);
+            my %fitness-of;
+	    my $population =  evaluate( population => @unpacked-pop,
+				        fitness-of => %fitness-of,
+				        evaluator => &max-ones );
 	    my $count = 0;
-	    my %fitness-of;
 	    while $count++ < $generations && best-fitness($population) < $length {
 	        LAST {
+                    say "In LAST";
+                    say "Best-fitness ", best-fitness($population);
 		    if best-fitness($population) >= $length {
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population),
@@ -98,33 +101,14 @@ sub mixer-EA( |parameters (
 	say "Mixing in ", $*THREAD.id;
     };
     
-    
     await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
-    for parameters.kv -> $key, $value {
+    for $parameters.kv -> $key, $value {
 	say "$key → $value";
     };
     say "=============";
     return $evaluations;
 }
 
-sub MAIN ( UInt :$repetitions = 30,
-	   UInt :$initial-populations = 3,
-           UInt :$length = 64,
-	   UInt :$population-size = 256,
-	   UInt :$generations=8,
-	   UInt :$threads = 2 ) {
 
-    my @results;
-    for ^$repetitions {
-	my $result = mixer-EA( length => $length,
-			       initial-populations => $initial-populations,
-			       population-size => $population-size,
-			       generations => $generations,
-			       threads => $threads );
-	push @results, $result;
-    }
-
-    say @results;
-}
