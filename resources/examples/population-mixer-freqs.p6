@@ -17,25 +17,25 @@ sub json-formatter ( $m, :$fh ) {
 logger.send-to("pmf-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub MAIN( UInt :$length = 64,
-	  UInt :$initial-populations = 3,
 	  UInt :$population-size = 256,
 	  UInt :$generations = 16,
 	  UInt :$threads = 2
 	) {
 
-    my $parameters = .Capture;
-    info(to-json( { length => $length,
-		    population-size => $population-size,
-		    generations => $generations,
-		    threads => $threads,
-		    start-at => DateTime.now.Str} ));
-    
+    my $parameters = .Capture;    
     my Channel $channel-one .= new;
     my Channel $to-mix .= new;
     my Channel $mixer = $to-mix.Supply.batch( elems => 2).Channel;
     my $evaluations = 0;
 
     my $initial-populations = $threads * 1.5;
+    info(to-json( { length => $length,
+		    population-size => $population-size,
+                    $:initial-populations,
+		    generations => $generations,
+		    threads => $threads,
+		    start-at => DateTime.now.Str} ));
+
     # Initialize three populations for the mixer
     for ^$initial-populations {
 	$channel-one.send( 1.rand xx $length );

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gap='2 4 8'
+gap='4 8 16'
 for g in $gap
 do
     echo $g
