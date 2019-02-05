@@ -101,7 +101,7 @@ sub MAIN( UInt :$length = 64,
 	say "Mixing in ", $*THREAD.id;
     };
 
-    start { sleep 400; exit };   # Just in case it gets stuck
+    start { sleep 800; exit };   # Just in case it gets stuck
     await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
