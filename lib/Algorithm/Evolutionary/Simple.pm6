@@ -332,7 +332,7 @@ Generates a population of that size with every gene according to the indicated f
 
 There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out.
 
-This is also a port of L<Algorithm::Evolutionary::Simple to Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies. 
+This is also a port of L<Algorithm::Evolutionary::Simple to Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies, but it's not simply a port, since most of the code is completely different.
 
 =head1 AUTHOR
 
