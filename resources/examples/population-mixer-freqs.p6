@@ -31,7 +31,7 @@ sub MAIN( UInt :$length = 64,
     my $initial-populations = $threads * 1.5;
     info(to-json( { length => $length,
 		    population-size => $population-size,
-                    $:initial-populations,
+                    initial-populations => $initial-populations,
 		    generations => $generations,
 		    threads => $threads,
 		    start-at => DateTime.now.Str} ));
