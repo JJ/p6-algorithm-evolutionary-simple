@@ -69,11 +69,10 @@ cmp-ok( $difference, "<", $population-size * 0.3, "Frequencies differ in $differ
 my @freqs-best = frequencies-best( $new-pop );
 is( @freqs-best.elems, $length, "Size of freqs-best is correct" );
 
+cmp-ok((sum @freqs-best), ">", (sum @frequencies), "Frequencies of the best are better");
+
 my @crossed = crossover-frequencies( @frequencies, @new-frequencies );
 is @crossed.elems, @frequencies.elems, "Same length frequencies";
-say @crossed;
-say @frequencies;
-say @new-frequencies;
 is( @crossed[0], any(@frequencies[0],@new-frequencies[0]), "Crossing OK");
 is( @crossed[*-1], any(@frequencies[*-1],@new-frequencies[*-1]), "Crossing OK");
 
