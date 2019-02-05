@@ -1,5 +1,7 @@
 2019-02-05  Juan J. merelo  <jmerelo@penny>
 
+	* population-mixer-freqs-nowb.p6: Trying not to send back something. Gets stuck every time.
+
 	* population-mixer-freqs.p6: Eliminates repetitions, will do at another level
 	Changes initial number of populations to be initialized by default, so that there are always enough populations to process.
 
