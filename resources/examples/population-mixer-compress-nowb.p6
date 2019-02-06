@@ -22,7 +22,7 @@ sub MAIN( UInt :$length = 64,
 	  UInt :$threads = 2
 	) {
 
-    my $initial-populations = $threads * 1.5;
+    my $initial-populations = $threads + 1;
     info(to-json( { length => $length,
 		    initial-populations => $initial-populations,
 		    population-size => $population-size,
