@@ -14,7 +14,7 @@ sub json-formatter ( $m, :$fh ) {
 			time => $m<when>.Str });
 }
 
-logger.send-to("pmf-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
+logger.send-to("pmw-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub MAIN( UInt :$length = 64,
 	  UInt :$population-size = 256,
@@ -79,7 +79,7 @@ sub MAIN( UInt :$length = 64,
     }
 
     my $pairs = start react whenever $mixer -> @pair {
-        $to-mix.send( @pair.pick ); # To avoid getting it hanged up
+        $channel-one.send( @pair.pick ); # To avoid getting it hanged up
 	my @new-population =  crossover-frequencies( @pair[0], @pair[1] );
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;
