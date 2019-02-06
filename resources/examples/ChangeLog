@@ -1,3 +1,8 @@
+2019-02-06  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer-freqs-ap.p6: ap as in "Adaptive population" Adapts the population to the number of existing threads. 
+	It uses a number of initial populations that is 1+number of threads.
+
 2019-02-05  Juan J. merelo  <jmerelo@penny>
 
 	* population-mixer-freqs-nowb.p6: Trying not to send back something. Gets stuck every time.
