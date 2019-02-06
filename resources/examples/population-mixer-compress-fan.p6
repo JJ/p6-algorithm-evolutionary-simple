@@ -14,11 +14,11 @@ sub json-formatter ( $m, :$fh ) {
 			time => $m<when>.Str });
 }
 
-logger.send-to("pmn-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
+logger.send-to("pmo-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub MAIN( UInt :$length = 64,
 	  UInt :$population-size = 256,
-	  UInt :$generations = 8,
+	  UInt :$generations = 16,
 	  UInt :$threads = 2
 	) {
 
@@ -75,6 +75,7 @@ sub MAIN( UInt :$length = 64,
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population) }));
 		        $to-mix.send( pack-population($population.keys) );
+                        $channel-one.send( pack-population($population.keys) );
 	            }
 	        };
 	        $population = generation( population => $population,
@@ -90,7 +91,6 @@ sub MAIN( UInt :$length = 64,
     }
 
     my $pairs = start react whenever $mixer -> @pair {
-	$channel-one.send( @pair.pick ); # To avoid getting it hanged up
 	my @new-population = unpack-population(@pair[0], $length);
 	my @new-population-prime = unpack-population(@pair[1], $length);
 	my $new-population = mix-raw( @new-population,
