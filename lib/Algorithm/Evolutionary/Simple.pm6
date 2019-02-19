@@ -1,6 +1,6 @@
 use v6.c;
 
-unit module Algorithm::Evolutionary::Simple:ver<0.0.5>;
+unit module Algorithm::Evolutionary::Simple:ver<0.0.6>;
 
 sub random-chromosome( UInt $length --> List(Seq) ) is export {
     return Bool.pick() xx $length;
@@ -265,6 +265,11 @@ That's a bumpy road, returns 1 for each block of 4 which has the same true or fa
 
 Evaluates the chromosomes, storing values in the fitness cache. If C<auto-t> is set to 'True', uses autothreading for faster operation (if needed). In absence of that parameter, defaults to sequential.
 
+=head2 sub evaluate-nocache( :@population,
+			    :$evaluator --> Mix )
+
+Evaluates the population, returning a Mix, but does not use a cache. Intended mainly for concurrent operation.
+                                               
 =head2 get-pool-roulette-wheel( Mix $population,
 				UInt $need = $population.elems ) is export
 
@@ -300,6 +305,7 @@ has to be evaluated before entering here using the C<evaluate> function. Will us
   
 Mixes the two populations, returning a single one of the indicated size and with type Mix.
 
+                                     
 =head2 sub pack-individual( @individual --> Int )
 
 Packs the individual in a single C<Int>. The invidual must be binary, and the maximum length is 64.
@@ -307,6 +313,7 @@ Packs the individual in a single C<Int>. The invidual must be binary, and the ma
 =head2 sub unpack-individual( Int $packed, UInt $bits --> Array(Seq))
 
 Unpacks the individual that has been packed previously using C<pack-individual>
+
 
 =head2 sub pack-population( @population --> Buf) 
 
@@ -316,6 +323,7 @@ Packs a population, producing a buffer which can be sent to a channel or stored 
 
 Unpacks the population that has been packed using C<pack-population>
 
+
 =head2 multi sub frequencies( $population)
 
 C<$population> can be an array or a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population. 
@@ -323,10 +331,17 @@ C<$population> can be an array or a Mix, in which case the keys are extracted. T
 =head2 multi sub frequencies-best( $population, $proportion = 2)
 
 C<$population> is a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population of the best part of the population; the size of the population will be divided by the $proportion variable.
-                                            
+
+
+
 =head2 sub generate-by-frequencies( $population-size, @frequencies )
 
 Generates a population of that size with every gene according to the indicated frequency.
+
+=head2 sub crossover-frequencies( @frequencies, @frequencies-prime --> Array )
+
+Generates a new array with random elements of the two arrays that are used as arguments.
+
 
 =head1 SEE ALSO
 
@@ -340,7 +355,7 @@ JJ Merelo <jjmerelo@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018 JJ Merelo
+Copyright 2018, 2019 JJ Merelo
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

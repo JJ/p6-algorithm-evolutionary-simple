@@ -10,91 +10,14 @@ SYNOPSIS
 
     use Algorithm::Evolutionary::Simple;
 
-	# Example in resources/examples/max-ones.p6
-    my @found;
-    for ^$repetitions {
-	my @initial-population = initialize( size => $population-size,
-					     genome-length => $length );
-	my %fitness-of;
-	
-	my $population = evaluate( population => @initial-population,
-				   fitness-of => %fitness-of,
-				   evaluator => &max-ones );
-	
-	my $result = 0;
-	while $population.sort(*.value).reverse.[0].value < $length {
-	    $population = generation( population => $population,
-				      fitness-of => %fitness-of,
-				      evaluator => &max-ones,
-				      population-size => $population-size) ;
-	    $result += $population-size;
-	    
-	}
-	say "Found → $population.sort(*.value).reverse.[0]";
-	@found.push( $result );
-
-
 DESCRIPTION
 ===========
 
-`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+Algorithm::Evolutionary::Simple is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
 It is intended mainly for demo purposes. In the future, more versions will be available. 
 
-It uses a fitness cache for storing and not reevaluating, so take care
-of memory bloat.
-
-INSTALLATION
-============
-
-This module is [available in the Perl 6 ecosystem](https://modules.perl6.org/dist/Algorithm::Evolutionary::Simple:cpan:JMERELO), so the usual
-
-	zef install Algorithm::Evolutionary::Simple
-
-should do the trick, or
-
-	zef install --deps-only .
-
-if you want to hack on a copy.
-
-REFERENCING THIS MODULE
-=======================
-
-If you use this module somehow for a paper, I would be very grateful
-if you used the following reference for it:
-
-```
-@inproceedings{Merelo-Guervos:2018:PIE:3205651.3208273,
- author = {Merelo-Guerv\'{o}s, Juan-Juli\'{a}n and Garc\'{\i}a-Valdez, Jos{\'e}-Mario},
- title = {Performance Improvements of Evolutionary Algorithms in Perl 6},
- booktitle = {Proceedings of the Genetic and Evolutionary Computation Conference Companion},
- series = {GECCO '18},
- year = {2018},
- isbn = {978-1-4503-5764-7},
- location = {Kyoto, Japan},
- pages = {1371--1378},
- numpages = {8},
- url = {http://doi.acm.org/10.1145/3205651.3208273},
- doi = {10.1145/3205651.3208273},
- acmid = {3208273},
- publisher = {ACM},
- address = {New York, NY, USA},
- keywords = {benchmarking, computer languages, concurrency, evolutionary algorithms, perl, perl 6},
-} 
-
-```
-
-The artículo is avaliable from [ACM in an open access model](https://dl.acm.org/citation.cfm?id=3208273)
-
-EXAMPLES
-========
-
-The [`resources/examples`](resources/examples) subdirectory includes a few examples, including how to use it in a concurrent way. If you want to test the speed, the [`resources/benchmarks`](resources/benchmarks) subdirectory includes also a few speed tests.
-
-PRESENTATIONS
-=============
-
-[Concurrent evolutionary algorithms in Perl 6](https://jj.github.io/evosoft-concurrent-perl6/#/) was presented for the last time at the [TPC in Glasgow](http://act.perlconference.org/tpc-2018-glasgow/)
+It uses a fitness cache for storing and not reevaluating, so take care of memory bloat.
 
 METHODS
 =======
@@ -124,10 +47,15 @@ multi evaluate( :@population, :%fitness-of, :$evaluator, :$auto-t = False --> Mi
 
 Evaluates the chromosomes, storing values in the fitness cache. If `auto-t` is set to 'True', uses autothreading for faster operation (if needed). In absence of that parameter, defaults to sequential.
 
+sub evaluate-nocache( :@population, :$evaluator --> Mix )
+---------------------------------------------------------
+
+Evaluates the population, returning a Mix, but does not use a cache. Intended mainly for concurrent operation.
+
 get-pool-roulette-wheel( Mix $population, UInt $need = $population.elems ) is export
 ------------------------------------------------------------------------------------
 
-Roulette wheel selection. 
+Returns `$need` elements with probability proportional to its *weight*, which is fitness in this case.
 
 mutation( @chromosome is copy --> Array )
 -----------------------------------------
@@ -149,22 +77,62 @@ best-fitness( $population )
 
 Returns the fitness of the first element. Mainly useful to check if the algorithm is finished.
 
-generation( :@population, :%fitness-of, :$evaluator, :$population-size = $population.elems --> Mix )
-----------------------------------------------------------------------------------------------------
+multi sub generation( :@population, :%fitness-of, :$evaluator, :$population-size = $population.elems, Bool :$auto-t --> Mix )
+-----------------------------------------------------------------------------------------------------------------------------
 
-Single generation of an evolutionary algorithm. The initial `Mix` has to be evaluated before entering here using the `evaluate` function.
+Single generation of an evolutionary algorithm. The initial `Mix` has to be evaluated before entering here using the `evaluate` function. Will use auto-threading if `$auto-t` is `True`.
 
 mix( $population1, $population2, $size --> Mix ) is export 
 -----------------------------------------------------------
 
-Mixes the two populations, returning a single one of the indicated size
+Mixes the two populations, returning a single one of the indicated size and with type Mix.
+
+sub pack-individual( @individual --> Int )
+------------------------------------------
+
+Packs the individual in a single `Int`. The invidual must be binary, and the maximum length is 64.
+
+sub unpack-individual( Int $packed, UInt $bits --> Array(Seq))
+--------------------------------------------------------------
+
+Unpacks the individual that has been packed previously using `pack-individual`
+
+sub pack-population( @population --> Buf) 
+------------------------------------------
+
+Packs a population, producing a buffer which can be sent to a channel or stored in a compact form.
+
+sub unpack-population( Buf $buffer, UInt $bits --> Array )
+----------------------------------------------------------
+
+Unpacks the population that has been packed using `pack-population`
+
+multi sub frequencies( $population)
+-----------------------------------
+
+`$population` can be an array or a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population. 
+
+multi sub frequencies-best( $population, $proportion = 2)
+---------------------------------------------------------
+
+`$population` is a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population of the best part of the population; the size of the population will be divided by the $proportion variable.
+
+sub generate-by-frequencies( $population-size, @frequencies )
+-------------------------------------------------------------
+
+Generates a population of that size with every gene according to the indicated frequency.
+
+sub crossover-frequencies( @frequencies, @frequencies-prime --> Array )
+-----------------------------------------------------------------------
+
+Generates a new array with random elements of the two arrays that are used as arguments.
 
 SEE ALSO
 ========
 
 There is a very interesting implementation of an evolutionary algorithm in [Algorithm::Genetic](Algorithm::Genetic). Check it out.
 
-This is also a port of [Algorithm::Evolutionary::Simple to Perl6](https://metacpan.org/release/Algorithm-Evolutionary-Simple), which has a few more goodies. 
+This is also a port of [Algorithm::Evolutionary::Simple to Perl6](https://metacpan.org/release/Algorithm-Evolutionary-Simple), which has a few more goodies, but it's not simply a port, since most of the code is completely different.
 
 AUTHOR
 ======
@@ -174,7 +142,7 @@ JJ Merelo <jjmerelo@gmail.com>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018 JJ Merelo
+Copyright 2018, 2019 JJ Merelo
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

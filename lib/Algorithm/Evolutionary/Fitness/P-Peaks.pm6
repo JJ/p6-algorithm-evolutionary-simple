@@ -1,6 +1,6 @@
 use v6.c;
 
-unit class Algorithm::Evolutionary::Fitness::P-Peaks:ver<0.0.5>;
+unit class Algorithm::Evolutionary::Fitness::P-Peaks:ver<0.0.6>;
 
 has UInt $.number-of-peaks;
 has UInt $.bits;
