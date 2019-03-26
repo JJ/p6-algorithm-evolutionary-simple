@@ -271,8 +271,8 @@ quasi-canonical evolutionary algorithms in Perl 6. It uses binary
 representation, integer fitness (which is needed for the kind of data
 structure we are using) and a single fitness function.
 
-It is intended mainly for demo purposes. In the future,
-more versions will be available.			
+It is intended mainly for demo purposes, although it's been actually used in research. In the future,
+more versions will be available.
 
 It uses a fitness cache for storing and not reevaluating,
 so take care of memory bloat.
@@ -326,6 +326,12 @@ Returns two chromosomes, with parts of it crossed over. Generally you will want 
 
 Produces offspring from an array that contains the reproductive pool; it returns a C<Seq>.
 
+=head2 produce-offspring-no-mutation( @pool,
+		                      $size = @pool.elems --> Seq ) is export
+
+Produces offspring from an array that contains the reproductive pool
+without using mutation; it returns a C<Seq>. 
+
 =head2 best-fitness( $population )
 
 Returns the fitness of the first element. Mainly useful to check if the algorithm is finished.
@@ -337,7 +343,20 @@ Returns the fitness of the first element. Mainly useful to check if the algorith
                               Bool :$auto-t --> Mix )
 
 Single generation of an evolutionary algorithm. The initial C<Mix>
-has to be evaluated before entering here using the C<evaluate> function. Will use auto-threading if C<$auto-t> is C<True>.
+has to be evaluated before entering here using the C<evaluate>
+function. Will use auto-threading if C<$auto-t> is C<True>.
+
+=head2 multi sub generation(  :@population,
+		              :%fitness-of,
+		              :$evaluator,
+	                      :$population-size = $population.elems,
+                              Bool :$no-mutation --> Mix )
+
+Single generation of an evolutionary algorithm. The initial C<Mix>
+has to be evaluated before entering here using the C<evaluate>
+function. Will not use mutation if that variable is set to C<True>
+
+
 
 =head2 mix( $population1, $population2, $size --> Mix ) is export 
   
