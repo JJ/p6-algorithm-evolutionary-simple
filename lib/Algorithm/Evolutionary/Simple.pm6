@@ -102,6 +102,17 @@ sub produce-offspring( @pool,
 
 }
 
+sub produce-offspring-no-mutation( @pool,
+		       $size = @pool.elems --> Seq ) is export {
+    my @new-population;
+    for 1..($size/2) {
+	my @χx = @pool.pick: 2;
+	@new-population.push: crossover(@χx[0], @χx[1]).Slip;
+    }
+    return @new-population.Seq;
+
+}
+
 sub best-fitness(Mix $population ) is export is pure {
     return $population.sort(*.value).reverse.[0].value;
 }
@@ -120,6 +131,20 @@ multi sub generation(Mix :$population,
     my $best = $population.sort(*.value).reverse.[0..1].Mix; # Keep the best as elite
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
     my @new-population= produce-offspring( @pool, $population-size );
+    return Mix(evaluate( population => @new-population,
+			 fitness-of => %fitness-of,
+			 evaluator => $evaluator ) ∪ $best );
+}
+
+multi sub generation(Mix :$population,
+	             :%fitness-of,
+	             :$evaluator,
+	             :$population-size = $population.elems,
+                     Bool :$no-mutation --> Mix ) is export {
+
+    my $best = $population.sort(*.value).reverse.[0..1].Mix; # Keep the best as elite
+    my @pool = get-pool-roulette-wheel( $population, $population-size-2);
+    my @new-population= produce-offspring-no-mutation( @pool, $population-size );
     return Mix(evaluate( population => @new-population,
 			 fitness-of => %fitness-of,
 			 evaluator => $evaluator ) ∪ $best );
