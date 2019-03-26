@@ -24,16 +24,16 @@ sub MAIN ( UInt :$repetitions = 30,
     info(to-json( { length => $length,
 		    population-size => $population-size,
 		    start-at => DateTime.now.Str} ));
-    
+
     for ^$repetitions {
 	my @initial-population = initialize( size => $population-size,
 					     genome-length => $length );
 	my %fitness-of;
-	
+
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
 				   evaluator => &max-ones );
-	
+
 	my $result = 0;
 	while $population.sort(*.value).reverse.[0].value < $length {
 	    $population = generation( population => $population,

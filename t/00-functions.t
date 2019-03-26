@@ -63,6 +63,8 @@ my $evolved-fitness = $population.sort(*.value).reverse.[0].value;
 
 cmp-ok( $evolved-fitness, ">=", $now-fitness, "Improving fitness by evolving " );
 
+
+
 # Merge populations
 my $another-population =  evaluate( population => @another-population,
 				    fitness-of => %fitness-of,
@@ -75,6 +77,20 @@ $population =  generation( population => $another-population,
 			   population-size => $population-size,
                            auto-t => True);
 $evolved-fitness = $population.sort(*.value).reverse.[0].value;
+
+my $merged = mix( $population, $another-population, $population-size);
+cmp-ok( best-fitness($merged), ">=", $evolved-fitness, "Improving fitness by mixing " );
+
+# Merge populations
+
+$another-population = $population;
+$evolved-fitness = $population.sort(*.value).reverse.[0].value;
+
+$population =  generation( population => $another-population,
+			   fitness-of => %fitness-of,
+			   evaluator => &max-ones,
+			   population-size => $population-size,
+                           :no-mutation);
 
 my $merged = mix( $population, $another-population, $population-size);
 cmp-ok( best-fitness($merged), ">=", $evolved-fitness, "Improving fitness by mixing " );
