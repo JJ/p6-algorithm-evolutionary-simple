@@ -92,7 +92,7 @@ $population =  generation( population => $another-population,
 			   population-size => $population-size,
                            :no-mutation);
 
-my $merged = mix( $population, $another-population, $population-size);
+$merged = mix( $population, $another-population, $population-size);
 cmp-ok( best-fitness($merged), ">=", $evolved-fitness, "Improving fitness by mixing " );
 
 

@@ -15,7 +15,7 @@ DESCRIPTION
 
 Algorithm::Evolutionary::Simple is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
-It is intended mainly for demo purposes. In the future, more versions will be available. 
+It is intended mainly for demo purposes, although it's been actually used in research. In the future, more versions will be available.
 
 It uses a fitness cache for storing and not reevaluating, so take care of memory bloat.
 
@@ -72,6 +72,11 @@ produce-offspring( @pool, $size = @pool.elems --> Seq ) is export
 
 Produces offspring from an array that contains the reproductive pool; it returns a `Seq`.
 
+produce-offspring-no-mutation( @pool, $size = @pool.elems --> Seq ) is export
+-----------------------------------------------------------------------------
+
+Produces offspring from an array that contains the reproductive pool without using mutation; it returns a `Seq`. 
+
 best-fitness( $population )
 ---------------------------
 
@@ -81,6 +86,11 @@ multi sub generation( :@population, :%fitness-of, :$evaluator, :$population-size
 -----------------------------------------------------------------------------------------------------------------------------
 
 Single generation of an evolutionary algorithm. The initial `Mix` has to be evaluated before entering here using the `evaluate` function. Will use auto-threading if `$auto-t` is `True`.
+
+multi sub generation( :@population, :%fitness-of, :$evaluator, :$population-size = $population.elems, Bool :$no-mutation --> Mix )
+----------------------------------------------------------------------------------------------------------------------------------
+
+Single generation of an evolutionary algorithm. The initial `Mix` has to be evaluated before entering here using the `evaluate` function. Will not use mutation if that variable is set to `True`
 
 mix( $population1, $population2, $size --> Mix ) is export 
 -----------------------------------------------------------
