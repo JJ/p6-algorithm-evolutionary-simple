@@ -71,6 +71,7 @@ sub selecto-recombinative-EA( |parameters (
 }
 
 
+
 sub MAIN ( UInt :$repetitions = 30,
            UInt :$length = 64,
 	   UInt :$population-size = 512,
@@ -90,3 +91,21 @@ sub MAIN ( UInt :$repetitions = 30,
     say "Result ", $found/$repetitions;
 
 }
+
+=begin pod
+
+=head1 NAME
+
+concurrent-selecto-recombinative-EA.p6 - Implements a selecto-recombinative algorithm to find population without mutation
+
+=head1 SYNOPSIS
+
+    ./concurrent-selecto-recombinative-EA.p6 --length[=64] --repetitions[=30]
+        --population-size[=512] --diversify-size[=8] --max-evaluations[=10000]
+        --tournament-size[=4]
+
+=head1 DESCRIPTION
+
+Uses a individual-based selecto-recombinative algorithm, with no population. Mainly used for finding out the correct population for an evolutionary algorithm
+
+=end pod
