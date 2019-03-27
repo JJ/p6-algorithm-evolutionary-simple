@@ -32,13 +32,13 @@ sub MAIN ( UInt :$repetitions = 30,
 	
 	my $population = evaluate( population => @initial-population,
 				   fitness-of => %fitness-of,
-				   evaluator => &max-ones );
+				   evaluator => &royal-road );
 	
 	my $result = 0;
-	while $population.sort(*.value).reverse.[0].value < $length {
+	while $population.sort(*.value).reverse.[0].value < $length/4 {
 	    $population = generation( population => $population,
 				      fitness-of => %fitness-of,
-				      evaluator => &max-ones,
+				      evaluator => &royal-road,
 				      population-size => $population-size) ;
 	    $result += $population-size;
 	    info(to-json( { best => best-fitness($population) } ));

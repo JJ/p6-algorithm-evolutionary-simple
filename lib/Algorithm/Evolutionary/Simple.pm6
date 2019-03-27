@@ -140,6 +140,19 @@ multi sub generation(Mix :$population,
                          :$auto-t ) ∪ $best );
 }
 
+sub no-change-during( $generations, $population ) {
+    state $generations-without-change=0;
+    state $previous-best;
+    my $best = $population.sort(*.value).reverse()[0];
+    if $best === $previous-best {
+	$generations-without-change++;
+    } else {
+	$generations-without-change=0;
+    }
+    $previous-best = $best;
+
+}
+
 sub mix( $population1, $population2, $size --> Mix ) is export {
     my $new-population = $population1 ∪ $population2;
     return $new-population.sort(*.value).reverse.[0..($size-1)].Mix;
