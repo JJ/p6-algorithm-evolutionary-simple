@@ -77,7 +77,7 @@ is( @crossed[0], any(@frequencies[0],@new-frequencies[0]), "Crossing OK");
 is( @crossed[*-1], any(@frequencies[*-1],@new-frequencies[*-1]), "Crossing OK");
 
 # Test no-change
-for ^3 {
+for ^2 {
     is( no-change-during( 3, 3 ), False, "No change for $_ generations" );
 }
 is( no-change-during( 3, 3 ), True, "No change for 3 generations" );
