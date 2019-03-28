@@ -1,11 +1,11 @@
 #!/bin/bash
 
-gap='4 8 16 32'
+gap='2 4 6 8 10 12'
 for g in $gap
 do
     echo $g
     for i in {1..15}
     do
-        perl6 -I../../lib population-mixer-compress-fan.p6 --generations=$g
+        perl6 -I../../lib population-mixer-freqs-ap-rr.p6 --threads=$g
     done
 done
