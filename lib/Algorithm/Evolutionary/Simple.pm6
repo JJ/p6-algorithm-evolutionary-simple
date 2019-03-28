@@ -165,16 +165,20 @@ multi sub generation(Mix :$population,
                          :$auto-t ) ∪ $best );
 }
 
-sub no-change-during( $generations, $population ) is export {
+sub no-change-during( $generations, $best ) is export {
     state $generations-without-change=0;
     state $previous-best;
-    my $best = $population.sort(*.value).reverse()[0];
-    if $best === $previous-best {
-	$generations-without-change++;
+    with $previous-best {
+	if $best == $previous-best {
+	    $generations-without-change++;
+	} else {
+	    $generations-without-change=0;
+	}
     } else {
-	$generations-without-change=0;
+	$generations-without-change++;
     }
     $previous-best = $best;
+    say "$generations-without-change, $generations";
     return $generations-without-change >= $generations;
 }
 
