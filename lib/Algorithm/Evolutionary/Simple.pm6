@@ -165,7 +165,7 @@ multi sub generation(Mix :$population,
                          :$auto-t ) ∪ $best );
 }
 
-sub no-change-during( $generations, $population ) {
+sub no-change-during( $generations, $population ) is export {
     state $generations-without-change=0;
     state $previous-best;
     my $best = $population.sort(*.value).reverse()[0];
@@ -175,7 +175,7 @@ sub no-change-during( $generations, $population ) {
 	$generations-without-change=0;
     }
     $previous-best = $best;
-
+    return $generations-without-change >= $generations;
 }
 
 sub mix( $population1, $population2, $size --> Mix ) is export {
@@ -357,6 +357,9 @@ has to be evaluated before entering here using the C<evaluate>
 function. Will not use mutation if that variable is set to C<True>
 
 
+=head2 sub generations-without-change( $generations, $population )
+
+Returns C<False> if the number of generations in C<$generations> has not been reached without changing; it returns C<True> otherwise.
 
 =head2 mix( $population1, $population2, $size --> Mix ) is export 
   
