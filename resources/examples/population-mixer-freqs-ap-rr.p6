@@ -53,7 +53,7 @@ sub MAIN( UInt :$length = 64,
 	    my $count = 0;
 	    while $count++ < $generations && best-fitness($population) < $length/4 {
 	        LAST {
-		    if best-fitness($population) >= $length {
+		    if best-fitness($population) >= $length/4 {
 		        info(to-json( { id => $*THREAD.id,
 			                best => best-fitness($population),
 			                found => True,
