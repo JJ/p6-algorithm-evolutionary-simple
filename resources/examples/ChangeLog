@@ -1,3 +1,7 @@
+2019-03-29  Juan J. merelo  <jmerelo@penny>
+
+	* population-mixer-freqs-ap-rr.p6: Testing with this. It takes some times more than 800 seconds, and thus it exits. Maybe should repeat with 1600, since more than half simply need more time to finish.
+
 2019-02-06  Juan J. merelo  <jmerelo@penny>
 
 	* population-mixer-freqs-ap.p6: ap as in "Adaptive population" Adapts the population to the number of existing threads. 

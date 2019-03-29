@@ -87,7 +87,10 @@ sub MAIN( UInt :$length = 64,
     };
     
 
-    start { sleep 800; exit };   # Just in case it gets stuck
+    start { sleep 800;
+            say "Reached time limit";
+            exit
+          };   # Just in case it gets stuck
     await @promises;
     say "Parameters ==";
     say "Evaluations => $evaluations";
