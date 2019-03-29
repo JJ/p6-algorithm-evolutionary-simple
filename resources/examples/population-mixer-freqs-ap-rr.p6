@@ -51,7 +51,7 @@ sub MAIN( UInt :$length = 64,
                                        fitness-of => %fitness-of,
 				       evaluator => &royal-road);
 	    my $count = 0;
-	    while $count++ < $generations && best-fitness($population) < $length {
+	    while $count++ < $generations && best-fitness($population) < $length/4 {
 	        LAST {
 		    if best-fitness($population) >= $length {
 		        info(to-json( { id => $*THREAD.id,
