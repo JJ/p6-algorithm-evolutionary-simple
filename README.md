@@ -37,6 +37,11 @@ max-ones( @chromosome --> Int )
 
 Returns the number of trues (or ones) in the chromosome.
 
+leading-ones( @chromosome --> Int )
+-----------------------------------
+
+Returns the number of ones from the beginning of the chromosome. 
+
 royal-road( @chromosome )
 -------------------------
 
@@ -91,6 +96,11 @@ multi sub generation( :@population, :%fitness-of, :$evaluator, :$population-size
 ----------------------------------------------------------------------------------------------------------------------------------
 
 Single generation of an evolutionary algorithm. The initial `Mix` has to be evaluated before entering here using the `evaluate` function. Will not use mutation if that variable is set to `True`
+
+sub generations-without-change( $generations, $population )
+-----------------------------------------------------------
+
+Returns `False` if the number of generations in `$generations` has not been reached without changing; it returns `True` otherwise.
 
 mix( $population1, $population2, $size --> Mix ) is export 
 -----------------------------------------------------------
