@@ -312,6 +312,11 @@ Generates a random chromosome of indicated length. Returns a C<Seq> of C<Bool>s
 
 Returns the number of trues (or ones) in the chromosome.
 
+=head2 leading-ones( @chromosome --> Int )
+
+Returns the number of ones from the beginning of the chromosome. 
+
+
 =head2 royal-road( @chromosome )
 
 That's a bumpy road, returns 1 for each block of 4 which has the same true or false value.
