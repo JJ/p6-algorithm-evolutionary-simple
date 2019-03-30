@@ -6,6 +6,6 @@ do
     echo $g
     for i in {1..15}
     do
-        perl6 -I../../lib population-mixer-freqs-ap-rr.p6 --threads=$g
+        perl6 -I../../lib population-mixer-freqs-ap-lo.p6 --threads=$g
     done
 done
