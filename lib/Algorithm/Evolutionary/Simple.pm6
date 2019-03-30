@@ -430,9 +430,9 @@ Generates a new array with random elements of the two arrays that are used as ar
 
 =head1 SEE ALSO
 
-There is a very interesting implementation of an evolutionary algorithm in L<Algorithm::Genetic>. Check it out.
+There is a very interesting implementation of an evolutionary algorithm in L<C<Algorithm::Genetic>|https://github.com/samgwise/p6-algorithm-genetic>. Check it out.
 
-This is also a port of L<Algorithm::Evolutionary::Simple to Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies, but it's not simply a port, since most of the code is completely different.
+This is also a port of L<Algorithm::Evolutionary::Simple, a Perl 5 module, to Perl6|https://metacpan.org/release/Algorithm-Evolutionary-Simple>, which has a few more goodies, but it's not simply a port, since most of the code is completely different. Also the functions. They're just namesakes, actually.
 
 =head1 AUTHOR
 
