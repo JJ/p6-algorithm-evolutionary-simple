@@ -16,19 +16,7 @@ sub initialize( UInt :$size,
 }
 
 sub leading-ones( @chromosome --> Int ) is export is pure {
-    if ! @chromosome[0] {
-        return 0;
-    } else {
-        my $leading-ones = 1;
-        for 1..^@chromosome.elems -> $i {
-            if ! @chromosome[$i] {
-                return $leading-ones;
-            } else {
-                $leading-ones++;
-            }
-        }
-        return $leading-ones;
-    }
+    return @chromosome.first( !*, :kv )[0] // @chromosome.elems;
 }
 
 sub max-ones( @chromosome --> Int ) is export is pure {
