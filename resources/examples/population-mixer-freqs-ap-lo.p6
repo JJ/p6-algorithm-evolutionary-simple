@@ -17,7 +17,7 @@ sub json-formatter ( $m, :$fh ) {
 logger.send-to("lo-pma-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
 sub MAIN( UInt :$length = 64,
-	  UInt :$total-population = 4096,
+	  UInt :$total-population = 8192,
 	  UInt :$generations = 8,
 	  UInt :$threads = 2
 	) {
@@ -88,7 +88,7 @@ sub MAIN( UInt :$length = 64,
     };
     
 
-    start { sleep 800;
+    start { sleep 1200;
             say "Reached time limit";
             exit
           };   # Just in case it gets stuck

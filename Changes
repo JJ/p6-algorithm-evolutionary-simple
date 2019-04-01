@@ -1,3 +1,7 @@
+2019-04-01  Juan J. merelo  <jmerelo@penny>
+
+	* lib/Algorithm/Evolutionary/Simple.pm6: Changes leading-ones to a single line, which should be a bit faster. 
+
 2019-03-30  Juan J. merelo  <jmerelo@penny>
 
 	* lib/Algorithm/Evolutionary/Simple.pm6: Adds leading-ones, besides having added before a few goodies, such as selectorecombinative algorithm. 
