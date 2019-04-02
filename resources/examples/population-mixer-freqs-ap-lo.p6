@@ -16,7 +16,7 @@ sub json-formatter ( $m, :$fh ) {
 
 logger.send-to("lo-pma-" ~ DateTime.now.Str ~ ".json", formatter => &json-formatter);
 
-sub MAIN( UInt :$length = 64,
+sub MAIN( UInt :$length = 48,
 	  UInt :$total-population = 8192,
 	  UInt :$generations = 16,
 	  UInt :$threads = 2
@@ -86,7 +86,6 @@ sub MAIN( UInt :$length = 64,
 	$channel-one.send( @new-population);
 	say "Mixing in ", $*THREAD.id;
     };
-    
 
     start { sleep 1200;
             say "Reached time limit";
