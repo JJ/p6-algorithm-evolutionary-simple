@@ -18,7 +18,7 @@ logger.send-to("lo-pma-" ~ DateTime.now.Str ~ ".json", formatter => &json-format
 
 sub MAIN( UInt :$length = 64,
 	  UInt :$total-population = 8192,
-	  UInt :$generations = 8,
+	  UInt :$generations = 16,
 	  UInt :$threads = 2
 	) {
 
