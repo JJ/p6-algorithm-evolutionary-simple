@@ -248,7 +248,7 @@ sub frequencies-best( Mix $population, $elite = 2 --> List ) is export {
 sub generate-with-best( $population-size, @frequencies, $best --> Array ) is export {
     my @mix = @frequencies.map( { (Bool::True => $_, Bool::False => 1-$_ ).Mix } );
     my @population = gather {
-        for ^$population-size - 1 {
+        for ^($population-size - 1) {
             my @one = @mix>>.roll;
             take @one;
         }
