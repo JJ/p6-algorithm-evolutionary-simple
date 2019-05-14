@@ -53,6 +53,7 @@ my @frequencies = frequencies( @fake-population);
 is-deeply(@frequencies, [1.0,0.75,0.5,0.25], "Frequencies OK" );
 
 # Check on real pop
+my $best-one = best-one( $new-pop );
 @frequencies = frequencies( $new-pop );
 is( @frequencies.elems, $length, "Size is correct" );
 cmp-ok( any(@frequencies), ">", 0, "Some frequencies are not null" );
@@ -65,6 +66,8 @@ is( @population.elems, $population-size, "Size is correct" );
 for @population -> @p {
     is( @p.elems, $length, "Size of generated elem is correct" );
 }
+@population = generate-with-best( $population-size, @frequencies, $best-one);
+is( @population.elems, $population-size, "Size is correct" );
 my @new-frequencies = frequencies( @population );
 my $difference =  [+] @new-frequencies Z- @frequencies;
 cmp-ok( $difference, "<", $population-size * 0.3, "Frequencies differ in $difference" );
@@ -73,6 +76,8 @@ my @freqs-best = frequencies-best( $new-pop );
 is( @freqs-best.elems, $length, "Size of freqs-best is correct" );
 
 cmp-ok((sum @freqs-best), ">", (sum @frequencies), "Frequencies of the best are better");
+
+
 
 my @crossed = crossover-frequencies( @frequencies, @new-frequencies );
 is @crossed.elems, @frequencies.elems, "Same length frequencies";

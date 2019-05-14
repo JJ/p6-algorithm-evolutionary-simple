@@ -426,6 +426,13 @@ C<$population> can be an array or a Mix, in which case the keys are extracted. T
 
 C<$population> is a Mix, in which case the keys are extracted. This returns the per-bit (or gene) frequency of one (or True) for the population of the best part of the population; the size of the population will be divided by the $proportion variable.
 
+=head2 sub generate-with-gest( $population-size, @frequencies, $best-one )
+
+Generates a population of that size with every gene according to the indicated frequency and adds the best a part of the population.
+
+=head2 sub generate-by-frequencies( $population-size, @frequencies )
+
+Generates a population of that size with every gene according to the indicated frequency.
 
 
 =head2 sub generate-by-frequencies( $population-size, @frequencies )
