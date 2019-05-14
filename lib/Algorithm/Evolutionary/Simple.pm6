@@ -117,8 +117,12 @@ sub produce-offspring-no-mutation( @pool,
 
 }
 
+sub best-one(Mix $population) is export is pure {
+    return $population.sort(*.value).reverse.[0];
+}
+
 sub best-fitness(Mix $population ) is export is pure {
-    return $population.sort(*.value).reverse.[0].value;
+    return best-one( $population ).value;
 }
 
 proto sub generation(Mix :$population,
