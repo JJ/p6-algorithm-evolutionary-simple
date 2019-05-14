@@ -253,7 +253,7 @@ sub generate-with-best( $population-size, @frequencies, $best --> Array ) is exp
             take @one;
         }
     }
-    @population.push( $best );
+    @population.push( $best.key );
     return @population;
 }
 
