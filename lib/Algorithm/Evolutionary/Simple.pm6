@@ -347,8 +347,13 @@ Produces offspring from an array that contains the reproductive pool; it returns
 		                      $size = @pool.elems --> Seq ) is export
 
 Produces offspring from an array that contains the reproductive pool
-without using mutation; it returns a C<Seq>. 
+without using mutation; it returns a C<Seq>.
+			
+=head2 best-one( $population )
 
+Returns the best individual in the population.
+
+			
 =head2 best-fitness( $population )
 
 Returns the fitness of the first element. Mainly useful to check if the algorithm is finished.

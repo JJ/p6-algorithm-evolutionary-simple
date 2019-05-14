@@ -34,6 +34,7 @@ my $evaluated-pop = evaluate-nocache(:@population,
 				     evaluator => &max-ones );
 
 is best-one( $evaluated-pop).value, best-fitness( $evaluated-pop), "Best fitness OK";
+cmp-ok best-fitness( $evaluated-pop ), "≥", $evaluated-pop.sort(*.value).reverse.[1].value, "Best is equal or better than second";
 
 for $evaluated-pop.keys -> $k {
     is( $evaluated-pop{$k}, max-ones( $k ), "Evaluation is correct, {$evaluated-pop{$k}}");
