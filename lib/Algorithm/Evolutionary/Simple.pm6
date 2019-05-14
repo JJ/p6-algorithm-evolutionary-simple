@@ -132,9 +132,9 @@ proto sub generation(Mix :$population,
                      | --> Mix ) { * };
 
 multi sub generation(Mix :$population,
-	       :%fitness-of,
-	       :$evaluator,
-	       :$population-size = $population.elems --> Mix ) is export {
+		     :%fitness-of,
+		     :$evaluator,
+		     :$population-size = $population.elems --> Mix ) is export {
 
     my $best = $population.sort(*.value).reverse.[0..1].Mix; # Keep the best as elite
     my @pool = get-pool-roulette-wheel( $population, $population-size-2);
@@ -243,6 +243,18 @@ multi sub frequencies( Mix $population --> List ) is export {
 sub frequencies-best( Mix $population, $elite = 2 --> List ) is export {
     my $best = $population.sort(*.value).reverse.[0..($population.elems/$elite)].Mix;
     frequencies($best);
+}
+
+sub generate-with-best( $population-size, @frequencies, $best --> Array ) is export {
+    my @mix = @frequencies.map( { (Bool::True => $_, Bool::False => 1-$_ ).Mix } );
+    my @population = gather {
+        for ^$population-size - 1 {
+            my @one = @mix>>.roll;
+            take @one;
+        }
+    }
+    @population.push( $best );
+    return @population;
 }
 
 sub generate-by-frequencies( $population-size, @frequencies --> Array ) is export {

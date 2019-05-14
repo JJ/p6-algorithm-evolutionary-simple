@@ -46,10 +46,14 @@ sub MAIN( UInt :$length = 48,
     my @promises;
     for ^$threads {
         my $promise = start react whenever $channel-one -> $msg {
-	    my @crew = @($msg<freqs>);
-	    say @crew;
+	    dd $msg;
             my %fitness-of;
-	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
+	    my @unpacked-pop;
+	    if $msg<best> {
+		@unpacked-pop = generate-with-best( $population-size, @($msg<freqs>), $msg<best> );
+	    } else {
+		@unpacked-pop = generate-by-frequencies( $population-size, @($msg<freqs>) );
+	    }
 	    my $population = evaluate( population => @unpacked-pop,
                                        fitness-of => %fitness-of,
 				       evaluator => &leading-ones);
@@ -87,9 +91,13 @@ sub MAIN( UInt :$length = 48,
 
     my $pairs = start react whenever $mixer -> @pair {
         $to-mix.send( @pair.pick ); # To avoid getting it hanged up
+	say "Mixing ", @pair;
 	my @new-population =  crossover-frequencies( @pair[0]<freqs>, @pair[1]<freqs> );
-	my $best-one = (@pair[0].value > @pair[1].value ) ?? @pair[0] !! @pair[1];
-	$channel-one.send( { freqs =>@new-population,
+	my $best-one = (@pair[0]<best>.value > @pair[1]<best>.value ) ?? @pair[0]<best> !! @pair[1]<best>;
+	say "Best one $best-one";
+	say  { freqs =>@new-population,
+	       best => $best-one };
+	$channel-one.send( { freqs => @new-population,
 			     best => $best-one } );
 	say "Mixing in ", $*THREAD.id;
     };
