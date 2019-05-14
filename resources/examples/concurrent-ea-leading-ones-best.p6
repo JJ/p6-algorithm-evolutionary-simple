@@ -52,21 +52,24 @@ sub MAIN( UInt :$length = 48,
                                        fitness-of => %fitness-of,
 				       evaluator => &leading-ones);
 	    my $count = 0;
-	    while $count++ < $generations && best-fitness($population) < $max-fitness {
+	    my $best-one = best-one($population);
+	    my $best-fitness = $best-one.value;
+	    while $count++ < $generations && $best-fitness < $max-fitness {
 	        LAST {
-		    if best-fitness($population) >= $max-fitness {
+		    if $best-fitness >= $max-fitness {
 		        info(to-json( { id => $*THREAD.id,
-			                best => best-fitness($population),
+			                best => $best-fitness,
 			                found => True,
 			                finishing-at => DateTime.now.Str} ));
                 
 		        say "Solution found" => $evaluations;
 		        $channel-one.close;
 	            } else {
-		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ",best-fitness($population)  ;
+		        say "Emitting after $count generations in thread ", $*THREAD.id, " Best fitness ", $best-fitness  ;
 		        info(to-json( { id => $*THREAD.id,
-			                best => best-fitness($population) }));
-		        $to-mix.send( frequencies-best($population, 8) );
+			                best => $best-fitness }));
+		        $to-mix.send( { freqs => frequencies-best($population, 8),
+					best => $best-one } );
 	            }
 	        };
 	        $population = generation( population => $population,
@@ -82,8 +85,10 @@ sub MAIN( UInt :$length = 48,
 
     my $pairs = start react whenever $mixer -> @pair {
         $to-mix.send( @pair.pick ); # To avoid getting it hanged up
-	my @new-population =  crossover-frequencies( @pair[0], @pair[1] );
-	$channel-one.send( @new-population);
+	my @new-population =  crossover-frequencies( @pair[0]<freqs>, @pair[1]<freqs> );
+	my $best-one = (@pair[0].value > @pair[1].value ) ?? @pair[0] !! @pair[1];
+	$channel-one.send( {freqs =>@new-population,
+			    best => $best-one } );
 	say "Mixing in ", $*THREAD.id;
     };
 
