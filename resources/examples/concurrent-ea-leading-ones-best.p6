@@ -40,12 +40,14 @@ sub MAIN( UInt :$length = 48,
 
     # Initialize three populations for the mixer
     for ^$initial-populations {
-	$channel-one.send( 1.rand xx $length );
+	$channel-one.send( { freqs => 1.rand xx $length } );
     }
 
     my @promises;
     for ^$threads {
-        my $promise = start react whenever $channel-one -> @crew {
+        my $promise = start react whenever $channel-one -> $msg {
+	    my @crew = @($msg<freqs>);
+	    say @crew;
             my %fitness-of;
 	    my @unpacked-pop = generate-by-frequencies( $population-size, @crew );
 	    my $population = evaluate( population => @unpacked-pop,
@@ -87,8 +89,8 @@ sub MAIN( UInt :$length = 48,
         $to-mix.send( @pair.pick ); # To avoid getting it hanged up
 	my @new-population =  crossover-frequencies( @pair[0]<freqs>, @pair[1]<freqs> );
 	my $best-one = (@pair[0].value > @pair[1].value ) ?? @pair[0] !! @pair[1];
-	$channel-one.send( {freqs =>@new-population,
-			    best => $best-one } );
+	$channel-one.send( { freqs =>@new-population,
+			     best => $best-one } );
 	say "Mixing in ", $*THREAD.id;
     };
 
