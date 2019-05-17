@@ -91,12 +91,8 @@ sub MAIN( UInt :$length = 48,
 
     my $pairs = start react whenever $mixer -> @pair {
         $to-mix.send( @pair.pick ); # To avoid getting it hanged up
-	say "Mixing ", @pair;
 	my @new-population =  crossover-frequencies( @pair[0]<freqs>, @pair[1]<freqs> );
 	my $best-one = (@pair[0]<best>.value > @pair[1]<best>.value ) ?? @pair[0]<best> !! @pair[1]<best>;
-	say "Best one $best-one";
-	say  { freqs =>@new-population,
-	       best => $best-one };
 	$channel-one.send( { freqs => @new-population,
 			     best => $best-one } );
 	say "Mixing in ", $*THREAD.id;
