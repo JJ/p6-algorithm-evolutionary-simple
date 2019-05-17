@@ -6,6 +6,6 @@ do
     echo $t
     for i in {1..15}
     do
-        perl6 -I../../lib concurrent-ea-leading-ones.p6 --threads=$t
+        perl6 -I../../lib concurrent-ea-leading-ones-best.p6 --threads=$t
     done
 done
