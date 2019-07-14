@@ -47,19 +47,19 @@ multi sub evaluate( :@population,
 }
 
 sub evaluate-nocache( :@population,
-			    :$evaluator --> Mix ) is export {
+    			    :$evaluator --> Mix ) is export {
     my MixHash $pop-bag;
     for @population -> $p {
-	if  $pop-bag{$p}:!exists {
-	    $pop-bag{$p} = $evaluator( $p );
-	}
+	    if  $pop-bag{$p}:!exists {
+	        $pop-bag{$p} = $evaluator( $p );
+	    }
     }
     return $pop-bag.Mix;
 }
 
 multi sub evaluate( :@population,
-	            :%fitness-of,
-	            :$evaluator,
+	                :%fitness-of,
+	                :$evaluator,
                     Bool :$auto-t --> Mix ) is export {
     my @unique-population = @population.unique;
     my @evaluations = @unique-population.race(degree => 8).map( { $^p => $evaluator( $^p ) } );
@@ -71,7 +71,7 @@ multi sub evaluate( :@population,
 }
 
 sub get-pool-roulette-wheel( Mix $population,
-			     UInt $need = $population.elems ) is export {
+			                 UInt $need = $population.elems ) is export {
     return $population.roll: $need;
 }
 
@@ -82,7 +82,7 @@ sub mutation ( @chromosome is copy --> List ) is export {
 }
 
 sub crossover ( @chromosome1 is copy,
-		@chromosome2 is copy )
+		        @chromosome2 is copy )
                 returns List
                 is export {
     my $length = @chromosome1.elems;
@@ -107,11 +107,11 @@ sub produce-offspring( @pool,
 }
 
 sub produce-offspring-no-mutation( @pool,
-		       $size = @pool.elems --> Seq ) is export {
+                                   $size = @pool.elems --> Seq ) is export {
     my @new-population;
     for 1..($size/2) {
-	my @χx = @pool.pick: 2;
-	@new-population.push: crossover(@χx[0], @χx[1]).Slip;
+	    my @χx = @pool.pick: 2;
+	    @new-population.push: crossover(@χx[0], @χx[1]).Slip;
     }
     return @new-population.Seq;
 
