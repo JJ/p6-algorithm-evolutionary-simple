@@ -1,36 +1,36 @@
 {
-  "auth" : "github:JJ",
-  "authors" : [
+  "name": "Algorithm::Evolutionary::Simple",
+  "description": "A simple evolutionary algorithm",
+  "version": "0.0.7",
+  "perl": "6.*",
+  "authors": [
     "JJ Merelo"
   ],
-  "build-depends" : [ ],
-  "depends" : [
+  "auth": "github:JJ",
+  "depends": [
     "Log::Async"
   ],
-  "description" : "A simple evolutionary algorithm",
-  "license" : "Artistic-2.0",
-  "name" : "Algorithm::Evolutionary::Simple",
-  "perl" : "6.*",
-  "provides" : {
-    "Algorithm::Evolutionary::Fitness::P-Peaks" : "lib/Algorithm/Evolutionary/Fitness/P-Peaks.pm6",
-    "Algorithm::Evolutionary::Simple" : "lib/Algorithm/Evolutionary/Simple.pm6"
+  "build-depends": [],
+  "test-depends": [
+    "Test",
+    "Test::META"
+  ],
+  "provides": {
+    "Algorithm::Evolutionary::Fitness::P-Peaks": "lib/Algorithm/Evolutionary/Fitness/P-Peaks.pm6",
+    "Algorithm::Evolutionary::Simple": "lib/Algorithm/Evolutionary/Simple.pm6"
   },
-  "resources" : [
+  "resources": [
     "examples/max-ones.p6",
     "examples/concurrent-selecto-recombinative-EA.p6",
     "examples/concurrent-evolutionary-algorithm.p6",
     "examples/population-mixer.p6"
   ],
-  "source-url" : "https://github.com/JJ/p6-algorithm-evolutionary-simple.git",
-  "tags" : [
+  "license": "Artistic-2.0",
+  "tags": [
     "evolutionary algorithms",
     "genetic algorithms",
     "optimization",
     "computational inteligence"
   ],
-  "test-depends" : [
-    "Test",
-    "Test::META"
-  ],
-  "version" : "0.0.7"
+  "source-url": "https://github.com/JJ/p6-algorithm-evolutionary-simple.git"
 }
