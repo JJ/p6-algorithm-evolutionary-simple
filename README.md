@@ -13,11 +13,23 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-Algorithm::Evolutionary::Simple is a module for writing simple and quasi-canonical evolutionary algorithms in Perl 6. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+Algorithm::Evolutionary::Simple is a module for writing simple and quasi
+-canonical evolutionary algorithms in Raku. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
 
 It is intended mainly for demo purposes, although it's been actually used in research. In the future, more versions will be available.
 
-It uses a fitness cache for storing and not reevaluating, so take care of memory bloat.
+It uses a fitness cache for storing and not reevaluating already seen
+ chromosomes, so take care of memory bloat.
+ 
+EXAMPLES
+========
+
+Go to [`resources/examples`](resources/examples) for examples. For instance
+, run `max-ones.p6` or `p-peaks.p6` there. You'll need to run
+
+     zef  install --deps-only .
+     
+To install needed modules there.
 
 METHODS
 =======
@@ -150,9 +162,10 @@ Generates a new array with random elements of the two arrays that are used as ar
 SEE ALSO
 ========
 
-There is a very interesting implementation of an evolutionary algorithm in [Algorithm::Genetic](Algorithm::Genetic). Check it out.
+There is a very interesting implementation of an evolutionary algorithm in [Algorithm::Genetic](https://github.com/samgwise/p6-algorithm-genetic). Check it out.
 
-This is also a port of [Algorithm::Evolutionary::Simple to Perl6](https://metacpan.org/release/Algorithm-Evolutionary-Simple), which has a few more goodies, but it's not simply a port, since most of the code is completely different.
+This is also kind of a port of [Algorithm::Evolutionary::Simple to Perl6](https
+://metacpan.org/release/Algorithm-Evolutionary-Simple), which has a few more goodies, but it's not simply a port, since most of the code is completely different.
 
 AUTHOR
 ======
