@@ -6,5 +6,13 @@
       <sourceFolder url="file://$MODULE_DIR$/t" isTestSource="true" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Log::Async" type="perl6">
+        <CLASSES />
+        <SOURCES>
+          <root url="raku://448590579:Log::Async!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
