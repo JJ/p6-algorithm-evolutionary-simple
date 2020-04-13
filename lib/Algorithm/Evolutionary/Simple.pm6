@@ -177,16 +177,15 @@ sub no-change-during( $generations, $best ) is export {
     state $generations-without-change=0;
     state $previous-best;
     with $previous-best {
-	if $best == $previous-best {
-	    $generations-without-change++;
-	} else {
-	    $generations-without-change=0;
-	}
+	    if $best == $previous-best {
+	        $generations-without-change++;
+	    } else {
+	        $generations-without-change=0;
+	    }
     } else {
-	$generations-without-change++;
+	    $generations-without-change++;
     }
     $previous-best = $best;
-    say "$generations-without-change, $generations";
     return $generations-without-change >= $generations;
 }
 
@@ -216,7 +215,7 @@ sub unpack-individual( uint64 $packed, UInt $bits --> Array(Seq)) is export {
 sub pack-population( @population --> Buf) is export {
     my @packed-individuals;
     for @population -> $individual {
-	@packed-individuals.push: pack-individual( $individual);
+	    @packed-individuals.push: pack-individual( $individual);
     }
     return buf64.new( @packed-individuals);
 }
@@ -224,7 +223,7 @@ sub pack-population( @population --> Buf) is export {
 sub unpack-population( Buf $buffer, UInt $bits --> Array ) is export {
     my @packed-individuals;
     loop (my $i = 0; $i < $buffer.elems; $i++ ) {
-	@packed-individuals.push: unpack-individual( $buffer[$i], $bits);
+	    @packed-individuals.push: unpack-individual( $buffer[$i], $bits);
     }
     return @packed-individuals;
 }
@@ -350,8 +349,7 @@ Returns the chromosome with a random bit flipped.
 
 Returns two chromosomes, with parts of it crossed over. Generally you will want to do crossover first, then mutation. 
 
-=head2 produce-offspring( @pool,
-		          $size = @pool.elems --> Seq ) is export
+=head2 produce-offspring( @pool, $size = @pool.elems --> Seq ) is export
 
 Produces offspring from an array that contains the reproductive pool; it returns a C<Seq>.
 
