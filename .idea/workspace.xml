@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9856cdce-80b8-4eb4-b2e4-b45489b1cedc" name="Default" comment="Proper (I guess) indentation using spaces.">
+    <list default="true" id="9856cdce-80b8-4eb4-b2e4-b45489b1cedc" name="Default" comment="Adds testing to configuration">
+      <change afterPath="$PROJECT_DIR$/resources/examples/META6.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/META6.json" beforeDir="false" afterPath="$PROJECT_DIR$/META6.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/p6-algorithm-evolutionary-simple.iml" beforeDir="false" afterPath="$PROJECT_DIR$/p6-algorithm-evolutionary-simple.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>fre</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -26,17 +24,33 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/examples/max-ones.p6" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Raku.Max ones">
+    <configuration name="Max ones" type="PERL6_RUN_CONFIGURATION" factoryName="Raku">
+      <SCRIPT_PATH>$PROJECT_DIR$/resources/examples/max-ones.p6</SCRIPT_PATH>
+      <SCRIPT_ARGS />
+      <WORKING_DIRECTORY>$PROJECT_DIR$/resources/examples</WORKING_DIRECTORY>
+      <ENV_VARS />
+      <PASS_ENVIRONMENT>false</PASS_ENVIRONMENT>
+      <PERL6_PARAMS />
+      <DEBUG_PORT>9999</DEBUG_PORT>
+      <START_SUSPENDED>false</START_SUSPENDED>
+      <method v="2" />
+    </configuration>
     <configuration name="All tests" type="PERL6_TEST_CONFIGURATION" factoryName="Raku test">
       <PARALELLISM_DEGREE>1</PARALELLISM_DEGREE>
       <ENVS />
       <PASS_PARENT_ENV>false</PASS_PARENT_ENV>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Raku.Max ones" />
+      <item itemvalue="Raku test.All tests" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -49,20 +63,57 @@
       <option name="presentableId" value="Default" />
       <updated>1563108133840</updated>
     </task>
+    <task id="LOCAL-00001" summary="Adds testing to configuration">
+      <created>1586760925398</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1586760925398</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Proper (I guess) indentation using spaces." />
-    <option name="LAST_COMMIT_MESSAGE" value="Proper (I guess) indentation using spaces." />
+    <MESSAGE value="Adds testing to configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds testing to configuration" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="204" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586760849677">
+    <state x="414" y="204" width="1092" height="734" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586761306451">
       <screen x="0" y="34" width="1920" height="1046" />
     </state>
-    <state x="414" y="204" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.34.1920.1046@0.34.1920.1046" timestamp="1586760849677" />
+    <state x="414" y="204" width="1092" height="734" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.34.1920.1046@0.34.1920.1046" timestamp="1586761306451" />
+    <state x="453" y="60" width="1004" height="1013" key="CommitChangelistDialog2" timestamp="1586760925204">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state x="453" y="60" width="1004" height="1013" key="CommitChangelistDialog2/0.34.1920.1046@0.34.1920.1046" timestamp="1586760925204" />
+    <state x="690" y="268" width="530" height="624" key="FileChooserDialogImpl" timestamp="1586761301319">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state x="690" y="268" width="530" height="624" key="FileChooserDialogImpl/0.34.1920.1046@0.34.1920.1046" timestamp="1586761301319" />
+    <state width="1878" height="243" key="GridCell.Tab.0.bottom" timestamp="1586761831703">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1878" height="243" key="GridCell.Tab.0.bottom/0.34.1920.1046@0.34.1920.1046" timestamp="1586761831703" />
+    <state width="1878" height="243" key="GridCell.Tab.0.center" timestamp="1586761831702">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1878" height="243" key="GridCell.Tab.0.center/0.34.1920.1046@0.34.1920.1046" timestamp="1586761831702" />
+    <state width="1878" height="243" key="GridCell.Tab.0.left" timestamp="1586761831702">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1878" height="243" key="GridCell.Tab.0.left/0.34.1920.1046@0.34.1920.1046" timestamp="1586761831702" />
+    <state width="1878" height="243" key="GridCell.Tab.0.right" timestamp="1586761831702">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1878" height="243" key="GridCell.Tab.0.right/0.34.1920.1046@0.34.1920.1046" timestamp="1586761831702" />
     <state x="449" y="196" width="1012" height="740" key="SettingsEditor" timestamp="1586760866325">
       <screen x="0" y="34" width="1920" height="1046" />
     </state>
     <state x="449" y="196" width="1012" height="740" key="SettingsEditor/0.34.1920.1046@0.34.1920.1046" timestamp="1586760866325" />
+    <state x="515" y="62" width="889" height="990" key="find.popup" timestamp="1586761384498">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state x="515" y="62" width="889" height="990" key="find.popup/0.34.1920.1046@0.34.1920.1046" timestamp="1586761384498" />
   </component>
 </project>

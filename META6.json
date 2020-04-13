@@ -7,10 +7,7 @@
     "JJ Merelo"
   ],
   "auth": "github:JJ",
-  "depends": [
-    "Log::Async"
-  ],
-  "build-depends": [],
+  "depends": [],
   "test-depends": [
     "Test",
     "Test::META"

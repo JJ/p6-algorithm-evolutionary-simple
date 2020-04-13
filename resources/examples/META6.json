@@ -1,0 +1,22 @@
+{
+  "name": "An Algorithm::Evolutionary::Simple set of examples",
+  "description": "A simple evolutionary algorithm",
+  "version": "0.0.1",
+  "perl": "6.*",
+  "authors": [
+    "JJ Merelo"
+  ],
+  "auth": "github:JJ",
+  "depends": [
+    "Log::Async",
+    "JSON::Fast"
+  ],
+  "license": "Artistic-2.0",
+  "tags": [
+    "evolutionary algorithms",
+    "genetic algorithms",
+    "optimization",
+    "computational inteligence"
+  ],
+  "source-url": "https://github.com/JJ/p6-algorithm-evolutionary-simple.git"
+}

@@ -10,7 +10,7 @@
       <library name="Log::Async" type="perl6">
         <CLASSES />
         <SOURCES>
-          <root url="raku://448590579:Log::Async!/" />
+          <root url="raku://1165951813:Log::Async!/" />
         </SOURCES>
       </library>
     </orderEntry>
