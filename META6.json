@@ -1,12 +1,12 @@
 {
   "name": "Algorithm::Evolutionary::Simple",
   "description": "A simple evolutionary algorithm",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "perl": "6.*",
   "authors": [
     "JJ Merelo"
   ],
-  "auth": "github:JJ",
+  "auth": "zef:jjmerelo",
   "depends": [],
   "test-depends": [
     "Test",
@@ -27,7 +27,8 @@
     "evolutionary algorithms",
     "genetic algorithms",
     "optimization",
-    "computational inteligence"
+    "computational inteligence",
+    "evolutionary computation"
   ],
   "source-url": "https://github.com/JJ/p6-algorithm-evolutionary-simple.git"
 }
