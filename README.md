@@ -9,18 +9,46 @@ SYNOPSIS
 ========
 
     use Algorithm::Evolutionary::Simple;
+    
+    # From resources/examples/max-ones.p6
+    my UInt :$length = 64;
+	my UInt :$population-size = 256;
+
+
+    my @initial-population = initialize( size => $population-size,
+					     genome-length => $length );
+	my %fitness-of;
+
+	my $population = evaluate( population => @initial-population,
+				   fitness-of => %fitness-of,
+				   evaluator => &max-ones );
+
+	my $result = 0;
+	while $population.sort(*.value).reverse.[0].value < $length {
+	    $population = generation( population => $population,
+				      fitness-of => %fitness-of,
+				      evaluator => &max-ones,
+				      population-size => $population-size) ;
+	    $result += $population-size;
+	    info(to-json( { best => best-fitness($population) } ));
+	}
+
+    say $result
 
 DESCRIPTION
 ===========
 
-Algorithm::Evolutionary::Simple is a module for writing simple and quasi
--canonical evolutionary algorithms in Raku. It uses binary representation, integer fitness (which is needed for the kind of data structure we are using) and a single fitness function.
+`Algorithm::Evolutionary::Simple` is a module for writing simple and quasi
+-canonical evolutionary algorithms in Raku. It uses binary representation,
+integer fitness (which is needed for the kind of data structure we are using)
+and a single fitness function.
 
-It is intended mainly for demo purposes, although it's been actually used in research. In the future, more versions will be available.
+It is intended mainly for demo purposes, although it's been actually used in
+research. In the future, more versions will be available.
 
 It uses a fitness cache for storing and not reevaluating already seen
- chromosomes, so take care of memory bloat.
- 
+ chromosomes, so be mindful of memory bloat.
+
 EXAMPLES
 ========
 
@@ -28,7 +56,7 @@ Go to [`resources/examples`](resources/examples) for examples. For instance
 , run `max-ones.p6` or `p-peaks.p6` there. You'll need to run
 
      zef  install --deps-only .
-     
+
 To install needed modules in that directory.
 
 METHODS
@@ -175,7 +203,7 @@ JJ Merelo <jjmerelo@gmail.com>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018, 2019 JJ Merelo
+Copyright 2018, 2019, 2022 JJ Merelo
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
