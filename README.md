@@ -9,7 +9,7 @@ SYNOPSIS
 ========
 
     use Algorithm::Evolutionary::Simple;
-    
+
     # From resources/examples/max-ones.p6
     my UInt :$length = 64;
 	my UInt :$population-size = 256;
@@ -65,7 +65,7 @@ METHODS
 initialize( UInt :$size, UInt :$genome-length --> Array ) is export
 -------------------------------------------------------------------
 
-Creates the initial population of binary chromosomes with the indicated length; returns an array. 
+Creates the initial population of binary chromosomes with the indicated length; returns an array.
 
 random-chromosome( UInt $length --> List )
 ------------------------------------------
@@ -80,7 +80,7 @@ Returns the number of trues (or ones) in the chromosome.
 leading-ones( @chromosome --> Int )
 -----------------------------------
 
-Returns the number of ones from the beginning of the chromosome. 
+Returns the number of ones from the beginning of the chromosome.
 
 royal-road( @chromosome )
 -------------------------
