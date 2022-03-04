@@ -5,6 +5,7 @@ use Algorithm::Evolutionary::Simple;
 
 my $population-size = 32;
 
+# TODO: add 64 here when regression in Rakudo is fixed.
 for <32 48> -> $length {
     for ^$population-size {
         my @random-chromosome = random-chromosome( $length );
