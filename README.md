@@ -29,7 +29,7 @@ Go to [`resources/examples`](resources/examples) for examples. For instance
 
      zef  install --deps-only .
      
-To install needed modules there.
+To install needed modules in that directory.
 
 METHODS
 =======

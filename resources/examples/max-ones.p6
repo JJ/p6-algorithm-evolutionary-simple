@@ -1,8 +1,8 @@
-#!/usr/bin/env p6
+#!/usr/bin/env raku
 
 use v6;
 
-use lib <../../lib>;
+use lib <lib ../../lib>;
 use Algorithm::Evolutionary::Simple;
 
 use Log::Async;
